@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `products` MODIFY `imageURL` VARCHAR(191) NULL,
+    MODIFY `videoURL` VARCHAR(191) NULL;
