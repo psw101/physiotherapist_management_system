@@ -1,38 +1,94 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import classNames from "classnames";
+import { CiMenuBurger } from "react-icons/ci";
+import { IoMdClose } from "react-icons/io";
 
 const Narbar = () => {
+  const currentPath = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const links = [
+    {label:'Dashboard', href: '/'},
+    {label:'Patients', href: '/patients'},
+    {label:'Products', href: '/products/test2'},
+    {label:'Appointments', href: '/appointments'},
+    {label:'Reports', href: '/reports'},
+    {label:'Settings', href: '/settings'}
+  ];
+  
   return (
-    <div>
-      <nav>
-        <div className="w-full h-full bg-gradient-to-r from-blue-400 to-emerald-400">
-          <header className="flex justify-between items-center text-black py-6 px-8 md:px-32 bg-white drop-shadow-md">
-            <ul className=" xl:flex hidden items-center gap-16 font-semibold text-base">
-              <li className="p-3 hover:bg-sky-400 hover:text-white rounded-md transition-all cursor-pointer"><Link href="/">Home</Link></li>
-              <li className="p-3 hover:bg-sky-400 hover:text-white rounded-md transition-all cursor-pointer"><Link href="/patients">Patients</Link></li>
-              <li className="p-3 hover:bg-sky-400 hover:text-white rounded-md transition-all cursor-pointer"><Link href="/products">Products</Link></li>
-              <li className="p-3 hover:bg-sky-400 hover:text-white rounded-md transition-all cursor-pointer"><Link href="/appointments">Appointments</Link></li>
-              <li className="p-3 hover:bg-sky-400 hover:text-white rounded-md transition-all cursor-pointer"><Link href="/reports">Reports</Link></li>
-              <li className="p-3 hover:bg-sky-400 hover:text-white rounded-md transition-all cursor-pointer"><Link href="/settings">Settings</Link></li>
-            </ul>
-            <div>
-              <Image className="xl:hidden " src="images/menu.svg" width={20} height={20} alt="Menu icon" onClick={() => setIsMenuOpen(!isMenuOpen)} />
-              <div className={`absolute xl:hidden left-0 w-full bg-white flex flex-col items-center gap-6 font-semibold text-lg transform transition-transform ${isMenuOpen ? "opacity-100" : "opacity-0"}`} style={{ transition: "trasnform 0.3s ease, opacity 0.03s ease" }}>
-                <li className="list-none w-full p-4 hover:bg-sky-400 hover:text-white transition-all cursor-pointer text-center"><Link href="/">Home</Link></li>
-                <li className="list-none w-full p-4 hover:bg-sky-400 hover:text-white transition-all cursor-pointer text-center"><Link href="/patients">Patients</Link></li>
-                <li className="list-none w-full p-4 hover:bg-sky-400 hover:text-white transition-all cursor-pointer text-center"><Link href="/products">Products</Link></li>
-                <li className="list-none w-full p-4 hover:bg-sky-400 hover:text-white transition-all cursor-pointer text-center"><Link href="/appointments">Appointments</Link></li>
-                <li className="list-none w-full p-4 hover:bg-sky-400 hover:text-white transition-all cursor-pointer text-center"><Link href="/reports">Reports</Link></li>
-                <li className="list-none w-full p-4 hover:bg-sky-400 hover:text-white transition-all cursor-pointer text-center"><Link href="/settings">Settings</Link></li>
-              </div>
-            </div>
-          </header>
+    <nav className="bg-white shadow-md w-full px-4 py-3 mb-6">
+      {/* Desktop & Mobile Navigation Bar */}
+      <div className="flex justify-between items-center">
+        {/* Logo/Brand */}
+        <div className="text-xl font-bold">PhysioSystem</div>
+        
+        {/* Desktop Navigation - Hidden on mobile */}
+        <ul className="hidden xl:flex items-center space-x-6">
+          {links.map(link => (
+            <Link 
+              key={link.href} 
+              className={classNames({
+                'text-zinc-900 font-medium': link.href === currentPath,
+                'text-zinc-500': link.href !== currentPath,
+                'hover:text-zinc-800 transition-colors': true,
+                'px-2 py-1': true,
+              })}
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </ul>
+        
+        {/* Mobile Menu Toggle Button */}
+        <button 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="xl:hidden text-gray-600 focus:outline-none"
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? (
+            <IoMdClose size={24} />
+          ) : (
+            <CiMenuBurger size={24} />
+          )}
+        </button>
+      </div>
+      
+      {/* Mobile Dropdown Menu */}
+      <div 
+        className={classNames(
+          "xl:hidden absolute left-0 right-0 bg-white shadow-md z-10 transition-all duration-300 ease-in-out",
+          {
+            "max-h-[400px] opacity-100 mt-3": isMenuOpen,
+            "max-h-0 opacity-0 overflow-hidden": !isMenuOpen
+          }
+        )}
+      >
+        <div className="py-2 px-4">
+          {links.map(link => (
+            <Link 
+              key={link.href}
+              href={link.href}
+              className={classNames(
+                "block py-3 border-b border-gray-100 w-full",
+                {
+                  'text-zinc-900 font-medium': link.href === currentPath,
+                  'text-zinc-500': link.href !== currentPath,
+                  'hover:bg-gray-50': true
+                }
+              )}
+              onClick={() => setIsMenuOpen(false)} // Close menu when link is clicked
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 
