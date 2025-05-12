@@ -5,15 +5,14 @@ import { Text } from "@radix-ui/themes";
 
 interface ImageUploaderProps {
   onChange: (file: File | null) => void;
-  acceptedFileTypes?: string;
-  maxSizeMB?: number;
+  acceptedFileTypes: string;
+  maxSizeMB: number;
 }
 
 const ImageUploader = ({
   onChange,
-
-  acceptedFileTypes = "image/*",
-  maxSizeMB = 5,
+  acceptedFileTypes,
+  maxSizeMB
 }: ImageUploaderProps) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

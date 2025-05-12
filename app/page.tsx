@@ -1,18 +1,44 @@
 import { getServerSession } from "next-auth";
-import Image from "next/image";
 import Link from "next/link";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import { Span } from "next/dist/trace";
-import { Session } from "inspector/promises";
-
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
+  
   return (
-    <div>
-      <h1>Hello { session && <span>{session.user!.name}</span>}</h1>
+    <div className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center text-center relative"
+         style={{ backgroundImage: "url('/images/background.jpg')" }}>
+      {/* Add a semi-transparent overlay for better text visibility */}
+      <div className="absolute inset-0 bg-black/40  z-0" />
       
- 
+      {/* Content with higher z-index to appear above the overlay */}
+      <div className="relative z-10 px-4 max-w-4xl mx-auto text-white">
+        {session && (
+          <h2 className="text-2xl font-light mb-4">
+            Welcome back, <span className="font-medium">{session.user?.name}</span>
+          </h2>
+        )}
+        
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          Empowering Your Recovery with Personalized Physiotherapy
+        </h1>
+        
+        <p className="text-xl md:text-2xl mb-8">
+          Your journey to wellness begins with expert care and proven techniques.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/appointments/make-appointments" 
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
+            Book an Appointment
+          </Link>
+          
+          <Link href="/services" 
+                className="bg-white/20 hover:bg-white/30 text-white font-medium py-3 px-6 rounded-lg backdrop-blur-sm transition-colors">
+            Explore Services
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
