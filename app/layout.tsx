@@ -7,6 +7,8 @@ import { Popover } from "radix-ui";
 import Navbar from "./components/Narbar"
 import SideMenu from "./components/SideMenu";
 import { Theme } from "@radix-ui/themes";
+import AuthProvider from "./auth/Provider";
+
 
 
 
@@ -39,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}><Theme><Navbar/><main className="p-5">{children}</main></Theme></body>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}><AuthProvider><Theme><Navbar/><main className="p-5">{children}</main></Theme></AuthProvider></body>
     </html>
   );
 }

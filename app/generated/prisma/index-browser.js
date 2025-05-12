@@ -145,13 +145,59 @@ exports.Prisma.AppointmentsScalarFieldEnum = {
   userId: 'userId'
 };
 
-exports.Prisma.UsersScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  username: 'username',
   email: 'email',
-  password: 'password',
-  phoneNumber: 'phoneNumber',
-  address: 'address'
+  emailVerified: 'emailVerified',
+  image: 'image',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state',
+  refresh_token_expires_in: 'refresh_token_expires_in',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+};
+
+exports.Prisma.AuthenticatorScalarFieldEnum = {
+  credentialID: 'credentialID',
+  userId: 'userId',
+  providerAccountId: 'providerAccountId',
+  credentialPublicKey: 'credentialPublicKey',
+  counter: 'counter',
+  credentialDeviceType: 'credentialDeviceType',
+  credentialBackedUp: 'credentialBackedUp',
+  transports: 'transports'
 };
 
 exports.Prisma.SortOrder = {
@@ -195,19 +241,57 @@ exports.Prisma.AppointmentsOrderByRelevanceFieldEnum = {
   status: 'status'
 };
 
-exports.Prisma.UsersOrderByRelevanceFieldEnum = {
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  id: 'id',
   name: 'name',
+  username: 'username',
   email: 'email',
-  password: 'password',
-  phoneNumber: 'phoneNumber',
-  address: 'address'
+  image: 'image'
+};
+
+exports.Prisma.AccountOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+};
+
+exports.Prisma.SessionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId'
+};
+
+exports.Prisma.VerificationTokenOrderByRelevanceFieldEnum = {
+  identifier: 'identifier',
+  token: 'token'
+};
+
+exports.Prisma.AuthenticatorOrderByRelevanceFieldEnum = {
+  credentialID: 'credentialID',
+  userId: 'userId',
+  providerAccountId: 'providerAccountId',
+  credentialPublicKey: 'credentialPublicKey',
+  credentialDeviceType: 'credentialDeviceType',
+  transports: 'transports'
 };
 
 
 exports.Prisma.ModelName = {
   Products: 'Products',
   Appointments: 'Appointments',
-  Users: 'Users'
+  User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
+  Authenticator: 'Authenticator'
 };
 
 /**

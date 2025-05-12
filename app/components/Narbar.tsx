@@ -5,10 +5,14 @@ import { usePathname } from "next/navigation";
 import classNames from "classnames";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
+import { useSession } from "next-auth/react";
 
 const Narbar = () => {
+  const { status, data: session } = useSession();
   const currentPath = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  if(status === "loading") return null
 
   const links = [
     {label:'Dashboard', href: '/'},
@@ -18,7 +22,10 @@ const Narbar = () => {
     {label:'Reports', href: '/reports'},
     {label:'Settings', href: '/settings'},
     {label:'Make Appointments', href: '/appointments/make-appointments'},
+
   ];
+
+
   
   return (
     <nav className="bg-white shadow-md w-full px-4 py-3 mb-6">
@@ -43,6 +50,9 @@ const Narbar = () => {
               {link.label}
             </Link>
           ))}
+          {status === 'authenticated' && <div>{session.user!.name}</div>}
+          {status === 'authenticated' && <Link href="/api/auth/signout">Sign out</Link>}
+          {status === 'unauthenticated' && <Link href="/api/auth/signin">Login</Link>}
         </ul>
         
         {/* Mobile Menu Toggle Button */}
