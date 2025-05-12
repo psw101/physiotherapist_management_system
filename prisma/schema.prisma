@@ -15,11 +15,36 @@ datasource db {
 }
 
 model Products {
-  id            Int    @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   productName   String
   price         Int
   description   String
   specification Json
   imageURL      String?
   videoURL      String?
+}
+
+model Appointments {
+  id                Int      @id @default(autoincrement())
+  appointmentNumber Int?
+  appointmentDate   DateTime? @default(now())
+  name              String?
+  age               Int?
+  contactNumber     String?
+  email             String?
+  nic               String?
+  address           String?
+  createdAt         DateTime @default(now())
+  status            String?
+  userId            Int?
+}
+
+model Users {
+  id          Int    @id @default(autoincrement())
+  name        String
+  email       String @unique
+  password    String
+  phoneNumber String
+  address     String
+  // appointments Appointments[]
 }

@@ -9,12 +9,10 @@ export async function POST(request: NextRequest) {
 
     const product = await prisma.products.create({
         data: {
-            productName: body.productName,
+            productName: body.name,
             price: body.price,
             description: body.description,
             specification: body.specification,
-            imageURL:body.imageURL
-
         }
     })
 

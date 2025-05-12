@@ -16,7 +16,8 @@ const Narbar = () => {
     {label:'Products', href: '/products/test2'},
     {label:'Appointments', href: '/appointments'},
     {label:'Reports', href: '/reports'},
-    {label:'Settings', href: '/settings'}
+    {label:'Settings', href: '/settings'},
+    {label:'Make Appointments', href: '/appointments/make-appointments'},
   ];
   
   return (

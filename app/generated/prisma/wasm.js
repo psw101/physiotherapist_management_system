@@ -130,6 +130,30 @@ exports.Prisma.ProductsScalarFieldEnum = {
   videoURL: 'videoURL'
 };
 
+exports.Prisma.AppointmentsScalarFieldEnum = {
+  id: 'id',
+  appointmentNumber: 'appointmentNumber',
+  appointmentDate: 'appointmentDate',
+  name: 'name',
+  age: 'age',
+  contactNumber: 'contactNumber',
+  email: 'email',
+  nic: 'nic',
+  address: 'address',
+  createdAt: 'createdAt',
+  status: 'status',
+  userId: 'userId'
+};
+
+exports.Prisma.UsersScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  phoneNumber: 'phoneNumber',
+  address: 'address'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -162,9 +186,28 @@ exports.Prisma.ProductsOrderByRelevanceFieldEnum = {
   videoURL: 'videoURL'
 };
 
+exports.Prisma.AppointmentsOrderByRelevanceFieldEnum = {
+  name: 'name',
+  contactNumber: 'contactNumber',
+  email: 'email',
+  nic: 'nic',
+  address: 'address',
+  status: 'status'
+};
+
+exports.Prisma.UsersOrderByRelevanceFieldEnum = {
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  phoneNumber: 'phoneNumber',
+  address: 'address'
+};
+
 
 exports.Prisma.ModelName = {
-  Products: 'Products'
+  Products: 'Products',
+  Appointments: 'Appointments',
+  Users: 'Users'
 };
 
 /**
