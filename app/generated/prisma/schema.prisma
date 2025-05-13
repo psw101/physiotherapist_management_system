@@ -14,29 +14,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Products {
+model Product {
   id            Int     @id @default(autoincrement())
-  productName   String
-  price         Int
-  description   String
-  specification Json
+  name          String?
+  price         Int?
+  description   String?
+  specification Json?
   imageURL      String?
   videoURL      String?
 }
 
-model Appointments {
-  id                Int       @id @default(autoincrement())
-  appointmentNumber Int?
-  appointmentDate   DateTime? @default(now())
-  name              String?
-  age               Int?
-  contactNumber     String?
-  email             String?
-  nic               String?
-  address           String?
-  createdAt         DateTime  @default(now())
-  status            String?
-  userId            Int?
+model Appointment {
+  id            Int       @id @default(autoincrement())
+  number        Int?
+  date          DateTime? @default(now())
+  name          String?
+  age           Int?
+  contactNumber String?
+  email         String?
+  nic           String?
+  address       String?
+  createdAt     DateTime  @default(now())
+  status        String?
+  userId        Int?
 }
 
 //Follwing are the prisma schemas from nextauth for authentication purposes

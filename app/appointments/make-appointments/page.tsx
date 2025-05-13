@@ -23,7 +23,7 @@ const MakeAppointmentPagePage = () => {
     console.log("Form submitted", data);
     try {
       const response = await axios.post("/api/appointments", data);
-      console.log(response.data);
+      console.log(response.data.body);
       router.push("/appointments/make-appointments");
     } catch (error) {
       console.log(error);

@@ -14,20 +14,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Products {
+model Product {
   id            Int     @id @default(autoincrement())
-  productName   String
-  price         Int
-  description   String
-  specification Json
+  name   String?
+  price         Int?
+  description   String?
+  specification Json?
   imageURL      String?
   videoURL      String?
 }
 
-model Appointments {
+model Appointment {
   id                Int       @id @default(autoincrement())
-  appointmentNumber Int?
-  appointmentDate   DateTime? @default(now())
+  number Int?
+  date   DateTime? @default(now())
   name              String?
   age               Int?
   contactNumber     String?

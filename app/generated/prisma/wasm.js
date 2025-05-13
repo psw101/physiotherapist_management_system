@@ -120,9 +120,9 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.ProductsScalarFieldEnum = {
+exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
-  productName: 'productName',
+  name: 'name',
   price: 'price',
   description: 'description',
   specification: 'specification',
@@ -130,10 +130,10 @@ exports.Prisma.ProductsScalarFieldEnum = {
   videoURL: 'videoURL'
 };
 
-exports.Prisma.AppointmentsScalarFieldEnum = {
+exports.Prisma.AppointmentScalarFieldEnum = {
   id: 'id',
-  appointmentNumber: 'appointmentNumber',
-  appointmentDate: 'appointmentDate',
+  number: 'number',
+  date: 'date',
   name: 'name',
   age: 'age',
   contactNumber: 'contactNumber',
@@ -206,7 +206,8 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -226,14 +227,14 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
-exports.Prisma.ProductsOrderByRelevanceFieldEnum = {
-  productName: 'productName',
+exports.Prisma.ProductOrderByRelevanceFieldEnum = {
+  name: 'name',
   description: 'description',
   imageURL: 'imageURL',
   videoURL: 'videoURL'
 };
 
-exports.Prisma.AppointmentsOrderByRelevanceFieldEnum = {
+exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
   name: 'name',
   contactNumber: 'contactNumber',
   email: 'email',
@@ -287,8 +288,8 @@ exports.Prisma.AuthenticatorOrderByRelevanceFieldEnum = {
 
 
 exports.Prisma.ModelName = {
-  Products: 'Products',
-  Appointments: 'Appointments',
+  Product: 'Product',
+  Appointment: 'Appointment',
   User: 'User',
   Account: 'Account',
   Session: 'Session',

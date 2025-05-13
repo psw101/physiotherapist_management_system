@@ -25,3 +25,14 @@ Not sure this line will work in nextauth route
  const passwordsMatch = await bcrypt.compare(credentials!.password, user!.hashedPassword!)
 
 
+
+200 OK: Request succeeded
+201 Created: Resource created successfully
+400 Bad Request: Client error (validation errors)
+401 Unauthorized: Authentication required
+403 Forbidden: Authenticated but not authorized
+404 Not Found: Resource not found
+422 Unprocessable Entity: Good for validation errors
+500 Internal Server Error: Server-side error
+
+
