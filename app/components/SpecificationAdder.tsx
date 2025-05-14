@@ -45,7 +45,6 @@ const SpecificationAdder = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <h3 className="text-lg font-medium">Specifications</h3>
       
       {/* Add new specification */}
       <div className="grid grid-cols-5 gap-4 items-end">

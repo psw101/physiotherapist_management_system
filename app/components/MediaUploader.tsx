@@ -82,7 +82,7 @@ const MediaUploader: React.FC<MediaUploaderProps> = ({ mediaType = "image", setU
         onSuccess={handleSuccess}
       >
         {({ open }) => (
-          <button onClick={() => open()} className="btn btn-primary px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+          <button type="button" onClick={() => open()} className="btn btn-primary px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             {selectedMedia ? "Replace" : "Select"} {mediaType === "any" ? "Media" : mediaType}
           </button>
         )}

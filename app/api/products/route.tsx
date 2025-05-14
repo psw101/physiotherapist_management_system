@@ -1,40 +1,73 @@
 import { NextRequest, NextResponse } from "next/server";
-import {productSchema} from "../validationSchemas";
-import {prisma} from "@/prisma/client";
+import { prisma } from "@/prisma/client";
+import { productSchema } from "../validationSchemas";
 
-
+// Create a new product
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const validation = productSchema.safeParse(body);
-  // if (!validation.success) return NextResponse.json(validation.error.format(), { status: 404 });
-
   try {
+    const body = await request.json();
+    
+    // Validate request body with Zod
+    const validation = productSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.format() }, 
+        { status: 400 }
+      );
+    }
+
     const product = await prisma.product.create({
       data: {
-        name: body.name || null,
-        price: parseInt(body.price )|| null,
-        description: body.description || null,
-        specification: body.specification || null,
-        imageURL: body.imageUrl || null,
-        videoURL: body.videoUrl || null,
+        name: body.name,
+        price: body.price,
+        description: body.description,
+        specification: body.specification,
+        imageUrl: body.imageUrl,
+        videoUrl: body.videoUrl,
       },
     });
+
     return NextResponse.json(product, { status: 201 });
-  } catch (error) {
-    console.error("Error creating product record in database:", error);
-    return NextResponse.json({ error: "Failed to create product in the database" }, { status: 510 });
+  } catch (error: any) {
+    console.error("Error creating product:", error);
+    
+    // Check for database constraints or other errors
+    if (error.code === 'P2002') {
+      const field = error.meta?.target[0] || 'field'; 
+      return NextResponse.json(
+        { error: `A product with this ${field} already exists` }, 
+        { status: 409 }
+      );
+    }
+    
+    return NextResponse.json(
+      { error: "Failed to create product" }, 
+      { status: 500 }
+    );
   }
 }
 
-export async function GET(request: NextRequest) {
+// Get all products
+export async function GET() {
   try {
-    const product = await prisma.product.findMany();
-    if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
-    }
-    return NextResponse.json(product);
+    const products = await prisma.product.findMany({
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        description: true,
+        specification: true,
+        imageUrl: true,
+        videoUrl: true,
+      },
+    });
+    
+    return NextResponse.json(products);
   } catch (error) {
-    console.error("Error fetching product:", error);
-    return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+    console.error("Error fetching products:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch products" }, 
+      { status: 500 }
+    );
   }
 }

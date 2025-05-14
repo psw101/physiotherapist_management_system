@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { patientSchema } from "../api/validationSchemas";
+import { patientSchema } from "../../api/validationSchemas";
 import {z} from "zod";
+import { NextResponse } from "next/server";
 
 type PatientForm = z.infer<typeof patientSchema>;
 
@@ -39,13 +40,15 @@ const Patients = () => {
       setIsSubmitting(true);
       console.log("Form submitted:", data);
       // Uncomment when API endpoint is ready
-      // await axios.post("/api/patients", data);
-      // router.push("/patients/view");
+      await axios.post("/api/patients", data);
+      router.push("/patients");
       setError("");
       reset(); // Clear form after successful submission
+
     } catch (error) {
       console.error("Error submitting patient data:", error);
       setError("An unexpected error occurred while saving patient data.");
+      setIsSubmitting(false);
     } finally {
       setIsSubmitting(false);
     }

@@ -36,3 +36,21 @@ Not sure this line will work in nextauth route
 500 Internal Server Error: Server-side error
 
 
+/app
+  /components
+    /ui             # Reusable UI components (buttons, inputs, etc.)
+    /layout         # Layout components (headers, footers, sidebars)
+    /features       # Feature-specific components 
+      /patients     # Patient-related components
+      /products     # Product-related components
+      /appointments # Appointment-related components
+    /common         # Shared components used across multiple features
+    /forms          # Form-related components
+    /tables         # Table components like your PatientTable
+    /modals         # Modal components
+    /icons          # Icon components
+  /lib             # Utility functions, hooks, contexts
+  /api             # API routes
+  /[feature]       # Route groups by feature
+
+
