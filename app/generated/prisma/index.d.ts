@@ -48,6 +48,11 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  * 
  */
 export type Authenticator = $Result.DefaultSelection<Prisma.$AuthenticatorPayload>
+/**
+ * Model Patient
+ * 
+ */
+export type Patient = $Result.DefaultSelection<Prisma.$PatientPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -243,6 +248,16 @@ export class PrismaClient<
     * ```
     */
   get authenticator(): Prisma.AuthenticatorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.patient`: Exposes CRUD operations for the **Patient** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Patients
+    * const patients = await prisma.patient.findMany()
+    * ```
+    */
+  get patient(): Prisma.PatientDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -689,7 +704,8 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
-    Authenticator: 'Authenticator'
+    Authenticator: 'Authenticator',
+    Patient: 'Patient'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -708,7 +724,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "product" | "appointment" | "user" | "account" | "session" | "verificationToken" | "authenticator"
+      modelProps: "product" | "appointment" | "user" | "account" | "session" | "verificationToken" | "authenticator" | "patient"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1174,6 +1190,72 @@ export namespace Prisma {
           }
         }
       }
+      Patient: {
+        payload: Prisma.$PatientPayload<ExtArgs>
+        fields: Prisma.PatientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PatientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PatientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>
+          }
+          findFirst: {
+            args: Prisma.PatientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PatientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>
+          }
+          findMany: {
+            args: Prisma.PatientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>[]
+          }
+          create: {
+            args: Prisma.PatientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>
+          }
+          createMany: {
+            args: Prisma.PatientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PatientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>
+          }
+          update: {
+            args: Prisma.PatientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>
+          }
+          deleteMany: {
+            args: Prisma.PatientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PatientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PatientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PatientPayload>
+          }
+          aggregate: {
+            args: Prisma.PatientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePatient>
+          }
+          groupBy: {
+            args: Prisma.PatientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PatientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PatientCountArgs<ExtArgs>
+            result: $Utils.Optional<PatientCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1265,6 +1347,7 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     authenticator?: AuthenticatorOmit
+    patient?: PatientOmit
   }
 
   /* Types for Logging */
@@ -1434,8 +1517,8 @@ export namespace Prisma {
     name: string | null
     price: number | null
     description: string | null
-    imageURL: string | null
-    videoURL: string | null
+    imageUrl: string | null
+    videoUrl: string | null
   }
 
   export type ProductMaxAggregateOutputType = {
@@ -1443,8 +1526,8 @@ export namespace Prisma {
     name: string | null
     price: number | null
     description: string | null
-    imageURL: string | null
-    videoURL: string | null
+    imageUrl: string | null
+    videoUrl: string | null
   }
 
   export type ProductCountAggregateOutputType = {
@@ -1453,8 +1536,8 @@ export namespace Prisma {
     price: number
     description: number
     specification: number
-    imageURL: number
-    videoURL: number
+    imageUrl: number
+    videoUrl: number
     _all: number
   }
 
@@ -1474,8 +1557,8 @@ export namespace Prisma {
     name?: true
     price?: true
     description?: true
-    imageURL?: true
-    videoURL?: true
+    imageUrl?: true
+    videoUrl?: true
   }
 
   export type ProductMaxAggregateInputType = {
@@ -1483,8 +1566,8 @@ export namespace Prisma {
     name?: true
     price?: true
     description?: true
-    imageURL?: true
-    videoURL?: true
+    imageUrl?: true
+    videoUrl?: true
   }
 
   export type ProductCountAggregateInputType = {
@@ -1493,8 +1576,8 @@ export namespace Prisma {
     price?: true
     description?: true
     specification?: true
-    imageURL?: true
-    videoURL?: true
+    imageUrl?: true
+    videoUrl?: true
     _all?: true
   }
 
@@ -1590,8 +1673,8 @@ export namespace Prisma {
     price: number | null
     description: string | null
     specification: JsonValue | null
-    imageURL: string | null
-    videoURL: string | null
+    imageUrl: string | null
+    videoUrl: string | null
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -1619,8 +1702,8 @@ export namespace Prisma {
     price?: boolean
     description?: boolean
     specification?: boolean
-    imageURL?: boolean
-    videoURL?: boolean
+    imageUrl?: boolean
+    videoUrl?: boolean
   }, ExtArgs["result"]["product"]>
 
 
@@ -1631,11 +1714,11 @@ export namespace Prisma {
     price?: boolean
     description?: boolean
     specification?: boolean
-    imageURL?: boolean
-    videoURL?: boolean
+    imageUrl?: boolean
+    videoUrl?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "price" | "description" | "specification" | "imageURL" | "videoURL", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "price" | "description" | "specification" | "imageUrl" | "videoUrl", ExtArgs["result"]["product"]>
 
   export type $ProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Product"
@@ -1646,8 +1729,8 @@ export namespace Prisma {
       price: number | null
       description: string | null
       specification: Prisma.JsonValue | null
-      imageURL: string | null
-      videoURL: string | null
+      imageUrl: string | null
+      videoUrl: string | null
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -2022,8 +2105,8 @@ export namespace Prisma {
     readonly price: FieldRef<"Product", 'Int'>
     readonly description: FieldRef<"Product", 'String'>
     readonly specification: FieldRef<"Product", 'Json'>
-    readonly imageURL: FieldRef<"Product", 'String'>
-    readonly videoURL: FieldRef<"Product", 'String'>
+    readonly imageUrl: FieldRef<"Product", 'String'>
+    readonly videoUrl: FieldRef<"Product", 'String'>
   }
     
 
@@ -8298,6 +8381,1003 @@ export namespace Prisma {
 
 
   /**
+   * Model Patient
+   */
+
+  export type AggregatePatient = {
+    _count: PatientCountAggregateOutputType | null
+    _avg: PatientAvgAggregateOutputType | null
+    _sum: PatientSumAggregateOutputType | null
+    _min: PatientMinAggregateOutputType | null
+    _max: PatientMaxAggregateOutputType | null
+  }
+
+  export type PatientAvgAggregateOutputType = {
+    id: number | null
+    age: number | null
+  }
+
+  export type PatientSumAggregateOutputType = {
+    id: number | null
+    age: number | null
+  }
+
+  export type PatientMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    username: string | null
+    password: string | null
+    age: number | null
+    contactNumber: string | null
+    email: string | null
+    area: string | null
+    nic: string | null
+    address: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PatientMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    username: string | null
+    password: string | null
+    age: number | null
+    contactNumber: string | null
+    email: string | null
+    area: string | null
+    nic: string | null
+    address: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PatientCountAggregateOutputType = {
+    id: number
+    name: number
+    username: number
+    password: number
+    age: number
+    contactNumber: number
+    email: number
+    area: number
+    nic: number
+    address: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PatientAvgAggregateInputType = {
+    id?: true
+    age?: true
+  }
+
+  export type PatientSumAggregateInputType = {
+    id?: true
+    age?: true
+  }
+
+  export type PatientMinAggregateInputType = {
+    id?: true
+    name?: true
+    username?: true
+    password?: true
+    age?: true
+    contactNumber?: true
+    email?: true
+    area?: true
+    nic?: true
+    address?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PatientMaxAggregateInputType = {
+    id?: true
+    name?: true
+    username?: true
+    password?: true
+    age?: true
+    contactNumber?: true
+    email?: true
+    area?: true
+    nic?: true
+    address?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PatientCountAggregateInputType = {
+    id?: true
+    name?: true
+    username?: true
+    password?: true
+    age?: true
+    contactNumber?: true
+    email?: true
+    area?: true
+    nic?: true
+    address?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PatientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Patient to aggregate.
+     */
+    where?: PatientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Patients to fetch.
+     */
+    orderBy?: PatientOrderByWithRelationInput | PatientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PatientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Patients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Patients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Patients
+    **/
+    _count?: true | PatientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PatientAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PatientSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PatientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PatientMaxAggregateInputType
+  }
+
+  export type GetPatientAggregateType<T extends PatientAggregateArgs> = {
+        [P in keyof T & keyof AggregatePatient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePatient[P]>
+      : GetScalarType<T[P], AggregatePatient[P]>
+  }
+
+
+
+
+  export type PatientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PatientWhereInput
+    orderBy?: PatientOrderByWithAggregationInput | PatientOrderByWithAggregationInput[]
+    by: PatientScalarFieldEnum[] | PatientScalarFieldEnum
+    having?: PatientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PatientCountAggregateInputType | true
+    _avg?: PatientAvgAggregateInputType
+    _sum?: PatientSumAggregateInputType
+    _min?: PatientMinAggregateInputType
+    _max?: PatientMaxAggregateInputType
+  }
+
+  export type PatientGroupByOutputType = {
+    id: number
+    name: string
+    username: string
+    password: string
+    age: number
+    contactNumber: string
+    email: string
+    area: string
+    nic: string
+    address: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PatientCountAggregateOutputType | null
+    _avg: PatientAvgAggregateOutputType | null
+    _sum: PatientSumAggregateOutputType | null
+    _min: PatientMinAggregateOutputType | null
+    _max: PatientMaxAggregateOutputType | null
+  }
+
+  type GetPatientGroupByPayload<T extends PatientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PatientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PatientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PatientGroupByOutputType[P]>
+            : GetScalarType<T[P], PatientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PatientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    username?: boolean
+    password?: boolean
+    age?: boolean
+    contactNumber?: boolean
+    email?: boolean
+    area?: boolean
+    nic?: boolean
+    address?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["patient"]>
+
+
+
+  export type PatientSelectScalar = {
+    id?: boolean
+    name?: boolean
+    username?: boolean
+    password?: boolean
+    age?: boolean
+    contactNumber?: boolean
+    email?: boolean
+    area?: boolean
+    nic?: boolean
+    address?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "password" | "age" | "contactNumber" | "email" | "area" | "nic" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["patient"]>
+
+  export type $PatientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Patient"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      username: string
+      password: string
+      age: number
+      contactNumber: string
+      email: string
+      area: string
+      nic: string
+      address: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["patient"]>
+    composites: {}
+  }
+
+  type PatientGetPayload<S extends boolean | null | undefined | PatientDefaultArgs> = $Result.GetResult<Prisma.$PatientPayload, S>
+
+  type PatientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PatientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PatientCountAggregateInputType | true
+    }
+
+  export interface PatientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Patient'], meta: { name: 'Patient' } }
+    /**
+     * Find zero or one Patient that matches the filter.
+     * @param {PatientFindUniqueArgs} args - Arguments to find a Patient
+     * @example
+     * // Get one Patient
+     * const patient = await prisma.patient.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PatientFindUniqueArgs>(args: SelectSubset<T, PatientFindUniqueArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Patient that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PatientFindUniqueOrThrowArgs} args - Arguments to find a Patient
+     * @example
+     * // Get one Patient
+     * const patient = await prisma.patient.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PatientFindUniqueOrThrowArgs>(args: SelectSubset<T, PatientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Patient that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientFindFirstArgs} args - Arguments to find a Patient
+     * @example
+     * // Get one Patient
+     * const patient = await prisma.patient.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PatientFindFirstArgs>(args?: SelectSubset<T, PatientFindFirstArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Patient that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientFindFirstOrThrowArgs} args - Arguments to find a Patient
+     * @example
+     * // Get one Patient
+     * const patient = await prisma.patient.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PatientFindFirstOrThrowArgs>(args?: SelectSubset<T, PatientFindFirstOrThrowArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Patients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Patients
+     * const patients = await prisma.patient.findMany()
+     * 
+     * // Get first 10 Patients
+     * const patients = await prisma.patient.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const patientWithIdOnly = await prisma.patient.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PatientFindManyArgs>(args?: SelectSubset<T, PatientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Patient.
+     * @param {PatientCreateArgs} args - Arguments to create a Patient.
+     * @example
+     * // Create one Patient
+     * const Patient = await prisma.patient.create({
+     *   data: {
+     *     // ... data to create a Patient
+     *   }
+     * })
+     * 
+     */
+    create<T extends PatientCreateArgs>(args: SelectSubset<T, PatientCreateArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Patients.
+     * @param {PatientCreateManyArgs} args - Arguments to create many Patients.
+     * @example
+     * // Create many Patients
+     * const patient = await prisma.patient.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PatientCreateManyArgs>(args?: SelectSubset<T, PatientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Patient.
+     * @param {PatientDeleteArgs} args - Arguments to delete one Patient.
+     * @example
+     * // Delete one Patient
+     * const Patient = await prisma.patient.delete({
+     *   where: {
+     *     // ... filter to delete one Patient
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PatientDeleteArgs>(args: SelectSubset<T, PatientDeleteArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Patient.
+     * @param {PatientUpdateArgs} args - Arguments to update one Patient.
+     * @example
+     * // Update one Patient
+     * const patient = await prisma.patient.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PatientUpdateArgs>(args: SelectSubset<T, PatientUpdateArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Patients.
+     * @param {PatientDeleteManyArgs} args - Arguments to filter Patients to delete.
+     * @example
+     * // Delete a few Patients
+     * const { count } = await prisma.patient.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PatientDeleteManyArgs>(args?: SelectSubset<T, PatientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Patients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Patients
+     * const patient = await prisma.patient.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PatientUpdateManyArgs>(args: SelectSubset<T, PatientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Patient.
+     * @param {PatientUpsertArgs} args - Arguments to update or create a Patient.
+     * @example
+     * // Update or create a Patient
+     * const patient = await prisma.patient.upsert({
+     *   create: {
+     *     // ... data to create a Patient
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Patient we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PatientUpsertArgs>(args: SelectSubset<T, PatientUpsertArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Patients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientCountArgs} args - Arguments to filter Patients to count.
+     * @example
+     * // Count the number of Patients
+     * const count = await prisma.patient.count({
+     *   where: {
+     *     // ... the filter for the Patients we want to count
+     *   }
+     * })
+    **/
+    count<T extends PatientCountArgs>(
+      args?: Subset<T, PatientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PatientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Patient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PatientAggregateArgs>(args: Subset<T, PatientAggregateArgs>): Prisma.PrismaPromise<GetPatientAggregateType<T>>
+
+    /**
+     * Group by Patient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PatientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PatientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PatientGroupByArgs['orderBy'] }
+        : { orderBy?: PatientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PatientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPatientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Patient model
+   */
+  readonly fields: PatientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Patient.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PatientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Patient model
+   */
+  interface PatientFieldRefs {
+    readonly id: FieldRef<"Patient", 'Int'>
+    readonly name: FieldRef<"Patient", 'String'>
+    readonly username: FieldRef<"Patient", 'String'>
+    readonly password: FieldRef<"Patient", 'String'>
+    readonly age: FieldRef<"Patient", 'Int'>
+    readonly contactNumber: FieldRef<"Patient", 'String'>
+    readonly email: FieldRef<"Patient", 'String'>
+    readonly area: FieldRef<"Patient", 'String'>
+    readonly nic: FieldRef<"Patient", 'String'>
+    readonly address: FieldRef<"Patient", 'String'>
+    readonly createdAt: FieldRef<"Patient", 'DateTime'>
+    readonly updatedAt: FieldRef<"Patient", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Patient findUnique
+   */
+  export type PatientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Filter, which Patient to fetch.
+     */
+    where: PatientWhereUniqueInput
+  }
+
+  /**
+   * Patient findUniqueOrThrow
+   */
+  export type PatientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Filter, which Patient to fetch.
+     */
+    where: PatientWhereUniqueInput
+  }
+
+  /**
+   * Patient findFirst
+   */
+  export type PatientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Filter, which Patient to fetch.
+     */
+    where?: PatientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Patients to fetch.
+     */
+    orderBy?: PatientOrderByWithRelationInput | PatientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Patients.
+     */
+    cursor?: PatientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Patients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Patients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Patients.
+     */
+    distinct?: PatientScalarFieldEnum | PatientScalarFieldEnum[]
+  }
+
+  /**
+   * Patient findFirstOrThrow
+   */
+  export type PatientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Filter, which Patient to fetch.
+     */
+    where?: PatientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Patients to fetch.
+     */
+    orderBy?: PatientOrderByWithRelationInput | PatientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Patients.
+     */
+    cursor?: PatientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Patients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Patients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Patients.
+     */
+    distinct?: PatientScalarFieldEnum | PatientScalarFieldEnum[]
+  }
+
+  /**
+   * Patient findMany
+   */
+  export type PatientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Filter, which Patients to fetch.
+     */
+    where?: PatientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Patients to fetch.
+     */
+    orderBy?: PatientOrderByWithRelationInput | PatientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Patients.
+     */
+    cursor?: PatientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Patients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Patients.
+     */
+    skip?: number
+    distinct?: PatientScalarFieldEnum | PatientScalarFieldEnum[]
+  }
+
+  /**
+   * Patient create
+   */
+  export type PatientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Patient.
+     */
+    data: XOR<PatientCreateInput, PatientUncheckedCreateInput>
+  }
+
+  /**
+   * Patient createMany
+   */
+  export type PatientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Patients.
+     */
+    data: PatientCreateManyInput | PatientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Patient update
+   */
+  export type PatientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Patient.
+     */
+    data: XOR<PatientUpdateInput, PatientUncheckedUpdateInput>
+    /**
+     * Choose, which Patient to update.
+     */
+    where: PatientWhereUniqueInput
+  }
+
+  /**
+   * Patient updateMany
+   */
+  export type PatientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Patients.
+     */
+    data: XOR<PatientUpdateManyMutationInput, PatientUncheckedUpdateManyInput>
+    /**
+     * Filter which Patients to update
+     */
+    where?: PatientWhereInput
+    /**
+     * Limit how many Patients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Patient upsert
+   */
+  export type PatientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Patient to update in case it exists.
+     */
+    where: PatientWhereUniqueInput
+    /**
+     * In case the Patient found by the `where` argument doesn't exist, create a new Patient with this data.
+     */
+    create: XOR<PatientCreateInput, PatientUncheckedCreateInput>
+    /**
+     * In case the Patient was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PatientUpdateInput, PatientUncheckedUpdateInput>
+  }
+
+  /**
+   * Patient delete
+   */
+  export type PatientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Filter which Patient to delete.
+     */
+    where: PatientWhereUniqueInput
+  }
+
+  /**
+   * Patient deleteMany
+   */
+  export type PatientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Patients to delete
+     */
+    where?: PatientWhereInput
+    /**
+     * Limit how many Patients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Patient without action
+   */
+  export type PatientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8317,8 +9397,8 @@ export namespace Prisma {
     price: 'price',
     description: 'description',
     specification: 'specification',
-    imageURL: 'imageURL',
-    videoURL: 'videoURL'
+    imageUrl: 'imageUrl',
+    videoUrl: 'videoUrl'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -8413,6 +9493,24 @@ export namespace Prisma {
   export type AuthenticatorScalarFieldEnum = (typeof AuthenticatorScalarFieldEnum)[keyof typeof AuthenticatorScalarFieldEnum]
 
 
+  export const PatientScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    username: 'username',
+    password: 'password',
+    age: 'age',
+    contactNumber: 'contactNumber',
+    email: 'email',
+    area: 'area',
+    nic: 'nic',
+    address: 'address',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -8457,8 +9555,8 @@ export namespace Prisma {
   export const ProductOrderByRelevanceFieldEnum: {
     name: 'name',
     description: 'description',
-    imageURL: 'imageURL',
-    videoURL: 'videoURL'
+    imageUrl: 'imageUrl',
+    videoUrl: 'videoUrl'
   };
 
   export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFieldEnum)[keyof typeof ProductOrderByRelevanceFieldEnum]
@@ -8534,6 +9632,20 @@ export namespace Prisma {
   export type AuthenticatorOrderByRelevanceFieldEnum = (typeof AuthenticatorOrderByRelevanceFieldEnum)[keyof typeof AuthenticatorOrderByRelevanceFieldEnum]
 
 
+  export const PatientOrderByRelevanceFieldEnum: {
+    name: 'name',
+    username: 'username',
+    password: 'password',
+    contactNumber: 'contactNumber',
+    email: 'email',
+    area: 'area',
+    nic: 'nic',
+    address: 'address'
+  };
+
+  export type PatientOrderByRelevanceFieldEnum = (typeof PatientOrderByRelevanceFieldEnum)[keyof typeof PatientOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -8600,8 +9712,8 @@ export namespace Prisma {
     price?: IntNullableFilter<"Product"> | number | null
     description?: StringNullableFilter<"Product"> | string | null
     specification?: JsonNullableFilter<"Product">
-    imageURL?: StringNullableFilter<"Product"> | string | null
-    videoURL?: StringNullableFilter<"Product"> | string | null
+    imageUrl?: StringNullableFilter<"Product"> | string | null
+    videoUrl?: StringNullableFilter<"Product"> | string | null
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -8610,8 +9722,8 @@ export namespace Prisma {
     price?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     specification?: SortOrderInput | SortOrder
-    imageURL?: SortOrderInput | SortOrder
-    videoURL?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
     _relevance?: ProductOrderByRelevanceInput
   }
 
@@ -8624,8 +9736,8 @@ export namespace Prisma {
     price?: IntNullableFilter<"Product"> | number | null
     description?: StringNullableFilter<"Product"> | string | null
     specification?: JsonNullableFilter<"Product">
-    imageURL?: StringNullableFilter<"Product"> | string | null
-    videoURL?: StringNullableFilter<"Product"> | string | null
+    imageUrl?: StringNullableFilter<"Product"> | string | null
+    videoUrl?: StringNullableFilter<"Product"> | string | null
   }, "id">
 
   export type ProductOrderByWithAggregationInput = {
@@ -8634,8 +9746,8 @@ export namespace Prisma {
     price?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     specification?: SortOrderInput | SortOrder
-    imageURL?: SortOrderInput | SortOrder
-    videoURL?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -8652,8 +9764,8 @@ export namespace Prisma {
     price?: IntNullableWithAggregatesFilter<"Product"> | number | null
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     specification?: JsonNullableWithAggregatesFilter<"Product">
-    imageURL?: StringNullableWithAggregatesFilter<"Product"> | string | null
-    videoURL?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    videoUrl?: StringNullableWithAggregatesFilter<"Product"> | string | null
   }
 
   export type AppointmentWhereInput = {
@@ -9116,13 +10228,103 @@ export namespace Prisma {
     transports?: StringNullableWithAggregatesFilter<"Authenticator"> | string | null
   }
 
+  export type PatientWhereInput = {
+    AND?: PatientWhereInput | PatientWhereInput[]
+    OR?: PatientWhereInput[]
+    NOT?: PatientWhereInput | PatientWhereInput[]
+    id?: IntFilter<"Patient"> | number
+    name?: StringFilter<"Patient"> | string
+    username?: StringFilter<"Patient"> | string
+    password?: StringFilter<"Patient"> | string
+    age?: IntFilter<"Patient"> | number
+    contactNumber?: StringFilter<"Patient"> | string
+    email?: StringFilter<"Patient"> | string
+    area?: StringFilter<"Patient"> | string
+    nic?: StringFilter<"Patient"> | string
+    address?: StringFilter<"Patient"> | string
+    createdAt?: DateTimeFilter<"Patient"> | Date | string
+    updatedAt?: DateTimeFilter<"Patient"> | Date | string
+  }
+
+  export type PatientOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
+    age?: SortOrder
+    contactNumber?: SortOrder
+    email?: SortOrder
+    area?: SortOrder
+    nic?: SortOrder
+    address?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: PatientOrderByRelevanceInput
+  }
+
+  export type PatientWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    username?: string
+    email?: string
+    nic?: string
+    AND?: PatientWhereInput | PatientWhereInput[]
+    OR?: PatientWhereInput[]
+    NOT?: PatientWhereInput | PatientWhereInput[]
+    name?: StringFilter<"Patient"> | string
+    password?: StringFilter<"Patient"> | string
+    age?: IntFilter<"Patient"> | number
+    contactNumber?: StringFilter<"Patient"> | string
+    area?: StringFilter<"Patient"> | string
+    address?: StringFilter<"Patient"> | string
+    createdAt?: DateTimeFilter<"Patient"> | Date | string
+    updatedAt?: DateTimeFilter<"Patient"> | Date | string
+  }, "id" | "username" | "email" | "nic">
+
+  export type PatientOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
+    age?: SortOrder
+    contactNumber?: SortOrder
+    email?: SortOrder
+    area?: SortOrder
+    nic?: SortOrder
+    address?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PatientCountOrderByAggregateInput
+    _avg?: PatientAvgOrderByAggregateInput
+    _max?: PatientMaxOrderByAggregateInput
+    _min?: PatientMinOrderByAggregateInput
+    _sum?: PatientSumOrderByAggregateInput
+  }
+
+  export type PatientScalarWhereWithAggregatesInput = {
+    AND?: PatientScalarWhereWithAggregatesInput | PatientScalarWhereWithAggregatesInput[]
+    OR?: PatientScalarWhereWithAggregatesInput[]
+    NOT?: PatientScalarWhereWithAggregatesInput | PatientScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Patient"> | number
+    name?: StringWithAggregatesFilter<"Patient"> | string
+    username?: StringWithAggregatesFilter<"Patient"> | string
+    password?: StringWithAggregatesFilter<"Patient"> | string
+    age?: IntWithAggregatesFilter<"Patient"> | number
+    contactNumber?: StringWithAggregatesFilter<"Patient"> | string
+    email?: StringWithAggregatesFilter<"Patient"> | string
+    area?: StringWithAggregatesFilter<"Patient"> | string
+    nic?: StringWithAggregatesFilter<"Patient"> | string
+    address?: StringWithAggregatesFilter<"Patient"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
+  }
+
   export type ProductCreateInput = {
     name?: string | null
     price?: number | null
     description?: string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: string | null
-    videoURL?: string | null
+    imageUrl?: string | null
+    videoUrl?: string | null
   }
 
   export type ProductUncheckedCreateInput = {
@@ -9131,8 +10333,8 @@ export namespace Prisma {
     price?: number | null
     description?: string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: string | null
-    videoURL?: string | null
+    imageUrl?: string | null
+    videoUrl?: string | null
   }
 
   export type ProductUpdateInput = {
@@ -9140,8 +10342,8 @@ export namespace Prisma {
     price?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: NullableStringFieldUpdateOperationsInput | string | null
-    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -9150,8 +10352,8 @@ export namespace Prisma {
     price?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: NullableStringFieldUpdateOperationsInput | string | null
-    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProductCreateManyInput = {
@@ -9160,8 +10362,8 @@ export namespace Prisma {
     price?: number | null
     description?: string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: string | null
-    videoURL?: string | null
+    imageUrl?: string | null
+    videoUrl?: string | null
   }
 
   export type ProductUpdateManyMutationInput = {
@@ -9169,8 +10371,8 @@ export namespace Prisma {
     price?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: NullableStringFieldUpdateOperationsInput | string | null
-    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProductUncheckedUpdateManyInput = {
@@ -9179,8 +10381,8 @@ export namespace Prisma {
     price?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     specification?: NullableJsonNullValueInput | InputJsonValue
-    imageURL?: NullableStringFieldUpdateOperationsInput | string | null
-    videoURL?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AppointmentCreateInput = {
@@ -9686,6 +10888,108 @@ export namespace Prisma {
     transports?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type PatientCreateInput = {
+    name: string
+    username: string
+    password: string
+    age: number
+    contactNumber: string
+    email: string
+    area: string
+    nic: string
+    address: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PatientUncheckedCreateInput = {
+    id?: number
+    name: string
+    username: string
+    password: string
+    age: number
+    contactNumber: string
+    email: string
+    area: string
+    nic: string
+    address: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PatientUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    nic?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PatientUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    nic?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PatientCreateManyInput = {
+    id?: number
+    name: string
+    username: string
+    password: string
+    age: number
+    contactNumber: string
+    email: string
+    area: string
+    nic: string
+    address: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PatientUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    nic?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PatientUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    nic?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -9763,8 +11067,8 @@ export namespace Prisma {
     price?: SortOrder
     description?: SortOrder
     specification?: SortOrder
-    imageURL?: SortOrder
-    videoURL?: SortOrder
+    imageUrl?: SortOrder
+    videoUrl?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
@@ -9777,8 +11081,8 @@ export namespace Prisma {
     name?: SortOrder
     price?: SortOrder
     description?: SortOrder
-    imageURL?: SortOrder
-    videoURL?: SortOrder
+    imageUrl?: SortOrder
+    videoUrl?: SortOrder
   }
 
   export type ProductMinOrderByAggregateInput = {
@@ -9786,8 +11090,8 @@ export namespace Prisma {
     name?: SortOrder
     price?: SortOrder
     description?: SortOrder
-    imageURL?: SortOrder
-    videoURL?: SortOrder
+    imageUrl?: SortOrder
+    videoUrl?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
@@ -10301,6 +11605,67 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type PatientOrderByRelevanceInput = {
+    fields: PatientOrderByRelevanceFieldEnum | PatientOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PatientCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
+    age?: SortOrder
+    contactNumber?: SortOrder
+    email?: SortOrder
+    area?: SortOrder
+    nic?: SortOrder
+    address?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PatientAvgOrderByAggregateInput = {
+    id?: SortOrder
+    age?: SortOrder
+  }
+
+  export type PatientMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
+    age?: SortOrder
+    contactNumber?: SortOrder
+    email?: SortOrder
+    area?: SortOrder
+    nic?: SortOrder
+    address?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PatientMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
+    age?: SortOrder
+    contactNumber?: SortOrder
+    email?: SortOrder
+    area?: SortOrder
+    nic?: SortOrder
+    address?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PatientSumOrderByAggregateInput = {
+    id?: SortOrder
+    age?: SortOrder
   }
 
   export type NullableStringFieldUpdateOperationsInput = {

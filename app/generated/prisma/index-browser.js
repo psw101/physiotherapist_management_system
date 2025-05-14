@@ -126,8 +126,8 @@ exports.Prisma.ProductScalarFieldEnum = {
   price: 'price',
   description: 'description',
   specification: 'specification',
-  imageURL: 'imageURL',
-  videoURL: 'videoURL'
+  imageUrl: 'imageUrl',
+  videoUrl: 'videoUrl'
 };
 
 exports.Prisma.AppointmentScalarFieldEnum = {
@@ -201,6 +201,21 @@ exports.Prisma.AuthenticatorScalarFieldEnum = {
   transports: 'transports'
 };
 
+exports.Prisma.PatientScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  username: 'username',
+  password: 'password',
+  age: 'age',
+  contactNumber: 'contactNumber',
+  email: 'email',
+  area: 'area',
+  nic: 'nic',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -230,8 +245,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
-  imageURL: 'imageURL',
-  videoURL: 'videoURL'
+  imageUrl: 'imageUrl',
+  videoUrl: 'videoUrl'
 };
 
 exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
@@ -286,6 +301,17 @@ exports.Prisma.AuthenticatorOrderByRelevanceFieldEnum = {
   transports: 'transports'
 };
 
+exports.Prisma.PatientOrderByRelevanceFieldEnum = {
+  name: 'name',
+  username: 'username',
+  password: 'password',
+  contactNumber: 'contactNumber',
+  email: 'email',
+  area: 'area',
+  nic: 'nic',
+  address: 'address'
+};
+
 
 exports.Prisma.ModelName = {
   Product: 'Product',
@@ -294,7 +320,8 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Authenticator: 'Authenticator'
+  Authenticator: 'Authenticator',
+  Patient: 'Patient'
 };
 
 /**

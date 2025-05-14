@@ -3,7 +3,7 @@ import { prisma } from "@/prisma/client";
 
 export async function POST(request: NextRequest) {
     const body = await request.json();
-    const newAppointment = await prisma.appointments.create({
+    const newAppointment = await prisma.appointment.create({
         data: {
             name: body.name,
             age: parseInt(body.age),

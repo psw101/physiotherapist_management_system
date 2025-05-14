@@ -20,8 +20,8 @@ model Product {
   price         Int?
   description   String?
   specification Json?
-  imageURL      String?
-  videoURL      String?
+  imageUrl      String?
+  videoUrl      String?
 }
 
 model Appointment {
@@ -115,4 +115,19 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model Patient {
+  id            Int      @id @default(autoincrement())
+  name          String
+  username      String   @unique
+  password      String
+  age           Int
+  contactNumber String
+  email         String   @unique
+  area          String
+  nic           String   @unique
+  address       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

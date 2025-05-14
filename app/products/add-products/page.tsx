@@ -8,26 +8,30 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import MediaUploader from "@/app/components/MediaUploader";
+import { productSchema } from "@/app/api/validationSchemas";
+import {z} from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { resolve } from "path";
 
-interface Specification {
-  key: string;
-  value: string;
-}
 
-interface ProductForm {
+
+ export interface Product {
   name: string;
   description: string;
   price: number;
   imageUrl: string;
   videoUrl: string;
-  specification: Specification[];
+  specification: {
+    key: string;
+    value: string;
+  }[];
 }
 
 const ProductFormPage = () => {
   const router = useRouter();
   const [productImage, setProductImage] = useState<File | null>(null);
   const [productVideo, setProductVideo] = useState<File | null>(null);
-  const [specs, setSpecs] = useState<Specification[]>([]);
+  const [specs, setSpecs] = useState<Product["specification"]>([]);
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -41,9 +45,9 @@ const ProductFormPage = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<ProductForm>();
+  } = useForm<Product>({resolver: zodResolver(productSchema)});
 
-  const onSubmit = async (data: ProductForm) => {
+  const onSubmit = async (data: Product) => {
     data.imageUrl = imageUrl;
     data.videoUrl = videoUrl;
     console.log("Form submitted:", data);
