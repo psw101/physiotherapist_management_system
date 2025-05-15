@@ -23,7 +23,6 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) return null;
-        return user;
 
         const passwordsMatch = await bcrypt.compare(credentials!.password, user!.hashedPassword!);
         return passwordsMatch ? user : null;
@@ -37,6 +36,28 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  // Add these configurations
+  pages: {
+    signIn: '/login',
+    signOut: '/',
+    error: '/login',
+    newUser: '/register'
+  },
+  callbacks: {
+    // Add a custom redirect callback
+    async redirect({ url, baseUrl }) {
+      // If the URL is relative, prepend the base URL
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      } 
+      // If the URL is already absolute but on the same host, allow it
+      else if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      // Redirect to home page as fallback
+      return baseUrl;
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);

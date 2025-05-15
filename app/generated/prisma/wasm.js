@@ -120,18 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  username: 'username',
-  email: 'email',
-  emailVerified: 'emailVerified',
-  hashedPassword: 'hashedPassword',
-  image: 'image',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -144,36 +132,30 @@ exports.Prisma.AccountScalarFieldEnum = {
   token_type: 'token_type',
   scope: 'scope',
   id_token: 'id_token',
-  session_state: 'session_state',
-  refresh_token_expires_in: 'refresh_token_expires_in',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  session_state: 'session_state'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
   sessionToken: 'sessionToken',
   userId: 'userId',
-  expires: 'expires',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  expires: 'expires'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  hashedPassword: 'hashedPassword',
+  image: 'image',
+  role: 'role'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
   identifier: 'identifier',
   token: 'token',
   expires: 'expires'
-};
-
-exports.Prisma.AuthenticatorScalarFieldEnum = {
-  credentialID: 'credentialID',
-  userId: 'userId',
-  providerAccountId: 'providerAccountId',
-  credentialPublicKey: 'credentialPublicKey',
-  counter: 'counter',
-  credentialDeviceType: 'credentialDeviceType',
-  credentialBackedUp: 'credentialBackedUp',
-  transports: 'transports'
 };
 
 exports.Prisma.PatientScalarFieldEnum = {
@@ -188,7 +170,8 @@ exports.Prisma.PatientScalarFieldEnum = {
   nic: 'nic',
   address: 'address',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  role: 'role'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
@@ -242,15 +225,6 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
-exports.Prisma.UserOrderByRelevanceFieldEnum = {
-  id: 'id',
-  name: 'name',
-  username: 'username',
-  email: 'email',
-  hashedPassword: 'hashedPassword',
-  image: 'image'
-};
-
 exports.Prisma.AccountOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -271,18 +245,18 @@ exports.Prisma.SessionOrderByRelevanceFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  hashedPassword: 'hashedPassword',
+  image: 'image',
+  role: 'role'
+};
+
 exports.Prisma.VerificationTokenOrderByRelevanceFieldEnum = {
   identifier: 'identifier',
   token: 'token'
-};
-
-exports.Prisma.AuthenticatorOrderByRelevanceFieldEnum = {
-  credentialID: 'credentialID',
-  userId: 'userId',
-  providerAccountId: 'providerAccountId',
-  credentialPublicKey: 'credentialPublicKey',
-  credentialDeviceType: 'credentialDeviceType',
-  transports: 'transports'
 };
 
 exports.Prisma.PatientOrderByRelevanceFieldEnum = {
@@ -293,7 +267,8 @@ exports.Prisma.PatientOrderByRelevanceFieldEnum = {
   email: 'email',
   area: 'area',
   nic: 'nic',
-  address: 'address'
+  address: 'address',
+  role: 'role'
 };
 
 exports.Prisma.JsonNullValueFilter = {
@@ -332,11 +307,10 @@ exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User',
   Account: 'Account',
   Session: 'Session',
+  User: 'User',
   VerificationToken: 'VerificationToken',
-  Authenticator: 'Authenticator',
   Patient: 'Patient',
   Product: 'Product',
   Appointment: 'Appointment',
