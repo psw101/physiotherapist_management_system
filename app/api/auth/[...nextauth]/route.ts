@@ -3,8 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/prisma/client";
-import { adapter } from "next/dist/server/web/adapter";
-import { Session } from "inspector/promises";
 import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
@@ -23,63 +21,97 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) return null;
-
+        return user;
 
         const passwordsMatch = await bcrypt.compare(credentials!.password, user!.hashedPassword!);
         return passwordsMatch ? user : null;
       },
     }),
-    
+
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, account }) {
+      // Add user ID to token if present in user object
+      if (user?.id) {
+        token.id = user.id;
+      }
+
+      // Keep existing role handling
+      if (account?.provider === "google" && !token.role) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email as string },
+          select: { role: true },
+        });
+
+        token.role = (dbUser?.role as string) || "PATIENT";
+      }
+
+      // Check if user has a corresponding patient record
+      if (token.email) {
+        // Look up patient record with matching email
+        const patient = await prisma.patient.findUnique({
+          where: { email: token.email as string },
+        });
+
+        // Add hasPatientProfile flag to token
+        token.hasPatientProfile = !!patient;
+
+        // If there's a patient record, store its ID
+        if (patient) {
+          token.patientId = patient.id;
+        }
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session.user) {
+        // Pass user ID from token to session
+        (session.user as any).id = token.id;
+
+        // Pass role from token to session
+        (session.user as any).role = token.role;
+
+        // Pass patient profile status to session
+        (session.user as any).hasPatientProfile = token.hasPatientProfile;
+
+        // Add patient ID if available
+        if (token.patientId) {
+          (session.user as any).patientId = token.patientId;
+        }
+      }
+
+      return session;
+    },
+
+    async redirect({ url, baseUrl }) {
+      // If it's an absolute URL that starts with the base URL
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      // For relative URLs
+      else if (url.startsWith("/")) {
+        return new URL(url, baseUrl).toString();
+      }
+
+      // Default to base URL
+      return baseUrl;
+    },
+  },
+  pages: {
+    signIn: "/login",
+    // No need to set newUser since we'll handle redirection elsewhere
+  },
   session: {
     strategy: "jwt",
   },
-  callbacks: {
-  // Add only the session callback to fetch role from database
-  async jwt({ token, user, account }) {
-      // Initial sign in
-      // if (user) {
-      //   // For first-time sign in, add user properties to token
-      //   token.id = user.id;
-      //   token.role = user.role || "PATIENT"; // Default role if none exists
-      // }
-      
-      // For Google sign-ins where we might not have a role yet
-      if (account?.provider === "google" && !token.role) {
-        // Fetch user from database to get their role
-        const dbUser = await prisma.user.findUnique({
-          where: { email: token.email as string },
-          select: { role: true }
-        });
-        
-        // Set role from database or default to PATIENT
-        token.role = (dbUser?.role as string) || "PATIENT";
-      }
-      
-      return token;
-    },
-  // Simple redirect callback that sends users to dashboard
-    async redirect({ url, baseUrl }) {
-      // After sign in, redirect to dashboard
-      if (url.startsWith(baseUrl)) {
-        return `${baseUrl}/`;
-      }
-      // For relative URLs
-      else if (url.startsWith('/')) {
-        return `${baseUrl}/`;
-      }
-      // For absolute URLs, default to baseUrl/dashboard
-      return `${baseUrl}/`;
-    }
-  },
-
 };
 
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-

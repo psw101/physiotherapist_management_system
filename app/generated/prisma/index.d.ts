@@ -1632,6 +1632,7 @@ export namespace Prisma {
     hashedPassword: string | null
     image: string | null
     role: string | null
+    hasCompletedProfile: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1645,6 +1646,7 @@ export namespace Prisma {
     hashedPassword: string | null
     image: string | null
     role: string | null
+    hasCompletedProfile: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1658,6 +1660,7 @@ export namespace Prisma {
     hashedPassword: number
     image: number
     role: number
+    hasCompletedProfile: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1673,6 +1676,7 @@ export namespace Prisma {
     hashedPassword?: true
     image?: true
     role?: true
+    hasCompletedProfile?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1686,6 +1690,7 @@ export namespace Prisma {
     hashedPassword?: true
     image?: true
     role?: true
+    hasCompletedProfile?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1699,6 +1704,7 @@ export namespace Prisma {
     hashedPassword?: true
     image?: true
     role?: true
+    hasCompletedProfile?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1785,6 +1791,7 @@ export namespace Prisma {
     hashedPassword: string | null
     image: string | null
     role: string | null
+    hasCompletedProfile: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1815,11 +1822,13 @@ export namespace Prisma {
     hashedPassword?: boolean
     image?: boolean
     role?: boolean
+    hasCompletedProfile?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     Authenticator?: boolean | User$AuthenticatorArgs<ExtArgs>
+    patientProfile?: boolean | User$patientProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1834,15 +1843,17 @@ export namespace Prisma {
     hashedPassword?: boolean
     image?: boolean
     role?: boolean
+    hasCompletedProfile?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "email" | "emailVerified" | "hashedPassword" | "image" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "email" | "emailVerified" | "hashedPassword" | "image" | "role" | "hasCompletedProfile" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     Authenticator?: boolean | User$AuthenticatorArgs<ExtArgs>
+    patientProfile?: boolean | User$patientProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -1852,6 +1863,7 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       Authenticator: Prisma.$AuthenticatorPayload<ExtArgs>[]
+      patientProfile: Prisma.$PatientPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1862,6 +1874,7 @@ export namespace Prisma {
       hashedPassword: string | null
       image: string | null
       role: string | null
+      hasCompletedProfile: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -2207,6 +2220,7 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Authenticator<T extends User$AuthenticatorArgs<ExtArgs> = {}>(args?: Subset<T, User$AuthenticatorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthenticatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    patientProfile<T extends User$patientProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$patientProfileArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2244,6 +2258,7 @@ export namespace Prisma {
     readonly hashedPassword: FieldRef<"User", 'String'>
     readonly image: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'String'>
+    readonly hasCompletedProfile: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -2658,6 +2673,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AuthenticatorScalarFieldEnum | AuthenticatorScalarFieldEnum[]
+  }
+
+  /**
+   * User.patientProfile
+   */
+  export type User$patientProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PatientInclude<ExtArgs> | null
+    where?: PatientWhereInput
   }
 
   /**
@@ -6597,7 +6631,6 @@ export namespace Prisma {
     id: number | null
     name: string | null
     username: string | null
-    password: string | null
     age: number | null
     contactNumber: string | null
     email: string | null
@@ -6606,13 +6639,13 @@ export namespace Prisma {
     address: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    userId: string | null
   }
 
   export type PatientMaxAggregateOutputType = {
     id: number | null
     name: string | null
     username: string | null
-    password: string | null
     age: number | null
     contactNumber: string | null
     email: string | null
@@ -6621,13 +6654,13 @@ export namespace Prisma {
     address: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    userId: string | null
   }
 
   export type PatientCountAggregateOutputType = {
     id: number
     name: number
     username: number
-    password: number
     age: number
     contactNumber: number
     email: number
@@ -6636,6 +6669,7 @@ export namespace Prisma {
     address: number
     createdAt: number
     updatedAt: number
+    userId: number
     _all: number
   }
 
@@ -6654,7 +6688,6 @@ export namespace Prisma {
     id?: true
     name?: true
     username?: true
-    password?: true
     age?: true
     contactNumber?: true
     email?: true
@@ -6663,13 +6696,13 @@ export namespace Prisma {
     address?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
   }
 
   export type PatientMaxAggregateInputType = {
     id?: true
     name?: true
     username?: true
-    password?: true
     age?: true
     contactNumber?: true
     email?: true
@@ -6678,13 +6711,13 @@ export namespace Prisma {
     address?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
   }
 
   export type PatientCountAggregateInputType = {
     id?: true
     name?: true
     username?: true
-    password?: true
     age?: true
     contactNumber?: true
     email?: true
@@ -6693,6 +6726,7 @@ export namespace Prisma {
     address?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
     _all?: true
   }
 
@@ -6786,7 +6820,6 @@ export namespace Prisma {
     id: number
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -6795,6 +6828,7 @@ export namespace Prisma {
     address: string
     createdAt: Date
     updatedAt: Date
+    userId: string | null
     _count: PatientCountAggregateOutputType | null
     _avg: PatientAvgAggregateOutputType | null
     _sum: PatientSumAggregateOutputType | null
@@ -6820,7 +6854,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     username?: boolean
-    password?: boolean
     age?: boolean
     contactNumber?: boolean
     email?: boolean
@@ -6829,6 +6862,8 @@ export namespace Prisma {
     address?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | Patient$userArgs<ExtArgs>
     appointments?: boolean | Patient$appointmentsArgs<ExtArgs>
     payments?: boolean | Patient$paymentsArgs<ExtArgs>
     _count?: boolean | PatientCountOutputTypeDefaultArgs<ExtArgs>
@@ -6840,7 +6875,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     username?: boolean
-    password?: boolean
     age?: boolean
     contactNumber?: boolean
     email?: boolean
@@ -6849,10 +6883,12 @@ export namespace Prisma {
     address?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
   }
 
-  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "password" | "age" | "contactNumber" | "email" | "area" | "nic" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["patient"]>
+  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "age" | "contactNumber" | "email" | "area" | "nic" | "address" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["patient"]>
   export type PatientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Patient$userArgs<ExtArgs>
     appointments?: boolean | Patient$appointmentsArgs<ExtArgs>
     payments?: boolean | Patient$paymentsArgs<ExtArgs>
     _count?: boolean | PatientCountOutputTypeDefaultArgs<ExtArgs>
@@ -6861,6 +6897,7 @@ export namespace Prisma {
   export type $PatientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Patient"
     objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
       appointments: Prisma.$AppointmentPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
     }
@@ -6868,7 +6905,6 @@ export namespace Prisma {
       id: number
       name: string
       username: string
-      password: string
       age: number
       contactNumber: string
       email: string
@@ -6877,6 +6913,7 @@ export namespace Prisma {
       address: string
       createdAt: Date
       updatedAt: Date
+      userId: string | null
     }, ExtArgs["result"]["patient"]>
     composites: {}
   }
@@ -7217,6 +7254,7 @@ export namespace Prisma {
    */
   export interface Prisma__PatientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends Patient$userArgs<ExtArgs> = {}>(args?: Subset<T, Patient$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     appointments<T extends Patient$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Patient$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends Patient$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Patient$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -7251,7 +7289,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Patient", 'Int'>
     readonly name: FieldRef<"Patient", 'String'>
     readonly username: FieldRef<"Patient", 'String'>
-    readonly password: FieldRef<"Patient", 'String'>
     readonly age: FieldRef<"Patient", 'Int'>
     readonly contactNumber: FieldRef<"Patient", 'String'>
     readonly email: FieldRef<"Patient", 'String'>
@@ -7260,6 +7297,7 @@ export namespace Prisma {
     readonly address: FieldRef<"Patient", 'String'>
     readonly createdAt: FieldRef<"Patient", 'DateTime'>
     readonly updatedAt: FieldRef<"Patient", 'DateTime'>
+    readonly userId: FieldRef<"Patient", 'String'>
   }
     
 
@@ -7600,6 +7638,25 @@ export namespace Prisma {
      * Limit how many Patients to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Patient.user
+   */
+  export type Patient$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -10736,6 +10793,7 @@ export namespace Prisma {
     hashedPassword: 'hashedPassword',
     image: 'image',
     role: 'role',
+    hasCompletedProfile: 'hasCompletedProfile',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -10803,7 +10861,6 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     username: 'username',
-    password: 'password',
     age: 'age',
     contactNumber: 'contactNumber',
     email: 'email',
@@ -10811,7 +10868,8 @@ export namespace Prisma {
     nic: 'nic',
     address: 'address',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    userId: 'userId'
   };
 
   export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
@@ -10948,12 +11006,12 @@ export namespace Prisma {
   export const PatientOrderByRelevanceFieldEnum: {
     name: 'name',
     username: 'username',
-    password: 'password',
     contactNumber: 'contactNumber',
     email: 'email',
     area: 'area',
     nic: 'nic',
-    address: 'address'
+    address: 'address',
+    userId: 'userId'
   };
 
   export type PatientOrderByRelevanceFieldEnum = (typeof PatientOrderByRelevanceFieldEnum)[keyof typeof PatientOrderByRelevanceFieldEnum]
@@ -11028,16 +11086,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'Boolean'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Int'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
@@ -11077,11 +11135,13 @@ export namespace Prisma {
     hashedPassword?: StringNullableFilter<"User"> | string | null
     image?: StringNullableFilter<"User"> | string | null
     role?: StringNullableFilter<"User"> | string | null
+    hasCompletedProfile?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     Authenticator?: AuthenticatorListRelationFilter
+    patientProfile?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11093,11 +11153,13 @@ export namespace Prisma {
     hashedPassword?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     role?: SortOrderInput | SortOrder
+    hasCompletedProfile?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     Authenticator?: AuthenticatorOrderByRelationAggregateInput
+    patientProfile?: PatientOrderByWithRelationInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -11113,11 +11175,13 @@ export namespace Prisma {
     hashedPassword?: StringNullableFilter<"User"> | string | null
     image?: StringNullableFilter<"User"> | string | null
     role?: StringNullableFilter<"User"> | string | null
+    hasCompletedProfile?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     Authenticator?: AuthenticatorListRelationFilter
+    patientProfile?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -11129,6 +11193,7 @@ export namespace Prisma {
     hashedPassword?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     role?: SortOrderInput | SortOrder
+    hasCompletedProfile?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -11148,6 +11213,7 @@ export namespace Prisma {
     hashedPassword?: StringNullableWithAggregatesFilter<"User"> | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: StringNullableWithAggregatesFilter<"User"> | string | null
+    hasCompletedProfile?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -11447,7 +11513,6 @@ export namespace Prisma {
     id?: IntFilter<"Patient"> | number
     name?: StringFilter<"Patient"> | string
     username?: StringFilter<"Patient"> | string
-    password?: StringFilter<"Patient"> | string
     age?: IntFilter<"Patient"> | number
     contactNumber?: StringFilter<"Patient"> | string
     email?: StringFilter<"Patient"> | string
@@ -11456,6 +11521,8 @@ export namespace Prisma {
     address?: StringFilter<"Patient"> | string
     createdAt?: DateTimeFilter<"Patient"> | Date | string
     updatedAt?: DateTimeFilter<"Patient"> | Date | string
+    userId?: StringNullableFilter<"Patient"> | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     appointments?: AppointmentListRelationFilter
     payments?: PaymentListRelationFilter
   }
@@ -11464,7 +11531,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    password?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
@@ -11473,6 +11539,8 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
     appointments?: AppointmentOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
     _relevance?: PatientOrderByRelevanceInput
@@ -11483,26 +11551,26 @@ export namespace Prisma {
     username?: string
     email?: string
     nic?: string
+    userId?: string
     AND?: PatientWhereInput | PatientWhereInput[]
     OR?: PatientWhereInput[]
     NOT?: PatientWhereInput | PatientWhereInput[]
     name?: StringFilter<"Patient"> | string
-    password?: StringFilter<"Patient"> | string
     age?: IntFilter<"Patient"> | number
     contactNumber?: StringFilter<"Patient"> | string
     area?: StringFilter<"Patient"> | string
     address?: StringFilter<"Patient"> | string
     createdAt?: DateTimeFilter<"Patient"> | Date | string
     updatedAt?: DateTimeFilter<"Patient"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     appointments?: AppointmentListRelationFilter
     payments?: PaymentListRelationFilter
-  }, "id" | "username" | "email" | "nic">
+  }, "id" | "username" | "email" | "nic" | "userId">
 
   export type PatientOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    password?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
@@ -11511,6 +11579,7 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
     _count?: PatientCountOrderByAggregateInput
     _avg?: PatientAvgOrderByAggregateInput
     _max?: PatientMaxOrderByAggregateInput
@@ -11525,7 +11594,6 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Patient"> | number
     name?: StringWithAggregatesFilter<"Patient"> | string
     username?: StringWithAggregatesFilter<"Patient"> | string
-    password?: StringWithAggregatesFilter<"Patient"> | string
     age?: IntWithAggregatesFilter<"Patient"> | number
     contactNumber?: StringWithAggregatesFilter<"Patient"> | string
     email?: StringWithAggregatesFilter<"Patient"> | string
@@ -11534,6 +11602,7 @@ export namespace Prisma {
     address?: StringWithAggregatesFilter<"Patient"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
+    userId?: StringNullableWithAggregatesFilter<"Patient"> | string | null
   }
 
   export type ProductWhereInput = {
@@ -11782,11 +11851,13 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    patientProfile?: PatientCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -11798,11 +11869,13 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -11814,11 +11887,13 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -11830,11 +11905,13 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -11846,6 +11923,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11859,6 +11937,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11872,6 +11951,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12184,7 +12264,6 @@ export namespace Prisma {
   export type PatientCreateInput = {
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -12193,6 +12272,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutPatientProfileInput
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
     payments?: PaymentCreateNestedManyWithoutPatientInput
   }
@@ -12201,7 +12281,6 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -12210,6 +12289,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
     payments?: PaymentUncheckedCreateNestedManyWithoutPatientInput
   }
@@ -12217,7 +12297,6 @@ export namespace Prisma {
   export type PatientUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -12226,6 +12305,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutPatientProfileNestedInput
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
     payments?: PaymentUpdateManyWithoutPatientNestedInput
   }
@@ -12234,7 +12314,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -12243,6 +12322,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
   }
@@ -12251,7 +12331,6 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -12260,12 +12339,12 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
   }
 
   export type PatientUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -12280,7 +12359,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -12289,6 +12367,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProductCreateInput = {
@@ -12576,6 +12655,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -12603,6 +12687,11 @@ export namespace Prisma {
     every?: AuthenticatorWhereInput
     some?: AuthenticatorWhereInput
     none?: AuthenticatorWhereInput
+  }
+
+  export type PatientNullableScalarRelationFilter = {
+    is?: PatientWhereInput | null
+    isNot?: PatientWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -12637,6 +12726,7 @@ export namespace Prisma {
     hashedPassword?: SortOrder
     image?: SortOrder
     role?: SortOrder
+    hasCompletedProfile?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -12650,6 +12740,7 @@ export namespace Prisma {
     hashedPassword?: SortOrder
     image?: SortOrder
     role?: SortOrder
+    hasCompletedProfile?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -12663,6 +12754,7 @@ export namespace Prisma {
     hashedPassword?: SortOrder
     image?: SortOrder
     role?: SortOrder
+    hasCompletedProfile?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -12715,6 +12807,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -12916,11 +13016,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type AuthenticatorOrderByRelevanceInput = {
     fields: AuthenticatorOrderByRelevanceFieldEnum | AuthenticatorOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -12989,14 +13084,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type AppointmentListRelationFilter = {
     every?: AppointmentWhereInput
     some?: AppointmentWhereInput
@@ -13027,7 +13114,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    password?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
@@ -13036,6 +13122,7 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
   }
 
   export type PatientAvgOrderByAggregateInput = {
@@ -13047,7 +13134,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    password?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
@@ -13056,13 +13142,13 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
   }
 
   export type PatientMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    password?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
@@ -13071,6 +13157,7 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
   }
 
   export type PatientSumOrderByAggregateInput = {
@@ -13325,6 +13412,12 @@ export namespace Prisma {
     connect?: AuthenticatorWhereUniqueInput | AuthenticatorWhereUniqueInput[]
   }
 
+  export type PatientCreateNestedOneWithoutUserInput = {
+    create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PatientCreateOrConnectWithoutUserInput
+    connect?: PatientWhereUniqueInput
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -13346,6 +13439,12 @@ export namespace Prisma {
     connect?: AuthenticatorWhereUniqueInput | AuthenticatorWhereUniqueInput[]
   }
 
+  export type PatientUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PatientCreateOrConnectWithoutUserInput
+    connect?: PatientWhereUniqueInput
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -13356,6 +13455,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -13404,6 +13507,16 @@ export namespace Prisma {
     deleteMany?: AuthenticatorScalarWhereInput | AuthenticatorScalarWhereInput[]
   }
 
+  export type PatientUpdateOneWithoutUserNestedInput = {
+    create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PatientCreateOrConnectWithoutUserInput
+    upsert?: PatientUpsertWithoutUserInput
+    disconnect?: PatientWhereInput | boolean
+    delete?: PatientWhereInput | boolean
+    connect?: PatientWhereUniqueInput
+    update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutUserInput, PatientUpdateWithoutUserInput>, PatientUncheckedUpdateWithoutUserInput>
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -13444,6 +13557,16 @@ export namespace Prisma {
     update?: AuthenticatorUpdateWithWhereUniqueWithoutUserInput | AuthenticatorUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AuthenticatorUpdateManyWithWhereWithoutUserInput | AuthenticatorUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AuthenticatorScalarWhereInput | AuthenticatorScalarWhereInput[]
+  }
+
+  export type PatientUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
+    connectOrCreate?: PatientCreateOrConnectWithoutUserInput
+    upsert?: PatientUpsertWithoutUserInput
+    disconnect?: PatientWhereInput | boolean
+    delete?: PatientWhereInput | boolean
+    connect?: PatientWhereUniqueInput
+    update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutUserInput, PatientUpdateWithoutUserInput>, PatientUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -13498,16 +13621,18 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
   export type UserUpdateOneRequiredWithoutAuthenticatorNestedInput = {
     create?: XOR<UserCreateWithoutAuthenticatorInput, UserUncheckedCreateWithoutAuthenticatorInput>
     connectOrCreate?: UserCreateOrConnectWithoutAuthenticatorInput
     upsert?: UserUpsertWithoutAuthenticatorInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuthenticatorInput, UserUpdateWithoutAuthenticatorInput>, UserUncheckedUpdateWithoutAuthenticatorInput>
+  }
+
+  export type UserCreateNestedOneWithoutPatientProfileInput = {
+    create?: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPatientProfileInput
+    connect?: UserWhereUniqueInput
   }
 
   export type AppointmentCreateNestedManyWithoutPatientInput = {
@@ -13536,6 +13661,16 @@ export namespace Prisma {
     connectOrCreate?: PaymentCreateOrConnectWithoutPatientInput | PaymentCreateOrConnectWithoutPatientInput[]
     createMany?: PaymentCreateManyPatientInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutPatientProfileNestedInput = {
+    create?: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPatientProfileInput
+    upsert?: UserUpsertWithoutPatientProfileInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPatientProfileInput, UserUpdateWithoutPatientProfileInput>, UserUncheckedUpdateWithoutPatientProfileInput>
   }
 
   export type AppointmentUpdateManyWithoutPatientNestedInput = {
@@ -13711,6 +13846,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -13794,6 +13934,14 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -13835,11 +13983,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -13865,14 +14008,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -13998,6 +14133,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PatientCreateWithoutUserInput = {
+    name: string
+    username: string
+    age: number
+    contactNumber: string
+    email: string
+    area: string
+    nic: string
+    address: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentCreateNestedManyWithoutPatientInput
+    payments?: PaymentCreateNestedManyWithoutPatientInput
+  }
+
+  export type PatientUncheckedCreateWithoutUserInput = {
+    id?: number
+    name: string
+    username: string
+    age: number
+    contactNumber: string
+    email: string
+    area: string
+    nic: string
+    address: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPatientInput
+  }
+
+  export type PatientCreateOrConnectWithoutUserInput = {
+    where: PatientWhereUniqueInput
+    create: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -14093,6 +14264,48 @@ export namespace Prisma {
     transports?: StringNullableFilter<"Authenticator"> | string | null
   }
 
+  export type PatientUpsertWithoutUserInput = {
+    update: XOR<PatientUpdateWithoutUserInput, PatientUncheckedUpdateWithoutUserInput>
+    create: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
+    where?: PatientWhereInput
+  }
+
+  export type PatientUpdateToOneWithWhereWithoutUserInput = {
+    where?: PatientWhereInput
+    data: XOR<PatientUpdateWithoutUserInput, PatientUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PatientUpdateWithoutUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    nic?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUpdateManyWithoutPatientNestedInput
+    payments?: PaymentUpdateManyWithoutPatientNestedInput
+  }
+
+  export type PatientUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    nic?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -14102,10 +14315,12 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    patientProfile?: PatientCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -14117,10 +14332,12 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -14148,10 +14365,12 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -14163,10 +14382,12 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -14178,10 +14399,12 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+    patientProfile?: PatientCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -14193,10 +14416,12 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -14224,10 +14449,12 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -14239,10 +14466,12 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAuthenticatorInput = {
@@ -14254,10 +14483,12 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    patientProfile?: PatientCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuthenticatorInput = {
@@ -14269,10 +14500,12 @@ export namespace Prisma {
     hashedPassword?: string | null
     image?: string | null
     role?: string | null
+    hasCompletedProfile?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuthenticatorInput = {
@@ -14300,10 +14533,12 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthenticatorInput = {
@@ -14315,10 +14550,51 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPatientProfileInput = {
+    id?: string
+    name?: string | null
+    username?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    hashedPassword?: string | null
+    image?: string | null
+    role?: string | null
+    hasCompletedProfile?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPatientProfileInput = {
+    id?: string
+    name?: string | null
+    username?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    hashedPassword?: string | null
+    image?: string | null
+    role?: string | null
+    hasCompletedProfile?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPatientProfileInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
   }
 
   export type AppointmentCreateWithoutPatientInput = {
@@ -14389,6 +14665,51 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserUpsertWithoutPatientProfileInput = {
+    update: XOR<UserUpdateWithoutPatientProfileInput, UserUncheckedUpdateWithoutPatientProfileInput>
+    create: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPatientProfileInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPatientProfileInput, UserUncheckedUpdateWithoutPatientProfileInput>
+  }
+
+  export type UserUpdateWithoutPatientProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPatientProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type AppointmentUpsertWithWhereUniqueWithoutPatientInput = {
     where: AppointmentWhereUniqueInput
     update: XOR<AppointmentUpdateWithoutPatientInput, AppointmentUncheckedUpdateWithoutPatientInput>
@@ -14456,7 +14777,6 @@ export namespace Prisma {
   export type PatientCreateWithoutAppointmentsInput = {
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -14465,6 +14785,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutPatientProfileInput
     payments?: PaymentCreateNestedManyWithoutPatientInput
   }
 
@@ -14472,7 +14793,6 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -14481,6 +14801,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutPatientInput
   }
 
@@ -14529,7 +14850,6 @@ export namespace Prisma {
   export type PatientUpdateWithoutAppointmentsInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -14538,6 +14858,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutPatientProfileNestedInput
     payments?: PaymentUpdateManyWithoutPatientNestedInput
   }
 
@@ -14545,7 +14866,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -14554,6 +14874,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
   }
 
@@ -14592,7 +14913,6 @@ export namespace Prisma {
   export type PatientCreateWithoutPaymentsInput = {
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -14601,6 +14921,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutPatientProfileInput
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
   }
 
@@ -14608,7 +14929,6 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    password: string
     age: number
     contactNumber: string
     email: string
@@ -14617,6 +14937,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
   }
 
@@ -14671,7 +14992,6 @@ export namespace Prisma {
   export type PatientUpdateWithoutPaymentsInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -14680,6 +15000,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutPatientProfileNestedInput
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
   }
 
@@ -14687,7 +15008,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -14696,6 +15016,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
   }
 

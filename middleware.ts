@@ -1,141 +1,84 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-// Define user roles for type safety and consistency
-export enum UserRole {
-  ADMIN = "ADMIN",
-  PATIENT = "PATIENT",
-  PHYSIOTHERAPIST = "PHYSIOTHERAPIST",
-  RECEPTIONIST = "RECEPTIONIST"
-}
+// Paths that don't require authentication or profile completion
+const publicPaths = ["/login", "/register", "/", "/about", "/contact"];
 
-// Define the protected route patterns for each role
-const protectedRoutes = {
-  admin: /^\/admin(?:\/.*)?$/,      // Any route starting with /admin
-  patient: /^\/patient(?:\/.*)?$/,  // Any route starting with /patient
-  physiotherapist: /^\/physiotherapist(?:\/.*)?$/, // Any route starting with /physiotherapist
-  receptionist: /^\/receptionist(?:\/.*)?$/,      // Any route starting with /receptionist
-  dashboard: /^\/dashboard(?:\/.*)?$/,  // Dashboard routes
-};
-
-// Public routes that don't require authentication
-const publicRoutes = [
-  "/login",
-  "/register",
-  "/api/auth",
-  "/about",
-  "/contact",
-  "/favicon.ico",
-  "/_next"
-];
-
-// Root path needs special handling
-const isRootPath = (path: string) => path === "/";
+// Paths that require patient profile
+const patientPaths = ["/appointments", "/dashboard/patient", "/treatments"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  console.log(`[Middleware] Processing: ${pathname}`);
-  
-  // Special case for the home page
-  if (isRootPath(pathname)) {
-    console.log(`[Middleware] Home page: ${pathname}`);
+  // Skip middleware for public paths and API routes
+  // Also skip Next.js internal routes like _next
+  if (
+    publicPaths.some(path => pathname.startsWith(path)) || 
+    pathname.startsWith('/api/') ||
+    pathname.includes('/_next/') ||
+    pathname.includes('/favicon.ico')
+  ) {
     return NextResponse.next();
   }
   
-  // Check if it's a public route
-  for (const route of publicRoutes) {
-    if (pathname.startsWith(route)) {
-      console.log(`[Middleware] Public route: ${pathname}`);
-      return NextResponse.next();
-    }
-  }
-
-  console.log(`[Middleware] Protected route: ${pathname}`);
-  
-  // Get the user's token and extract role
+  // Get the JWT token
   const token = await getToken({ 
-    req: request, 
-    secret: process.env.NEXTAUTH_SECRET
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET 
   });
   
-  console.log(`[Middleware] Token:`, token ? "exists" : "null", token?.role);
+  // Debug log - use this to verify your middleware is running
+  console.log("MIDDLEWARE RUNNING:", {
+    path: pathname,
+    hasToken: !!token,
+    tokenData: token ? {
+      id: token.id,
+      email: token.email,
+      role: token.role,
+      hasPatientProfile: token.hasPatientProfile
+    } : null
+  });
   
-  // No token means user is not authenticated
+  // If no token, redirect to login
   if (!token) {
-    console.log(`[Middleware] No auth, redirecting to login`);
-    // Redirect to login with callback URL to return after login
-    const url = new URL("/login", request.url);
-    url.searchParams.set("callbackUrl", encodeURI(pathname));
+    console.log("No token, redirecting to login");
+    const url = new URL(`/login`, request.url);
+    url.searchParams.set("callbackUrl", encodeURIComponent(pathname));
     return NextResponse.redirect(url);
   }
-
-  const userRole = token.role as string || UserRole.PATIENT;
-  console.log(`[Middleware] User role: ${userRole}`);
   
-  // STRICT ROLE ENFORCEMENT:
-  // Each user can only access their own role's routes
-  
-  // Admin routes - ONLY admins can access
-  if (protectedRoutes.admin.test(pathname)) {
-    console.log(`[Middleware] Admin route check`);
-    if (userRole !== UserRole.ADMIN) {
-      console.log(`[Middleware] Not admin, unauthorized`);
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+  // Check if:
+  // 1. User is a PATIENT
+  // 2. User is trying to access a patient-specific path
+  // 3. User doesn't have a patient profile
+  if (token.role === "PATIENT" && 
+      patientPaths.some(path => pathname.startsWith(path)) && 
+      token.hasPatientProfile === false) {
+    
+    console.log("Patient needs profile, redirecting to register");
+    
+    // Prevent redirect loops - don't redirect if already on register page
+    if (!pathname.startsWith('/register')) {
+      const url = new URL(`/register`, request.url);
+      url.searchParams.set("callbackUrl", encodeURIComponent(pathname));
+      return NextResponse.redirect(url);
     }
   }
   
-  // Patient routes - ONLY patients can access
-  if (protectedRoutes.patient.test(pathname)) {
-    console.log(`[Middleware] Patient route check`);
-    if (userRole !== UserRole.PATIENT) {
-      console.log(`[Middleware] Not patient, unauthorized`);
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
-    }
-  }
-  
-  // Physiotherapist routes - ONLY physiotherapists can access
-  if (protectedRoutes.physiotherapist.test(pathname)) {
-    console.log(`[Middleware] Physiotherapist route check`);
-    if (userRole !== UserRole.PHYSIOTHERAPIST) {
-      console.log(`[Middleware] Not physiotherapist, unauthorized`);
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
-    }
-  }
-  
-  // Receptionist routes - ONLY receptionists can access
-  if (protectedRoutes.receptionist.test(pathname)) {
-    console.log(`[Middleware] Receptionist route check`);
-    if (userRole !== UserRole.RECEPTIONIST) {
-      console.log(`[Middleware] Not receptionist, unauthorized`);
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
-    }
-  }
-  
-  // Dashboard access - redirect to role-specific dashboard
-  if (pathname === "/dashboard") {
-    const dashboardPath = `/${userRole.toLowerCase()}/dashboard`;
-    return NextResponse.redirect(new URL(dashboardPath, request.url));
-  }
-
-  // Allow access if all checks pass
-  console.log(`[Middleware] Access granted`);
   return NextResponse.next();
 }
 
+// Improved matcher configuration
 export const config = {
   matcher: [
-    // Explicitly protect these paths and their subpaths
-    '/admin',
-    '/admin/:path*',
-    '/patient',
-    '/patient/:path*',
-    '/physiotherapist',
-    '/physiotherapist/:path*',
-    '/receptionist',
-    '/receptionist/:path*',
-    '/dashboard',
-    '/dashboard/:path*'
-  ]
+    /*
+     * Match all paths except for:
+     * - API routes (/api/*)
+     * - Static files (_next/static/*, _next/image/*)
+     * - Favicon, robots.txt and similar
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt).*)',
+  ],
 };
 

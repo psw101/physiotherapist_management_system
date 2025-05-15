@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma/client";
 import { patientSchema } from "../validationSchemas";
+import bcrypt from "bcrypt";
 
 // Create a new patient
 export async function POST(request: NextRequest) {
@@ -15,12 +16,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
+    bcrypt.hash(body.password, 10);
     const patient = await prisma.patient.create({
       data: {
         name: body.name,
         username: body.username,
-        password: body.password, // Note: In production, hash this password
         age: body.age,
         contactNumber: body.contactNumber,
         email: body.email,
@@ -29,9 +29,19 @@ export async function POST(request: NextRequest) {
         address: body.address,
       },
     });
+    bcrypt.hash(body.password, 10);
+    const user = await prisma.user.create({
+      data: {
+        name: body.name,
+        username: body.username,
+        email: body.email,
+        hashedPassword: body.password,
+      },
+    });
 
 
     return NextResponse.json(patient, { status: 201 });
+    return NextResponse.json(user, { status: 201 });
   } catch (error) {
     console.error("Error creating patient:", error);
     

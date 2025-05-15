@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import Email from "next-auth/providers/email";
+
 
 const schema = z.object({
   email: z.string().email(),

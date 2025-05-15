@@ -129,6 +129,7 @@ exports.Prisma.UserScalarFieldEnum = {
   hashedPassword: 'hashedPassword',
   image: 'image',
   role: 'role',
+  hasCompletedProfile: 'hasCompletedProfile',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -181,7 +182,6 @@ exports.Prisma.PatientScalarFieldEnum = {
   id: 'id',
   name: 'name',
   username: 'username',
-  password: 'password',
   age: 'age',
   contactNumber: 'contactNumber',
   email: 'email',
@@ -189,7 +189,8 @@ exports.Prisma.PatientScalarFieldEnum = {
   nic: 'nic',
   address: 'address',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
@@ -290,12 +291,12 @@ exports.Prisma.AuthenticatorOrderByRelevanceFieldEnum = {
 exports.Prisma.PatientOrderByRelevanceFieldEnum = {
   name: 'name',
   username: 'username',
-  password: 'password',
   contactNumber: 'contactNumber',
   email: 'email',
   area: 'area',
   nic: 'nic',
-  address: 'address'
+  address: 'address',
+  userId: 'userId'
 };
 
 exports.Prisma.JsonNullValueFilter = {

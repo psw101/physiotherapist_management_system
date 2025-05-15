@@ -17,18 +17,23 @@ datasource db {
 // !impotant do not change
 //Follwing are the prisma schemas from nextauth for authentication purposes
 model User {
-  id             String          @id @default(cuid())
-  name           String?
-  username       String?         @unique
-  email          String?         @unique
-  emailVerified  DateTime?
-  hashedPassword String?
-  image          String?
-  role           String?         @default("PATIENT") // PATIENT, DOCTOR, ADMIN
-  accounts       Account[]
-  sessions       Session[]
+  id                  String    @id @default(cuid())
+  name                String?
+  username            String?   @unique
+  email               String?   @unique
+  emailVerified       DateTime?
+  hashedPassword      String?
+  image               String?
+  role                String?   @default("PATIENT") // PATIENT, DOCTOR, ADMIN
+  hasCompletedProfile Boolean   @default(false) // Flag to track profile completion
+
+  accounts      Account[]
+  sessions      Session[]
   // Optional for WebAuthn support
-  Authenticator  Authenticator[]
+  Authenticator Authenticator[]
+
+  // Add relation to Patient model
+  patientProfile Patient?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -99,7 +104,6 @@ model Patient {
   id            Int      @id @default(autoincrement())
   name          String
   username      String   @unique
-  password      String
   age           Int
   contactNumber String
   email         String   @unique
@@ -108,6 +112,10 @@ model Patient {
   address       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  // Connect to User model
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
 
   // Relationships
   appointments Appointment[]
