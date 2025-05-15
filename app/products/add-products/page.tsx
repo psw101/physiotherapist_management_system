@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Add useEffect
 import { Button, Text, TextArea, TextField, Callout } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -39,19 +39,46 @@ const ProductFormPage = () => {
     setValue,
     formState: { errors },
     reset,
-  } = useForm<Product>({resolver: zodResolver(productSchema)});
+    trigger, // Add trigger to validate on demand
+  } = useForm<Product>({
+    resolver: zodResolver(productSchema),
+    mode: "onChange",
+  });
+
+  // Update form values when media URLs change
+  useEffect(() => {
+    // Register these values with react-hook-form
+    setValue("imageUrl", imageUrl);
+    setValue("videoUrl", videoUrl);
+  }, [imageUrl, videoUrl, setValue]);
+
+  // Custom image URL setter that also updates the form
+  const handleImageUrlChange = (url: string) => {
+    setImageUrl(url);
+    setValue("imageUrl", url);
+    // Trigger validation for this field
+    trigger("imageUrl");
+  };
+
+  // Custom video URL setter that also updates the form
+  const handleVideoUrlChange = (url: string) => {
+    setVideoUrl(url);
+    setValue("videoUrl", url);
+    // Trigger validation for this field
+    trigger("videoUrl");
+  };
 
   const onSubmit = async (data: Product) => {
-    // Add image and video URLs to the form data
-    data.imageUrl = imageUrl;
-    data.videoUrl = videoUrl;
+    console.log("Form submitted:", data);
     try {
       setSubmitting(true);
-      console.log("Form submitted:", data);
 
       await axios.post("/api/products", data);
 
       setError("Successfully added product");
+      setImageUrl("");
+      setVideoUrl("");
+      setSpecs([]);
       reset(); // Clear form after successful submission
       router.push("/products/add-products");
     } catch (error) {
@@ -62,11 +89,14 @@ const ProductFormPage = () => {
     }
   };
 
+  const onError = (errors: any) => {
+    console.log("Form validation failed:", errors);
+  };
+
   return (
     <div className="p-6 max-w-xl">
       <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
 
-      {/* {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">{error}</div>} */}
       {error && (
         <Callout.Root variant="soft" color={error.includes("Successfully") ? "green" : "red"} className="mb-6">
           <Text size="2" weight="medium">
@@ -75,9 +105,18 @@ const ProductFormPage = () => {
         </Callout.Root>
       )}
 
-      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl space-y-6">
+        {Object.keys(errors).length > 0 && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <p>Please correct the following errors:</p>
+            <ul className="list-disc ml-5">
+              {Object.entries(errors).map(([field, error]) => (
+                <li key={field}>{(error as any).message}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-6">
         <div>
           <Text as="div" size="2" mb="1" weight="medium">
             Product Name
@@ -118,10 +157,11 @@ const ProductFormPage = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Product Image
           </Text>
-          <MediaUploader mediaType="image" setUrl={setImageUrl} setPublicId={setPublicId} />
-          {!imageUrl && (
-            <Text size="1">
-              Please upload a product image
+          {/* Use the custom handler */}
+          <MediaUploader mediaType="image" setUrl={handleImageUrlChange} setPublicId={setPublicId} />
+          {errors.imageUrl && (
+            <Text color="red" size="1">
+              {errors.imageUrl.message}
             </Text>
           )}
         </div>
@@ -130,10 +170,11 @@ const ProductFormPage = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Product Video
           </Text>
-          <MediaUploader mediaType="video" setUrl={setVideoUrl} />
-          {!videoUrl && (
-            <Text size="1">
-              Please upload a product video
+          {/* Use the custom handler */}
+          <MediaUploader mediaType="video" setUrl={handleVideoUrlChange} />
+          {errors.videoUrl && (
+            <Text color="red" size="1">
+              {errors.videoUrl.message}
             </Text>
           )}
         </div>

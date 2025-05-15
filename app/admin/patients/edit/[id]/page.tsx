@@ -30,6 +30,7 @@ const PatientEditPage = () => {
     const fetchPatient = async () => {
       try {
         setLoading(true);
+        // Add the leading slash to make it an absolute path
         const response = await axios.get(`/api/patients/${id}`);
         setPatient(response.data);
         
@@ -38,7 +39,7 @@ const PatientEditPage = () => {
         setPatients(allPatientsResponse.data);
       } catch (error) {
         console.error('Error fetching patient:', error);
-        router.push('/patients/view-patients');
+        router.push('/admin/patients/view-patients');
       } finally {
         setLoading(false);
       }
@@ -50,7 +51,7 @@ const PatientEditPage = () => {
   // If editing is done, redirect back to the patients list
   useEffect(() => {
     if (!isEditing && !loading) {
-      router.push('/patients/view-patients');
+      router.push('/admin/patients/view-patients');
     }
   }, [isEditing, loading, router]);
 

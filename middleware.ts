@@ -20,7 +20,6 @@ const protectedRoutes = {
 
 // Public routes that don't require authentication
 const publicRoutes = [
-  "/",
   "/login",
   "/register",
   "/api/auth",
@@ -30,24 +29,41 @@ const publicRoutes = [
   "/_next"
 ];
 
+// Root path needs special handling
+const isRootPath = (path: string) => path === "/";
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Allow access to public routes without authentication
+  console.log(`[Middleware] Processing: ${pathname}`);
+  
+  // Special case for the home page
+  if (isRootPath(pathname)) {
+    console.log(`[Middleware] Home page: ${pathname}`);
+    return NextResponse.next();
+  }
+  
+  // Check if it's a public route
   for (const route of publicRoutes) {
     if (pathname.startsWith(route)) {
+      console.log(`[Middleware] Public route: ${pathname}`);
       return NextResponse.next();
     }
   }
 
+  console.log(`[Middleware] Protected route: ${pathname}`);
+  
   // Get the user's token and extract role
   const token = await getToken({ 
     req: request, 
     secret: process.env.NEXTAUTH_SECRET
   });
   
+  console.log(`[Middleware] Token:`, token ? "exists" : "null", token?.role);
+  
   // No token means user is not authenticated
   if (!token) {
+    console.log(`[Middleware] No auth, redirecting to login`);
     // Redirect to login with callback URL to return after login
     const url = new URL("/login", request.url);
     url.searchParams.set("callbackUrl", encodeURI(pathname));
@@ -55,56 +71,71 @@ export async function middleware(request: NextRequest) {
   }
 
   const userRole = token.role as string || UserRole.PATIENT;
+  console.log(`[Middleware] User role: ${userRole}`);
   
-  // Check for role-based access restrictions
+  // STRICT ROLE ENFORCEMENT:
+  // Each user can only access their own role's routes
   
-  // Admin routes
+  // Admin routes - ONLY admins can access
   if (protectedRoutes.admin.test(pathname)) {
+    console.log(`[Middleware] Admin route check`);
     if (userRole !== UserRole.ADMIN) {
+      console.log(`[Middleware] Not admin, unauthorized`);
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }
   
-  // Patient routes
+  // Patient routes - ONLY patients can access
   if (protectedRoutes.patient.test(pathname)) {
-    if (userRole !== UserRole.PATIENT && userRole !== UserRole.ADMIN) {
+    console.log(`[Middleware] Patient route check`);
+    if (userRole !== UserRole.PATIENT) {
+      console.log(`[Middleware] Not patient, unauthorized`);
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }
   
-  // Physiotherapist routes
+  // Physiotherapist routes - ONLY physiotherapists can access
   if (protectedRoutes.physiotherapist.test(pathname)) {
-    if (userRole !== UserRole.PHYSIOTHERAPIST && userRole !== UserRole.ADMIN) {
+    console.log(`[Middleware] Physiotherapist route check`);
+    if (userRole !== UserRole.PHYSIOTHERAPIST) {
+      console.log(`[Middleware] Not physiotherapist, unauthorized`);
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }
   
-  // Receptionist routes
+  // Receptionist routes - ONLY receptionists can access
   if (protectedRoutes.receptionist.test(pathname)) {
-    if (userRole !== UserRole.RECEPTIONIST && userRole !== UserRole.ADMIN) {
+    console.log(`[Middleware] Receptionist route check`);
+    if (userRole !== UserRole.RECEPTIONIST) {
+      console.log(`[Middleware] Not receptionist, unauthorized`);
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }
   
-  // Dashboard access - everyone can access their appropriate dashboard
-  if (protectedRoutes.dashboard.test(pathname)) {
-    // Each role should be redirected to their specific dashboard
+  // Dashboard access - redirect to role-specific dashboard
+  if (pathname === "/dashboard") {
     const dashboardPath = `/${userRole.toLowerCase()}/dashboard`;
-    
-    // If they're trying to access the generic dashboard, redirect to role-specific one
-    if (pathname === "/dashboard") {
-      return NextResponse.redirect(new URL(dashboardPath, request.url));
-    }
+    return NextResponse.redirect(new URL(dashboardPath, request.url));
   }
 
   // Allow access if all checks pass
+  console.log(`[Middleware] Access granted`);
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    // Match all routes except static files, api routes that aren't auth-related, and _next
-    "/((?!api(?!/auth)|_next/static|_next/image|favicon.ico).*)",
+    // Explicitly protect these paths and their subpaths
+    '/admin',
+    '/admin/:path*',
+    '/patient',
+    '/patient/:path*',
+    '/physiotherapist',
+    '/physiotherapist/:path*',
+    '/receptionist',
+    '/receptionist/:path*',
+    '/dashboard',
+    '/dashboard/:path*'
   ]
 };
 

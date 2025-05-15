@@ -35,7 +35,7 @@ const Navbar = () => {
       href: '#',
        dropdown: [
         { label: 'Add Patients', href: '/patients/add-patients' },
-        { label: 'Patients', href: '/patients/view-patients'},
+        { label: 'View Patients', href: '/patients/view-patients' },
        ] },
     {
       label: 'Products', 

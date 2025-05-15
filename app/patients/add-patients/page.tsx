@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Text, TextArea, TextField } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { patientSchema } from "../../api/validationSchemas";
 import {z} from "zod";
@@ -43,8 +43,8 @@ const Patients = () => {
       await axios.post("/api/patients", data);
       router.push("/patients/add-patients");
       setError("");
-      reset(); // Clear form after successful submission
-
+      reset();
+                        // Clear form after successful submission
     } catch (error) {
       console.error("Error submitting patient data:", error);
       setError("An unexpected error occurred while saving patient data.");

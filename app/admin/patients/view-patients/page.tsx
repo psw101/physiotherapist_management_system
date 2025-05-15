@@ -25,7 +25,7 @@ const PatientViewPage = () => {
     // Fetch patients data when component mounts
     const fetchPatients = async () => {
       try {
-        const response = await axios.get('/api/patients');
+        const response = await axios.get('/api/patients'); // Add leading slash here
         setPatients(response.data);
       } catch (error) {
         console.error('Error fetching patients:', error);
@@ -38,7 +38,7 @@ const PatientViewPage = () => {
   }, []);
 
   const handleEdit = (id: number) => {
-    router.push(`/patients/edit/${id}`);
+    router.push(`/admin/patients/edit/${id}`);
   };
 
   const handleDelete = async (id: number) => {
