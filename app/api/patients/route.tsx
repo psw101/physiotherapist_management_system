@@ -29,13 +29,13 @@ export async function POST(request: NextRequest) {
         address: body.address,
       },
     });
-    bcrypt.hash(body.password, 10);
+    const hashedPassword = await bcrypt.hash(body.password, 10);
     const user = await prisma.user.create({
       data: {
         name: body.name,
         username: body.username,
         email: body.email,
-        hashedPassword: body.password,
+        hashedPassword
       },
     });
 

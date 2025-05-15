@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) return null;
-        return user;
+      
 
         const passwordsMatch = await bcrypt.compare(credentials!.password, user!.hashedPassword!);
         return passwordsMatch ? user : null;
