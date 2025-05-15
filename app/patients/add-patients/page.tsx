@@ -41,7 +41,7 @@ const Patients = () => {
       console.log("Form submitted:", data);
       // Uncomment when API endpoint is ready
       await axios.post("/api/patients", data);
-      router.push("/patients");
+      router.push("/patients/add-patients");
       setError("");
       reset(); // Clear form after successful submission
 
@@ -56,7 +56,7 @@ const Patients = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Add New Patient</h2>
+      <h2 className="text-2xl font-bold mb-6">Register Patient</h2>
 
       {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
@@ -189,7 +189,7 @@ const Patients = () => {
 
         <div className="flex gap-4 pt-4">
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Add Patient"}
+            {isSubmitting ? "Saving..." : "Register"}
           </Button>
           <Button type="button" variant="soft" color="gray" onClick={() => reset()} disabled={isSubmitting}>
             Cancel

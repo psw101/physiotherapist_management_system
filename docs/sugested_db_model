@@ -1,0 +1,295 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Product management
+model Product {
+  id            Int             @id @default(autoincrement())
+  name          String
+  price         Int
+  description   String          @db.Text
+  specification Json?
+  imageUrl      String?
+  videoUrl      String?
+  categoryId    Int?
+  category      ProductCategory? @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  inventory     Int             @default(0)
+  isActive      Boolean         @default(true)
+  
+  // Relationship with sales/orders
+  orderItems    OrderItem[]
+}
+
+model ProductCategory {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?   @db.Text
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Patient management
+model Patient {
+  id            Int           @id @default(autoincrement())
+  name          String
+  username      String        @unique
+  password      String
+  age           Int
+  contactNumber String
+  email         String        @unique
+  area          String
+  nic           String        @unique
+  address       String
+  medicalHistory String?      @db.Text
+  emergencyContact String?
+  dateOfBirth   DateTime?
+  gender        String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // Relationships
+  appointments  Appointment[]
+  medicalRecords MedicalRecord[]
+  prescriptions Prescription[]
+  payments      Payment[]
+}
+
+// Physiotherapist management
+model Physiotherapist {
+  id             Int           @id @default(autoincrement())
+  name           String
+  specialization String?
+  qualifications String?       @db.Text
+  contactNumber  String
+  email          String        @unique
+  bio            String?       @db.Text
+  imageUrl       String?
+  isActive       Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  
+}
+
+model WorkingHours {
+  id               Int            @id @default(autoincrement())
+  physiotherapistId Int
+  dayOfWeek        Int            // 0 = Sunday, 1 = Monday, etc.
+  startTime        String         // Format: "HH:MM"
+  endTime          String         // Format: "HH:MM"
+  isAvailable      Boolean        @default(true)
+  
+}
+
+// Appointment management
+model Appointment {
+  id                Int           @id @default(autoincrement())
+  patientId         Int
+  physiotherapistId Int?
+  serviceId         Int?
+  appointmentDate   String        // Format: "YYYY-MM-DD"
+  startTime         String        // Format: "HH:MM"
+  duration          Int           // Duration in minutes
+  status            String        @default("scheduled") // scheduled, completed, cancelled, no-show
+  notes             String?       @db.Text
+  reason            String
+  paymentStatus     String        @default("unpaid") // unpaid, partially_paid, paid
+  paymentAmount     Int?
+  createdAt         DateTime      @default(now())
+  
+  // Relationships
+  patient           Patient       @relation(fields: [patientId], references: [id])
+  medicalRecord     MedicalRecord?
+  payment           Payment?
+}
+
+// Services offered
+model Service {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?       @db.Text
+  price       Int
+  duration    Int           // Duration in minutes
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  // Relationships
+  appointments Appointment[]
+}
+
+// Medical records
+model MedicalRecord {
+  id            Int         @id @default(autoincrement())
+  patientId     Int
+  appointmentId Int?        @unique
+  diagnosis     String?     @db.Text
+  treatment     String?     @db.Text
+  notes         String?     @db.Text
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relationships
+  patient       Patient     @relation(fields: [patientId], references: [id])
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+}
+
+// Prescriptions
+model Prescription {
+  id            Int         @id @default(autoincrement())
+  patientId     Int
+  prescribedBy  String
+  medications   String      @db.Text
+  instructions  String      @db.Text
+  issuedDate    DateTime    @default(now())
+  validUntil    DateTime?
+  
+  // Relationships
+  patient       Patient     @relation(fields: [patientId], references: [id])
+}
+
+// Payments
+model Payment {
+  id            Int         @id @default(autoincrement())
+  patientId     Int
+  appointmentId Int?        @unique
+  amount        Int
+  method        String      // cash, card, bank transfer, etc.
+  status        String      @default("completed") // pending, completed, refunded, failed
+  paymentDate   DateTime    @default(now())
+  reference     String?
+  notes         String?
+  
+  // Relationships
+  patient       Patient     @relation(fields: [patientId], references: [id])
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+}
+
+// Inventory and Order Management
+model Order {
+  id            Int         @id @default(autoincrement())
+  orderNumber   String      @unique
+  patientId     Int?
+  customerName  String?
+  contactNumber String?
+  email         String?
+  totalAmount   Int
+  status        String      @default("pending") // pending, completed, cancelled
+  orderDate     DateTime    @default(now())
+  paymentMethod String?
+  paymentStatus String      @default("unpaid") // unpaid, paid
+  notes         String?
+  
+  // Relationships
+  orderItems    OrderItem[]
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  productId   Int
+  quantity    Int
+  unitPrice   Int
+  subtotal    Int
+  
+  // Relationships
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+}
+
+// Authentication models
+model User {
+  id             String          @id @default(cuid())
+  name           String?
+  username       String?         @unique
+  email          String?         @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  role           String          @default("user") // admin, staff, user
+  isActive       Boolean         @default(true)
+  accounts       Account[]
+  sessions       Session[]
+  Authenticator  Authenticator[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+// System Settings and Configuration
+model Settings {
+  id            Int      @id @default(autoincrement())
+  key           String   @unique
+  value         String   @db.Text
+  description   String?
+  updatedAt     DateTime @updatedAt
+}

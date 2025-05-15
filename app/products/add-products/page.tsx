@@ -39,7 +39,7 @@ const ProductFormPage = () => {
     setValue,
     formState: { errors },
     reset,
-  } = useForm<Product>();
+  } = useForm<Product>({resolver: zodResolver(productSchema)});
 
   const onSubmit = async (data: Product) => {
     // Add image and video URLs to the form data

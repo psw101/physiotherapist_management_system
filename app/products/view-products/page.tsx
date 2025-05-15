@@ -40,7 +40,7 @@ const ProductsViewPage = () => {
   }, []);
 
   const handleViewProduct = (id: number) => {
-    router.push(`/products/view-products?id=${id}`);
+    router.push(`/products/view-products/${id}`);
   };
 
   if (loading) {

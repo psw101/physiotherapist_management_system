@@ -120,31 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.ProductScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  price: 'price',
-  description: 'description',
-  specification: 'specification',
-  imageUrl: 'imageUrl',
-  videoUrl: 'videoUrl'
-};
-
-exports.Prisma.AppointmentScalarFieldEnum = {
-  id: 'id',
-  number: 'number',
-  date: 'date',
-  name: 'name',
-  age: 'age',
-  contactNumber: 'contactNumber',
-  email: 'email',
-  nic: 'nic',
-  address: 'address',
-  createdAt: 'createdAt',
-  status: 'status',
-  userId: 'userId'
-};
-
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -216,6 +191,42 @@ exports.Prisma.PatientScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price',
+  description: 'description',
+  specification: 'specification',
+  imageUrl: 'imageUrl',
+  videoUrl: 'videoUrl'
+};
+
+exports.Prisma.AppointmentScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  appointmentDate: 'appointmentDate',
+  startTime: 'startTime',
+  duration: 'duration',
+  status: 'status',
+  notes: 'notes',
+  reason: 'reason',
+  paymentStatus: 'paymentStatus',
+  paymentAmount: 'paymentAmount',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  appointmentId: 'appointmentId',
+  amount: 'amount',
+  method: 'method',
+  status: 'status',
+  paymentDate: 'paymentDate',
+  reference: 'reference',
+  notes: 'notes'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -226,36 +237,9 @@ exports.Prisma.NullableJsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
-};
-
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-};
-
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
-};
-
-exports.Prisma.ProductOrderByRelevanceFieldEnum = {
-  name: 'name',
-  description: 'description',
-  imageUrl: 'imageUrl',
-  videoUrl: 'videoUrl'
-};
-
-exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
-  name: 'name',
-  contactNumber: 'contactNumber',
-  email: 'email',
-  nic: 'nic',
-  address: 'address',
-  status: 'status'
 };
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
@@ -312,16 +296,51 @@ exports.Prisma.PatientOrderByRelevanceFieldEnum = {
   address: 'address'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.ProductOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  videoUrl: 'videoUrl'
+};
+
+exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
+  appointmentDate: 'appointmentDate',
+  startTime: 'startTime',
+  status: 'status',
+  notes: 'notes',
+  reason: 'reason',
+  paymentStatus: 'paymentStatus'
+};
+
+exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
+  method: 'method',
+  status: 'status',
+  reference: 'reference',
+  notes: 'notes'
+};
+
 
 exports.Prisma.ModelName = {
-  Product: 'Product',
-  Appointment: 'Appointment',
   User: 'User',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Authenticator: 'Authenticator',
-  Patient: 'Patient'
+  Patient: 'Patient',
+  Product: 'Product',
+  Appointment: 'Appointment',
+  Payment: 'Payment'
 };
 
 /**

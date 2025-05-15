@@ -14,31 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id            Int     @id @default(autoincrement())
-  name   String?
-  price         Int?
-  description   String?
-  specification Json?
-  imageUrl      String?
-  videoUrl      String?
-}
-
-model Appointment {
-  id                Int       @id @default(autoincrement())
-  number Int?
-  date   DateTime? @default(now())
-  name              String?
-  age               Int?
-  contactNumber     String?
-  email             String?
-  nic               String?
-  address           String?
-  createdAt         DateTime  @default(now())
-  status            String?
-  userId            Int?
-}
-
+// !impotant do not change
 //Follwing are the prisma schemas from nextauth for authentication purposes
 model User {
   id             String          @id @default(cuid())
@@ -117,6 +93,7 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
+//folloing are for application
 model Patient {
   id            Int      @id @default(autoincrement())
   name          String
@@ -130,4 +107,53 @@ model Patient {
   address       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  // Relationships
+  appointments Appointment[]
+  payments     Payment[]
+}
+
+model Product {
+  id            Int     @id @default(autoincrement())
+  name          String?
+  price         Int?
+  description   String?
+  specification Json?
+  imageUrl      String?
+  videoUrl      String?
+}
+
+// Appointment management
+model Appointment {
+  id              Int      @id @default(autoincrement())
+  patientId       Int
+  appointmentDate String // Format: "YYYY-MM-DD"
+  startTime       String // Format: "HH:MM"
+  duration        Int // Duration in minutes
+  status          String   @default("scheduled") // scheduled, completed, cancelled, no-show
+  notes           String?  @db.Text
+  reason          String
+  paymentStatus   String   @default("unpaid") // unpaid, partially_paid, paid
+  paymentAmount   Int?
+  createdAt       DateTime @default(now())
+
+  // Relationships
+  patient Patient  @relation(fields: [patientId], references: [id])
+  payment Payment?
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  patientId     Int
+  appointmentId Int?     @unique
+  amount        Int
+  method        String // cash, card, bank transfer, etc.
+  status        String   @default("completed") // pending, completed, refunded, failed
+  paymentDate   DateTime @default(now())
+  reference     String?
+  notes         String?
+
+  // Relationships
+  patient     Patient      @relation(fields: [patientId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
 }
