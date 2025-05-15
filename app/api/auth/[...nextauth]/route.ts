@@ -24,10 +24,12 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null;
 
+
         const passwordsMatch = await bcrypt.compare(credentials!.password, user!.hashedPassword!);
         return passwordsMatch ? user : null;
       },
     }),
+    
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -36,30 +38,48 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  // Add these configurations
-  pages: {
-    signIn: '/login',
-    signOut: '/',
-    error: '/login',
-    newUser: '/register'
-  },
   callbacks: {
-    // Add a custom redirect callback
-    async redirect({ url, baseUrl }) {
-      // If the URL is relative, prepend the base URL
-      if (url.startsWith('/')) {
-        return `${baseUrl}${url}`;
-      } 
-      // If the URL is already absolute but on the same host, allow it
-      else if (url.startsWith(baseUrl)) {
-        return url;
+  // Add only the session callback to fetch role from database
+  async jwt({ token, user, account }) {
+      // Initial sign in
+      // if (user) {
+      //   // For first-time sign in, add user properties to token
+      //   token.id = user.id;
+      //   token.role = user.role || "PATIENT"; // Default role if none exists
+      // }
+      
+      // For Google sign-ins where we might not have a role yet
+      if (account?.provider === "google" && !token.role) {
+        // Fetch user from database to get their role
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email as string },
+          select: { role: true }
+        });
+        
+        // Set role from database or default to PATIENT
+        token.role = (dbUser?.role as string) || "PATIENT";
       }
-      // Redirect to home page as fallback
-      return baseUrl;
+      
+      return token;
+    },
+  // Simple redirect callback that sends users to dashboard
+    async redirect({ url, baseUrl }) {
+      // After sign in, redirect to dashboard
+      if (url.startsWith(baseUrl)) {
+        return `${baseUrl}/`;
+      }
+      // For relative URLs
+      else if (url.startsWith('/')) {
+        return `${baseUrl}/`;
+      }
+      // For absolute URLs, default to baseUrl/dashboard
+      return `${baseUrl}/`;
     }
-  }
+  },
+
 };
 
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+

@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+
     return NextResponse.json(patient, { status: 201 });
   } catch (error) {
     console.error("Error creating patient:", error);
