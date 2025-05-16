@@ -64,23 +64,49 @@ export default function MakeAppointment() {
     try {
       setBookingSlot(slot);
       
-      // In a real app, you would send a request to book the appointment
-      await axios.post("/api/appointments", {
+      // Get patientId from localStorage and ensure it's a number
+      let patientId = 6; // Default to your test patient ID
+      
+      const storedId = localStorage.getItem("patientId");
+      if (storedId) {
+        patientId = Number(storedId);
+      }
+      
+      const appointmentData = {
         appointmentDate: slot.date,
         startTime: slot.time,
-        duration: 60, // Default duration
-        status: "scheduled",
+        duration: 60,
+        status: "pending",
         reason: "Physiotherapy session",
-        paymentStatus: "unpaid",
-        // Note: Assuming patientId is stored in localStorage or state management
-        patientId: localStorage.getItem("patientId") || 1
-      });
+        patientId: patientId
+      };
       
-      alert("Appointment booked successfully!");
-      router.push("/appointments"); // Redirect to appointments list
+      console.log("Sending appointment data:", appointmentData);
+      
+      // Add explicit error handling for the appointment creation
+      const response = await axios.post("/api/appointments", appointmentData);
+      
+      console.log("Appointment created:", response.data);
+      
+      // Get the appointment ID from the response
+      const appointmentId = response.data.id;
+      
+      if (!appointmentId) {
+        throw new Error("No appointment ID returned from server");
+      }
+      
+      // Redirect to payment page with the appointment ID
+      router.push(`/appointments/payment/${appointmentId}`);
     } catch (err) {
       console.error("Failed to book appointment:", err);
-      alert("Failed to book appointment. Please try again.");
+      
+      // Show detailed error message
+      if (axios.isAxiosError(err) && err.response) {
+        console.error("Error response:", err.response.data);
+        alert(`Booking failed: ${err.response.data.error || err.response.data.details || err.message}`);
+      } else {
+        alert(`Failed to book appointment: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
     } finally {
       setBookingSlot(null);
     }

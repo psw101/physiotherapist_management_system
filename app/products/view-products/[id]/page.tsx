@@ -5,6 +5,9 @@ import axios from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { useCart } from "@/context/CartContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Specification {
   key: string;
@@ -25,17 +28,19 @@ const ProductDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const productId = params.id;
-  
+  const { addToCart } = useCart(); // Use the cart context
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("standard");
-  
+  const [addedToCart, setAddedToCart] = useState(false);
+
   useEffect(() => {
     const fetchProduct = async () => {
       if (!productId) return;
-      
+
       try {
         setLoading(true);
         const response = await axios.get(`/api/products/${productId}`);
@@ -47,17 +52,57 @@ const ProductDetailPage = () => {
         setLoading(false);
       }
     };
-    
+
     fetchProduct();
   }, [productId]);
-  
+
   const handleAddToCart = () => {
     if (!product) return;
-    
-    // Here you would implement your cart logic
-    alert(`Added to cart: ${selectedQuantity} ${product.name} (${selectedOption})`);
+
+    // Calculate correct price based on option
+    const priceWithOption = getOptionPrice(selectedOption);
+
+    // Add product to cart
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: priceWithOption,
+      quantity: selectedQuantity,
+      option: selectedOption,
+      imageUrl: product.imageUrl,
+    });
+
+    // Show success message using toast
+    toast.success(`Added ${selectedQuantity} ${product.name} to cart!`, {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+
+    // Update state to show cart notification
+    setAddedToCart(true);
+
+    // Hide notification after 5 seconds
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 5000);
   };
-  
+
+  const getOptionPrice = (option: string) => {
+    if (!product) return 0; // Add null check
+
+    switch (option) {
+      case "premium":
+        return product.price + 5000;
+      case "professional":
+        return product.price + 10000;
+      default:
+        return product.price;
+    }
+  };
+
+  // Add null check for totalPrice calculation
+  const totalPrice = product ? getOptionPrice(selectedOption) * selectedQuantity : 0;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -65,43 +110,30 @@ const ProductDetailPage = () => {
       </div>
     );
   }
-  
+
   if (error || !product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="text-red-500 font-medium text-lg mb-4">{error || "Product not found"}</div>
-        <button 
-          onClick={() => router.push("/products/view-products")}
-          className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-        >
+        <button onClick={() => router.push("/products/view-products")} className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
           <IoChevronBackOutline className="mr-2" /> Back to Products
         </button>
       </div>
     );
   }
-  
-  const getOptionPrice = (option: string) => {
-    switch (option) {
-      case "premium": return product.price + 5000;
-      case "professional": return product.price + 10000;
-      default: return product.price;
-    }
-  };
 
-  const totalPrice = getOptionPrice(selectedOption) * selectedQuantity;
-  
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
+      {/* Add ToastContainer for notifications */}
+      <ToastContainer />
+
       {/* Back button */}
       <div className="mb-6">
-        <button 
-          onClick={() => router.push("/products/view-products")}
-          className="flex items-center text-blue-600 hover:text-blue-800"
-        >
+        <button onClick={() => router.push("/products/view-products")} className="flex items-center text-blue-600 hover:text-blue-800">
           <IoChevronBackOutline className="mr-1" /> Back to Products
         </button>
       </div>
-      
+
       {/* Product Overview */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="grid md:grid-cols-2 gap-8 p-6">
@@ -109,22 +141,13 @@ const ProductDetailPage = () => {
           <div className="space-y-4">
             {/* Main Image */}
             <div className="border border-gray-200 rounded-lg overflow-hidden">
-              <img 
-                src={product.imageUrl || "https://via.placeholder.com/600x400?text=No+Image"} 
-                alt={product.name} 
-                className="w-full h-auto object-cover"
-              />
+              <img src={product.imageUrl || "https://via.placeholder.com/600x400?text=No+Image"} alt={product.name} className="w-full h-auto object-cover" />
             </div>
 
             {/* Video (if available) */}
             {product.videoUrl && (
               <div className="border border-gray-200 rounded-lg overflow-hidden aspect-w-16 aspect-h-9">
-                <iframe 
-                  src={product.videoUrl} 
-                  title={`${product.name} demo`} 
-                  className="w-full h-64" 
-                  allowFullScreen
-                ></iframe>
+                <iframe src={product.videoUrl} title={`${product.name} demo`} className="w-full h-64" allowFullScreen></iframe>
               </div>
             )}
           </div>
@@ -159,12 +182,7 @@ const ProductDetailPage = () => {
                 <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
                   Quantity
                 </label>
-                <select 
-                  id="quantity" 
-                  className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" 
-                  value={selectedQuantity} 
-                  onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-                >
+                <select id="quantity" className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" value={selectedQuantity} onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}>
                   {[1, 2, 3, 4, 5].map((num) => (
                     <option key={num} value={num}>
                       {num}
@@ -178,37 +196,25 @@ const ProductDetailPage = () => {
                 <label htmlFor="options" className="block text-sm font-medium text-gray-700">
                   Options
                 </label>
-                <select 
-                  id="options" 
-                  className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" 
-                  value={selectedOption} 
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                >
+                <select id="options" className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
                   <option value="standard">Standard</option>
                   <option value="premium">Premium (+Rs. 5,000)</option>
                   <option value="professional">Professional (+Rs. 10,000)</option>
                 </select>
               </div>
             </div>
-            
+
             {/* Total Price */}
             <div className="bg-gray-50 p-4 rounded-md">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Total Price:</span>
                 <span className="text-xl font-bold text-blue-600">Rs. {totalPrice.toLocaleString()}</span>
               </div>
-              {selectedQuantity > 1 && (
-                <div className="text-sm text-gray-500 text-right mt-1">
-                  (Rs. {getOptionPrice(selectedOption).toLocaleString()} each)
-                </div>
-              )}
+              {product && selectedQuantity > 1 && <div className="text-sm text-gray-500 text-right mt-1">(Rs. {getOptionPrice(selectedOption).toLocaleString()} each)</div>}
             </div>
 
             {/* Add to Cart Button */}
-            <button 
-              onClick={handleAddToCart} 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
+            <button onClick={handleAddToCart} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               Add to Cart
             </button>
           </div>
@@ -230,9 +236,38 @@ const ProductDetailPage = () => {
           </div>
         )}
       </div>
-      
-      {/* Related Products Section (Optional) */}
-      {/* You can add a related products section here if needed */}
+
+      {/* Added to Cart Notification */}
+      {addedToCart && (
+        <div className="fixed bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg border border-green-500 max-w-sm">
+          <div className="flex items-center">
+            <div className="bg-green-100 rounded-full p-2 mr-3">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-medium">Added to Cart!</h4>
+              <p className="text-sm text-gray-600">
+                {selectedQuantity} x {product?.name} ({selectedOption})
+              </p>
+            </div>
+            <button onClick={() => setAddedToCart(false)} className="text-gray-400 hover:text-gray-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div className="mt-3 flex justify-between">
+            <button onClick={() => router.push("/products/view-products")} className="text-blue-600 hover:text-blue-800 text-sm">
+              Continue Shopping
+            </button>
+            <button onClick={() => router.push("/cart")} className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded">
+              View Cart
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

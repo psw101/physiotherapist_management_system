@@ -57,6 +57,8 @@ const Navbar = () => {
     },
     { label: 'Reports', href: '/reports', dropdown: null },
     { label: 'Settings', href: '/settings', dropdown: null },
+    { label: 'Cart', href: '/cart', dropdown: null },
+
   ];
 
   // Handle dropdown toggling

@@ -134,35 +134,57 @@ model Product {
 
 // Appointment management
 model Appointment {
-  id              Int      @id @default(autoincrement())
-  patientId       Int
-  appointmentDate String // Format: "YYYY-MM-DD"
-  startTime       String // Format: "HH:MM"
-  duration        Int // Duration in minutes
-  status          String   @default("scheduled") // scheduled, completed, cancelled, no-show
-  notes           String?  @db.Text
-  reason          String
-  paymentStatus   String   @default("unpaid") // unpaid, partially_paid, paid
-  paymentAmount   Int?
-  createdAt       DateTime @default(now())
-
-  // Relationships
-  patient Patient  @relation(fields: [patientId], references: [id])
-  payment Payment?
+  id                String           @id @default(cuid())
+  patientId         Int
+  patient           Patient          @relation(fields: [patientId], references: [id])
+  physiotherapistId Int?
+  physiotherapist   Physiotherapist? @relation(fields: [physiotherapistId], references: [id])
+  appointmentDate   DateTime
+  startTime         String
+  duration          Int // in minutes
+  status            String           @default("pending") // pending, scheduled, completed, cancelled
+  reason            String?
+  notes             String?
+  paymentStatus     String           @default("unpaid") // unpaid, paid, refunded
+  fee               Float            @default(2500)
+  payment           Payment?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model Payment {
-  id            Int      @id @default(autoincrement())
-  patientId     Int
-  appointmentId Int?     @unique
-  amount        Int
-  method        String // cash, card, bank transfer, etc.
-  status        String   @default("completed") // pending, completed, refunded, failed
-  paymentDate   DateTime @default(now())
-  reference     String?
-  notes         String?
+  id            String      @id @default(cuid())
+  appointmentId String      @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  amount        Float
+  method        String // card, cash, etc.
+  status        String // pending, completed, failed, refunded
+  transactionId String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  Patient       Patient?    @relation(fields: [patientId], references: [id])
+  patientId     Int?
+}
+
+model Physiotherapist {
+  id             Int     @id @default(autoincrement())
+  name           String
+  email          String  @unique
+  contactNumber  String
+  specialization String
+  experience     Int     @default(0) // Years of experience
+  education      String?
+  certifications String?
+  bio            String? @db.Text
+  availability   Json? // Store availability as JSON
+  rating         Float?  @default(0)
+  imageUrl       String? // Profile image
+  isActive       Boolean @default(true)
 
   // Relationships
-  patient     Patient      @relation(fields: [patientId], references: [id])
-  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+  appointments Appointment[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

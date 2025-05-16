@@ -206,27 +206,47 @@ exports.Prisma.ProductScalarFieldEnum = {
 exports.Prisma.AppointmentScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
+  physiotherapistId: 'physiotherapistId',
   appointmentDate: 'appointmentDate',
   startTime: 'startTime',
   duration: 'duration',
   status: 'status',
-  notes: 'notes',
   reason: 'reason',
+  notes: 'notes',
   paymentStatus: 'paymentStatus',
-  paymentAmount: 'paymentAmount',
-  createdAt: 'createdAt'
+  fee: 'fee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
-  patientId: 'patientId',
   appointmentId: 'appointmentId',
   amount: 'amount',
   method: 'method',
   status: 'status',
-  paymentDate: 'paymentDate',
-  reference: 'reference',
-  notes: 'notes'
+  transactionId: 'transactionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  patientId: 'patientId'
+};
+
+exports.Prisma.PhysiotherapistScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  contactNumber: 'contactNumber',
+  specialization: 'specialization',
+  experience: 'experience',
+  education: 'education',
+  certifications: 'certifications',
+  bio: 'bio',
+  availability: 'availability',
+  rating: 'rating',
+  imageUrl: 'imageUrl',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -318,19 +338,31 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
-  appointmentDate: 'appointmentDate',
+  id: 'id',
   startTime: 'startTime',
   status: 'status',
-  notes: 'notes',
   reason: 'reason',
+  notes: 'notes',
   paymentStatus: 'paymentStatus'
 };
 
 exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  appointmentId: 'appointmentId',
   method: 'method',
   status: 'status',
-  reference: 'reference',
-  notes: 'notes'
+  transactionId: 'transactionId'
+};
+
+exports.Prisma.PhysiotherapistOrderByRelevanceFieldEnum = {
+  name: 'name',
+  email: 'email',
+  contactNumber: 'contactNumber',
+  specialization: 'specialization',
+  education: 'education',
+  certifications: 'certifications',
+  bio: 'bio',
+  imageUrl: 'imageUrl'
 };
 
 
@@ -343,7 +375,8 @@ exports.Prisma.ModelName = {
   Patient: 'Patient',
   Product: 'Product',
   Appointment: 'Appointment',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  Physiotherapist: 'Physiotherapist'
 };
 
 /**

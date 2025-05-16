@@ -8,6 +8,7 @@ import Navbar from "./components/Narbar"
 import SideMenu from "./components/SideMenu";
 import { Theme } from "@radix-ui/themes";
 import AuthProvider from "./auth/Provider";
+import { CartProvider } from "@/context/CartContext";
 
 
 
@@ -41,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}><AuthProvider><Theme><Navbar/><main className="p-5">{children}</main></Theme></AuthProvider></body>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}><AuthProvider><Theme><Navbar/><main className="p-5"><CartProvider>{children}</CartProvider></main></Theme></AuthProvider></body>
     </html>
   );
 }
