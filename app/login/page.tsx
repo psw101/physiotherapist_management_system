@@ -52,14 +52,21 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Invalid email or password. Please try again.");
       } else {
-        // Check if there's a pending action in session storage
-        const pendingAppointment = sessionStorage.getItem("pendingAppointmentSlot");
-        if (pendingAppointment && callbackUrl.includes("appointments")) {
-          router.push(callbackUrl);
-        } else {
-          router.push("/dashboard");
-        }
+      // Fetch session data from the API to get the role
+      const tokenResponse = await fetch("/api/auth/token");
+      const tokenData = await tokenResponse.json();
+      
+      console.log("Token data:", tokenData);
+      
+      // Redirect based on user role
+      if (tokenData.role === "ADMIN") {
+        console.log("Redirecting to admin dashboard");
+        router.push("/admin/dashboard");
+      } else {
+        console.log("Redirecting to user dashboard");
+        router.push("/dashboard");
       }
+    }
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
       console.error("Login error:", error);
