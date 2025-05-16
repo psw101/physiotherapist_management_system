@@ -34,37 +34,46 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       // Add user ID to token if present in user object
       if (user?.id) {
         token.id = user.id;
       }
 
-      // Keep existing role handling
-      if (account?.provider === "google" && !token.role) {
-        const dbUser = await prisma.user.findUnique({
+      // For every token refresh, get the latest user data including role
+      if (token.email) {
+        // Get the user from the database with their role
+        const userDB = await prisma.user.findUnique({
           where: { email: token.email as string },
-          select: { role: true },
+          select: { id: true, role: true }
         });
 
-        token.role = (dbUser?.role as string) || "PATIENT";
-      }
+        // Set role directly from database
+        if (userDB?.role) {
+          token.role = userDB.role;
+        } else {
+          token.role = "PATIENT"; // Default fallback
+        }
 
-      // Check if user has a corresponding patient record
-      if (token.email) {
-        // Look up patient record with matching email
+        // Check if user has a patient profile
         const patient = await prisma.patient.findUnique({
           where: { email: token.email as string },
         });
 
-        // Add hasPatientProfile flag to token
         token.hasPatientProfile = !!patient;
-
-        // If there's a patient record, store its ID
+        
         if (patient) {
           token.patientId = patient.id;
         }
       }
+
+      // Log for debugging
+      console.log("JWT Token:", {
+        id: token.id,
+        email: token.email,
+        role: token.role,
+        hasPatientProfile: token.hasPatientProfile,
+      });
 
       return token;
     },
