@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Text, TextArea, TextField, Callout, Heading } from "@radix-ui/themes";
+import { Button, Text, TextArea, TextField, Callout } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -97,20 +97,40 @@ const EditProductPage = () => {
     setValue("videoUrl", videoUrl);
   }, [imageUrl, videoUrl, setValue]);
 
+  // Helper function to preserve scroll position
+  const preserveScroll = (callback: () => void) => {
+    // Get current scroll position
+    const scrollPos = window.scrollY;
+    
+    // Execute the callback that changes the component state
+    callback();
+    
+    // Force immediate scroll restoration and then again after a short delay
+    window.scrollTo(0, scrollPos);
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollPos);
+      setTimeout(() => window.scrollTo(0, scrollPos), 50);
+      setTimeout(() => window.scrollTo(0, scrollPos), 100);
+      setTimeout(() => window.scrollTo(0, scrollPos), 200);
+    });
+  };
+
   // Custom image URL setter that also updates the form
   const handleImageUrlChange = (url: string) => {
-    setImageUrl(url);
-    setValue("imageUrl", url);
-    // Trigger validation for this field
-    trigger("imageUrl");
+    preserveScroll(() => {
+      setImageUrl(url);
+      setValue("imageUrl", url);
+      trigger("imageUrl");
+    });
   };
 
   // Custom video URL setter that also updates the form
   const handleVideoUrlChange = (url: string) => {
-    setVideoUrl(url);
-    setValue("videoUrl", url);
-    // Trigger validation for this field
-    trigger("videoUrl");
+    preserveScroll(() => {
+      setVideoUrl(url);
+      setValue("videoUrl", url);
+      trigger("videoUrl");
+    });
   };
 
   const onSubmit = async (data: Product) => {
@@ -157,156 +177,176 @@ const EditProductPage = () => {
   }
 
   return (
-    <div className="p-6 max-w-xl">
-      <Heading size="5" className="mb-6">Edit Product</Heading>
+    <div className="p-6 max-w-xl mx-auto">
+      <div className="fixed left-64 top-0 right-0 bottom-0 pt-16 pb-6 px-6 overflow-y-auto">
+        <div className="max-w-xl mx-auto">
+          <h2 className="text-2xl font-bold mb-6">Edit Product</h2>
 
-      {error && (
-        <Callout.Root variant="soft" color={error.includes("Successfully") ? "green" : "red"} className="mb-6">
-          <Text size="2" weight="medium">
-            {error}
-          </Text>
-        </Callout.Root>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl space-y-6">
-        {Object.keys(errors).length > 0 && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <p>Please correct the following errors:</p>
-            <ul className="list-disc ml-5">
-              {Object.entries(errors).map(([field, error]) => (
-                <li key={field}>{(error as any).message}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div>
-          <Text as="div" size="2" mb="1" weight="medium">
-            Product Name
-          </Text>
-          <TextField.Root placeholder="Enter product name" {...register("name")} />
-          {errors.name && (
-            <Text color="red" size="1">
-              {errors.name.message as string}
-            </Text>
+          {error && (
+            <Callout.Root variant="soft" color={error.includes("Successfully") ? "green" : "red"} className="mb-6">
+              <Text size="2" weight="medium">
+                {error}
+              </Text>
+            </Callout.Root>
           )}
-        </div>
 
-        <div>
-          <Text as="div" size="2" mb="1" weight="medium">
-            Description
-          </Text>
-          <TextArea placeholder="Enter product description" {...register("description")} />
-          {errors.description && (
-            <Text color="red" size="1">
-              {errors.description.message as string}
-            </Text>
-          )}
-        </div>
-
-        <div>
-          <Text as="div" size="2" mb="1" weight="medium">
-            Product Price
-          </Text>
-          <TextField.Root type="number" placeholder="Enter product price" {...register("price", { valueAsNumber: true })} />
-          {errors.price && (
-            <Text color="red" size="1">
-              {errors.price.message as string}
-            </Text>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <Text as="div" size="2" mb="1" weight="medium">
-            Product Image
-          </Text>
-          {imageUrl ? (
-            <div className="relative w-full mb-2">
-              <img src={imageUrl} alt="Product" className="w-full h-48 object-cover rounded" />
-              <div className="flex gap-2 mt-2">
-                <Button
-                  type="button"
-                  size="1"
-                  variant="soft"
-                  onClick={() => {
-                    setImageUrl("");
-                    setImagePublicId("");
-                    setValue("imageUrl", "");
-                  }}
-                >
-                  Change Image
-                </Button>
+          <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl space-y-6 pb-20">
+            {Object.keys(errors).length > 0 && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <p>Please correct the following errors:</p>
+                <ul className="list-disc ml-5">
+                  {Object.entries(errors).map(([field, error]) => (
+                    <li key={field}>{(error as any).message}</li>
+                  ))}
+                </ul>
               </div>
+            )}
+
+            <div>
+              <Text as="div" size="2" mb="1" weight="medium">
+                Product Name
+              </Text>
+              <TextField.Root placeholder="Enter product name" {...register("name")} />
+              {errors.name && (
+                <Text color="red" size="1">
+                  {errors.name.message as string}
+                </Text>
+              )}
             </div>
-          ) : (
-            <MediaUploader mediaType="image" setUrl={handleImageUrlChange} setPublicId={setImagePublicId} />
-          )}
-          {errors.imageUrl && (
-            <Text color="red" size="1">
-              {errors.imageUrl.message as string}
-            </Text>
-          )}
-        </div>
 
-        <div>
-          <Text as="div" size="2" mb="1" weight="medium">
-            Product Video
-          </Text>
-          {videoUrl ? (
-            <div className="relative w-full mb-2">
-              <video src={videoUrl} controls className="w-full h-48 bg-black rounded" />
-              <div className="flex gap-2 mt-2">
-                <Button
-                  type="button"
-                  size="1"
-                  variant="soft"
-                  onClick={() => {
-                    setVideoUrl("");
-                    setVideoPublicId("");
-                    setValue("videoUrl", "");
-                  }}
-                >
-                  Change Video
-                </Button>
-              </div>
+            <div>
+              <Text as="div" size="2" mb="1" weight="medium">
+                Description
+              </Text>
+              <TextArea placeholder="Enter product description" {...register("description")} />
+              {errors.description && (
+                <Text color="red" size="1">
+                  {errors.description.message as string}
+                </Text>
+              )}
             </div>
-          ) : (
-            <MediaUploader mediaType="video" setUrl={handleVideoUrlChange} setPublicId={setVideoPublicId} />
-          )}
-          {errors.videoUrl && (
-            <Text color="red" size="1">
-              {errors.videoUrl.message as string}
-            </Text>
-          )}
-        </div>
 
-        <div>
-          <Text as="div" size="2" mb="1" weight="medium">
-            Specifications
-          </Text>
-          <SpecificationAdder
-            initialSpecs={specs}
-            onChange={(newSpecs) => {
-              setSpecs(newSpecs);
-              setValue("specification", newSpecs);
-            }}
-          />
-          {errors.specification && (
-            <Text color="red" size="1">
-              {errors.specification?.message as string}
-            </Text>
-          )}
-        </div>
+            <div>
+              <Text as="div" size="2" mb="1" weight="medium">
+                Product Price
+              </Text>
+              <TextField.Root type="number" placeholder="Enter product price" {...register("price", { valueAsNumber: true })} />
+              {errors.price && (
+                <Text color="red" size="1">
+                  {errors.price.message as string}
+                </Text>
+              )}
+            </div>
 
-        <div className="flex gap-4 pt-4">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Update Product"}
-          </Button>
-          <Button type="button" variant="soft" color="gray" onClick={() => router.push("/admin/products")} disabled={isSubmitting}>
-            Cancel
-          </Button>
+            <div className="flex flex-col gap-4">
+              <Text as="div" size="2" mb="1" weight="medium">
+                Product Image
+              </Text>
+              {!imageUrl ? (
+                <div key="image-uploader-fixed">
+                  <MediaUploader 
+                    mediaType="image" 
+                    setUrl={handleImageUrlChange}
+                    setPublicId={setImagePublicId} 
+                  />
+                </div>
+              ) : (
+                <div className="relative w-full mb-2">
+                  <img src={imageUrl} alt="Product" className="w-full h-48 object-cover rounded" />
+                  <div className="flex gap-2 mt-2">
+                    <Button
+                      type="button"
+                      size="1"
+                      variant="soft"
+                      onClick={() => {
+                        preserveScroll(() => {
+                          setImageUrl("");
+                          setImagePublicId("");
+                          setValue("imageUrl", "");
+                        });
+                      }}
+                    >
+                      Change Image
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {errors.imageUrl && (
+                <Text color="red" size="1">
+                  {errors.imageUrl.message as string}
+                </Text>
+              )}
+            </div>
+
+            <div>
+              <Text as="div" size="2" mb="1" weight="medium">
+                Product Video
+              </Text>
+              {!videoUrl ? (
+                <div key="video-uploader-fixed">
+                  <MediaUploader 
+                    mediaType="video" 
+                    setUrl={handleVideoUrlChange}
+                    setPublicId={setVideoPublicId} 
+                  />
+                </div>
+              ) : (
+                <div className="relative w-full mb-2">
+                  <video src={videoUrl} controls className="w-full h-48 bg-black rounded" />
+                  <div className="flex gap-2 mt-2">
+                    <Button
+                      type="button"
+                      size="1"
+                      variant="soft"
+                      onClick={() => {
+                        preserveScroll(() => {
+                          setVideoUrl("");
+                          setVideoPublicId("");
+                          setValue("videoUrl", "");
+                        });
+                      }}
+                    >
+                      Change Video
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {errors.videoUrl && (
+                <Text color="red" size="1">
+                  {errors.videoUrl.message as string}
+                </Text>
+              )}
+            </div>
+
+            <div>
+              <Text as="div" size="2" mb="1" weight="medium">
+                Specifications
+              </Text>
+              <SpecificationAdder
+                initialSpecs={specs}
+                onChange={(newSpecs) => {
+                  setSpecs(newSpecs);
+                  setValue("specification", newSpecs);
+                }}
+              />
+              {errors.specification && (
+                <Text color="red" size="1">
+                  {errors.specification?.message as string}
+                </Text>
+              )}
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Update Product"}
+              </Button>
+              <Button type="button" variant="soft" color="gray" onClick={() => router.push("/admin/products")} disabled={isSubmitting}>
+                Cancel
+              </Button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
