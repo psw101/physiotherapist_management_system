@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
-import EditPatient from '@/app/components/EditPatient';
+import EditPatient from '@/components/EditPatient';
 
 interface Patient {
   id: number;

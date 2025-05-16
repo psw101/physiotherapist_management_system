@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema } from "../../api/validationSchemas";
 import { z } from "zod";
-import MediaUploader from "@/app/components/MediaUploader";
-import SpecificationAdder from "@/app/components/SpecificationAdder";
+import MediaUploader from "@/components/MediaUploader";
+import SpecificationAdder from "@/components/SpecificationAdder";
 
 export interface Product {
   name: string;

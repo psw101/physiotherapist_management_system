@@ -61,3 +61,42 @@ physiotherapist_management_system/
 │
 └── types/
     └── index.ts                            # Type definitions
+
+
+
+
+    /app
+  /admin
+    layout.tsx                # Admin layout with navbar and auth protection
+    page.tsx                  # Dashboard page
+    /users
+      page.tsx                # Users management page
+    /patients
+      page.tsx                # Patients management page
+    /physiotherapists
+      page.tsx                # Physiotherapists management page
+    /appointments
+      page.tsx                # Appointments management page
+    /products
+      page.tsx                # Products management page
+    /orders
+      page.tsx                # Orders management page
+    /reports
+      page.tsx                # Reports and analytics page
+    /settings
+      page.tsx                # System settings page
+  /api
+    /admin
+      /stats
+        route.ts              # Stats API endpoint
+      /users
+        route.ts              # Users API endpoint
+        /[id]
+          route.ts            # User by ID endpoint
+
+/components
+  /admin
+    AdminNavbar.tsx           # Admin navigation component
+    AdminTable.tsx            # Reusable admin table component (optional)
+    AdminHeader.tsx           # Reusable page header (optional)
+    AdminCard.tsx             # Styled admin card component (optional)

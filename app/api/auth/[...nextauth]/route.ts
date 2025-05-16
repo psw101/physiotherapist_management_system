@@ -16,15 +16,29 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials.password) return null;
-        const user = await prisma.user.findUnique({
+        
+        const dbUser = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user) return null;
-      
+        if (!dbUser) return null;
 
-        const passwordsMatch = await bcrypt.compare(credentials!.password, user!.hashedPassword!);
-        return passwordsMatch ? user : null;
+        const passwordsMatch = await bcrypt.compare(
+          credentials.password, 
+          dbUser.hashedPassword || ''
+        );
+        
+        if (!passwordsMatch) return null;
+        
+        // Convert null to undefined for role to match NextAuth's User type
+        return {
+          id: dbUser.id,
+          name: dbUser.name,
+          email: dbUser.email,
+          image: dbUser.image,
+          // Convert null to undefined to fix type error
+          role: dbUser.role || undefined
+        };
       },
     }),
 
@@ -45,7 +59,7 @@ export const authOptions: NextAuthOptions = {
         // Get the user from the database with their role
         const userDB = await prisma.user.findUnique({
           where: { email: token.email as string },
-          select: { id: true, role: true }
+          select: { id: true, role: true },
         });
 
         // Set role directly from database
@@ -61,7 +75,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         token.hasPatientProfile = !!patient;
-        
+
         if (patient) {
           token.patientId = patient.id;
         }
@@ -78,20 +92,30 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
+    //   jwt: async ({ token, user }) => {
+    //   if (user) {
+    //     token.role = user.role;
+    //     token.id = user.id;
+    //   }
+    //   return token;
+    // },
+    // session: async ({ session, token }) => {
+    //   if (token && session.user) {
+    //     session.user.role = token.role as string;
+    //     session.user.id = token.id as string;
+    //   }
+    //   return session;
+    // },
+
     async session({ session, token }) {
       if (session.user) {
-        // Pass user ID from token to session
-        (session.user as any).id = token.id;
-
-        // Pass role from token to session
-        (session.user as any).role = token.role;
-
-        // Pass patient profile status to session
-        (session.user as any).hasPatientProfile = token.hasPatientProfile;
-
-        // Add patient ID if available
+        // Define these properties in your types/next-auth.d.ts
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
+        session.user.hasPatientProfile = token.hasPatientProfile as boolean;
+        
         if (token.patientId) {
-          (session.user as any).patientId = token.patientId;
+          session.user.patientId = token.patientId as number;
         }
       }
 

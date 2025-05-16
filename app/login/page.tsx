@@ -61,7 +61,7 @@ export default function LoginPage() {
       // Redirect based on user role
       if (tokenData.role === "ADMIN") {
         console.log("Redirecting to admin dashboard");
-        router.push("/admin/dashboard");
+        router.push("/admin");
       } else {
         console.log("Redirecting to user dashboard");
         router.push("/dashboard");

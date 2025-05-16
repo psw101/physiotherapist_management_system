@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import PatientTable from '@/app/components/PatientTable';
+import PatientTable from '@/components/PatientTable';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 

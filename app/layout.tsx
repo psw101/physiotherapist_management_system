@@ -4,8 +4,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Popover } from "radix-ui";
-import Navbar from "./components/Narbar"
-import SideMenu from "./components/SideMenu";
+import Navbar from "../components/Narbar"
+import SideMenu from "../components/SideMenu";
 import { Theme } from "@radix-ui/themes";
 import AuthProvider from "./auth/Provider";
 import { CartProvider } from "@/context/CartContext";
