@@ -31,12 +31,6 @@ const Navbar = () => {
   // Navigation items data
   const navItems: NavItem[] = [
     { label: 'Dashboard', href: '/', dropdown: null },
-    { label: 'Patients',
-      href: '#',
-       dropdown: [
-        { label: 'Add Patients', href: '/patients/add-patients' },
-        { label: 'View Patients', href: '/patients/view-patients' },
-       ] },
     {
       label: 'Products', 
       href: '#', 
