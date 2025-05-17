@@ -100,3 +100,72 @@ physiotherapist_management_system/
     AdminTable.tsx            # Reusable admin table component (optional)
     AdminHeader.tsx           # Reusable page header (optional)
     AdminCard.tsx             # Styled admin card component (optional)
+
+
+
+# adding timeslots multi physiotherapist
+
+        physiotherapist_management_system/
+    │
+    ├── app/
+    │   ├── admin/
+    │   │   └── appointments/
+    │   │       ├── page.tsx                           # Main admin appointments page
+    │   │       ├── available-dates/
+    │   │       │   └── page.tsx                       # Manage available dates 
+    │   │       └── time-slots/
+    │   │           └── [dateId]/
+    │   │               └── page.tsx                   # Manage time slots for a date
+    │   │
+    │   └── api/
+    │       ├── admin/
+    │       │   └── appointments/
+    │       │       ├── available-dates/
+    │       │       │   ├── route.ts                   # CRUD for available dates
+    │       │       │   └── [id]/
+    │       │       │       └── route.ts               # Get/Update/Delete date
+    │       │       └── time-slots/
+    │       │           ├── route.ts                   # Create time slots
+    │       │           └── [id]/
+    │       │               └── route.ts               # Update/Delete time slot
+    │       └── appointments/
+    │           ├── available-dates/
+    │           │   └── route.ts                       # Public API to get available dates
+    │           └── available-slots/
+    │               └── [dateId]/
+    │                   └── route.ts                   # Get available slots for date
+
+
+# timeslot adding
+
+physiotherapist_management_system/
+├── app/
+│   ├── admin/
+│   │   └── appointments/
+│   │       ├── page.tsx                       # Admin appointments dashboard
+│   │       └── slots/
+│   │           └── page.tsx                   # Slot management UI
+│   │
+│   ├── appointments/
+│   │   ├── page.tsx                           # My appointments page
+│   │   └── book/
+│   │       └── page.tsx                       # Appointment booking UI
+│   │
+│   └── api/
+│       ├── admin/
+│       │   └── slots/
+│       │       ├── route.ts                   # Create/list slots
+│       │       └── [id]/
+│       │           └── route.ts               # Update/delete slot
+│       │
+│       ├── appointments/
+│       │   ├── route.ts                       # Create appointment
+│       │   └── [id]/
+│       │       └── route.ts                   # Get/update appointment
+│       │
+│       └── slots/
+│           └── available/
+│               └── route.ts                   # Get available slots
+│
+├── prisma/
+│   └── schema.prisma                          # Database schema definition

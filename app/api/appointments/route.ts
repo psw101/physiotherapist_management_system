@@ -36,6 +36,7 @@ export async function POST(request: Request) {
     
     // Validate appointment date
     let appointmentDate;
+    console.log(JSON.stringify(data, null, 2));
     try {
       appointmentDate = new Date(data.appointmentDate);
       if (isNaN(appointmentDate.getTime())) {

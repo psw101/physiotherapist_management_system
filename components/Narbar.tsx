@@ -45,7 +45,7 @@ const Navbar = () => {
       href: '',
       dropdown: [
         { label: 'View All', href: '/appointments' },
-        { label: 'Make Appointment', href: '/appointments/make-appointments' },
+        { label: 'Book Appointment', href: '/appointments/book-appointments' },
         { label: 'Calendar', href: '/appointments/calendar' },
       ]
     },

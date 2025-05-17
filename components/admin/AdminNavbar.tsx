@@ -23,7 +23,7 @@ export default function AdminNavbar() {
     { name: "Users", href: "/admin/users", icon: UserIcon },
     { name: "Patients", href: "/admin/patients", icon: UserGroupIcon },
     { name: "Physiotherapists", href: "/admin/physiotherapists", icon: UserIcon },
-    { name: "Appointments", href: "/admin/appointments", icon: CalendarIcon },
+    { name: "Appointments", href: "/admin/appointments/slots", icon: CalendarIcon },
     { name: "Products", href: "/admin/products", icon: ShoppingCartIcon },
     { name: "Orders", href: "/admin/orders", icon: ClipboardDocumentListIcon },
     { name: "Reports", href: "/admin/reports", icon: ChartPieIcon },

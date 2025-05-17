@@ -1,32 +1,30 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Text, TextArea, TextField } from "@radix-ui/themes";
+import { Button, Text, TextArea, TextField, Callout } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-// Update the path below to the actual relative path where validationSchemas.ts is located
 import { patientSchema } from "../api/validationSchemas";
-import {z} from "zod";
-import { NextResponse } from "next/server";
+import { z } from "zod";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 
-type PatientForm = z.infer<typeof patientSchema>;
+// Extended schema with confirm password
+const extendedPatientSchema = patientSchema
+  .extend({
+    confirmPassword: z.string().min(1, "Confirm password is required"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
-interface PatientFormData {
-  name: string;
-  username: string;
-  password: string;
-  age: number;
-  contactNumber: string;
-  email: string;
-  area: string;
-  nic: string;
-  address: string;
-}
+type PatientFormData = z.infer<typeof patientSchema> & { confirmPassword: string };
 
 const Patients = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -34,22 +32,35 @@ const Patients = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<PatientFormData>({resolver: zodResolver(patientSchema)});
+    watch,
+  } = useForm<PatientFormData>({
+    resolver: zodResolver(extendedPatientSchema),
+  });
+
+  const password = watch("password");
 
   const onSubmit = async (data: PatientFormData) => {
     try {
       setIsSubmitting(true);
-      console.log("Form submitted:", data);
-      // Uncomment when API endpoint is ready
-      await axios.post("/api/patients", data);
-      router.push("/patients/add-patients");
       setError("");
+
+      // Remove confirmPassword before API submission
+      const { confirmPassword, ...apiData } = data;
+
+      // Submit to API
+      await axios.post("/api/patients", apiData);
+
+      // Show success message
+      setSuccess(true);
       reset();
-                        // Clear form after successful submission
+
+      // Redirect to home page after a delay
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     } catch (error) {
       console.error("Error submitting patient data:", error);
       setError("An unexpected error occurred while saving patient data.");
-      setIsSubmitting(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -59,7 +70,22 @@ const Patients = () => {
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6">Register</h2>
 
-      {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
+      {error && (
+        <Callout.Root color="red" className="mb-6">
+          <Callout.Text>{error}</Callout.Text>
+        </Callout.Root>
+      )}
+
+      {success && (
+        <Callout.Root color="green" className="mb-6">
+          <Callout.Icon>
+            <CheckCircledIcon />
+          </Callout.Icon>
+          <Callout.Text>
+            Registration successful! Redirecting to home page...
+          </Callout.Text>
+        </Callout.Root>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-6">
         <div>
@@ -90,10 +116,27 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Password
           </Text>
-          <TextField.Root type="password" placeholder="Create a password" {...register("password", { required: "Password is required" })} />
+          <TextField.Root type="password" placeholder="Create a password" {...register("password")} />
           {errors.password && (
             <Text color="red" size="1">
               {errors.password.message}
+            </Text>
+          )}
+        </div>
+
+        {/* New confirm password field */}
+        <div>
+          <Text as="div" size="2" mb="1" weight="medium">
+            Confirm Password
+          </Text>
+          <TextField.Root
+            type="password"
+            placeholder="Confirm your password"
+            {...register("confirmPassword")}
+          />
+          {errors.confirmPassword && (
+            <Text color="red" size="1">
+              {errors.confirmPassword.message}
             </Text>
           )}
         </div>
@@ -107,8 +150,6 @@ const Patients = () => {
             placeholder="Enter patient's age"
             {...register("age", {
               valueAsNumber: true,
-              required: "Age is required",
-              min: { value: 0, message: "Age cannot be negative" },
             })}
           />
           {errors.age && (
@@ -122,7 +163,7 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Contact Number
           </Text>
-          <TextField.Root placeholder="Enter contact number" {...register("contactNumber", { required: "Contact number is required" })} />
+          <TextField.Root placeholder="Enter contact number" {...register("contactNumber")} />
           {errors.contactNumber && (
             <Text color="red" size="1">
               {errors.contactNumber.message}
@@ -137,13 +178,7 @@ const Patients = () => {
           <TextField.Root
             type="email"
             placeholder="Enter email address"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
-              },
-            })}
+            {...register("email")}
           />
           {errors.email && (
             <Text color="red" size="1">
@@ -156,7 +191,7 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Area
           </Text>
-          <TextField.Root placeholder="Enter residential area" {...register("area", { required: "Area is required" })} />
+          <TextField.Root placeholder="Enter residential area" {...register("area")} />
           {errors.area && (
             <Text color="red" size="1">
               {errors.area.message}
@@ -168,7 +203,7 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             NIC / Passport
           </Text>
-          <TextField.Root placeholder="Enter NIC or passport number" {...register("nic", { required: "NIC/Passport number is required" })} />
+          <TextField.Root placeholder="Enter NIC or passport number" {...register("nic")} />
           {errors.nic && (
             <Text color="red" size="1">
               {errors.nic.message}
@@ -180,7 +215,7 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Address
           </Text>
-          <TextArea placeholder="Enter full address" {...register("address", { required: "Address is required" })} />
+          <TextArea placeholder="Enter full address" {...register("address")} />
           {errors.address && (
             <Text color="red" size="1">
               {errors.address.message}
@@ -189,10 +224,16 @@ const Patients = () => {
         </div>
 
         <div className="flex gap-4 pt-4">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Register"}
+          <Button type="submit" disabled={isSubmitting || success}>
+            {isSubmitting ? "Registering..." : "Register"}
           </Button>
-          <Button type="button" variant="soft" color="gray" onClick={() => reset()} disabled={isSubmitting}>
+          <Button
+            type="button"
+            variant="soft"
+            color="gray"
+            onClick={() => reset()}
+            disabled={isSubmitting || success}
+          >
             Cancel
           </Button>
         </div>

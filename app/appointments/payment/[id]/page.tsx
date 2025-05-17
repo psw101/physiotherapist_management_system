@@ -105,12 +105,6 @@ export default function AppointmentPayment() {
   
   return (
     <div className="p-6 bg-slate-50 max-w-3xl mx-auto">
-      <button 
-        onClick={() => router.back()}
-        className="flex items-center text-indigo-600 mb-6"
-      >
-        <ArrowLeftIcon className="mr-2" /> Back
-      </button>
       
       <Heading size="6" className="mb-6">Payment for Appointment</Heading>
       

@@ -134,22 +134,29 @@ model Product {
 
 // Appointment management
 model Appointment {
-  id                String           @id @default(cuid())
-  patientId         Int
-  patient           Patient          @relation(fields: [patientId], references: [id])
+  id        String  @id @default(cuid())
+  patientId Int
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  // Add this new field to link appointment to slot
+  slotId          Int?
+  appointmentSlot AppointmentSlot? @relation(fields: [slotId], references: [id])
+
+  // Keep these existing fields for compatibility
   physiotherapistId Int?
   physiotherapist   Physiotherapist? @relation(fields: [physiotherapistId], references: [id])
   appointmentDate   DateTime
   startTime         String
   duration          Int // in minutes
-  status            String           @default("pending") // pending, scheduled, completed, cancelled
-  reason            String?
-  notes             String?
-  paymentStatus     String           @default("unpaid") // unpaid, paid, refunded
-  fee               Float            @default(2500)
-  payment           Payment?
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+
+  status        String   @default("pending") // pending, scheduled, completed, cancelled
+  reason        String?
+  notes         String?
+  paymentStatus String   @default("unpaid") // unpaid, paid, refunded
+  fee           Float    @default(2500)
+  payment       Payment?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Payment {
@@ -182,9 +189,34 @@ model Physiotherapist {
   isActive       Boolean @default(true)
 
   // Relationships
-  appointments Appointment[]
+  appointments     Appointment[]
+  appointmentSlots AppointmentSlot[]
 
   // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model AppointmentSlot {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  startTime   String // Format: "HH:MM" in 24h format
+  endTime     String // Format: "HH:MM" in 24h format
+  capacity    Int      @default(1) // Maximum number of patients that can be booked
+  bookedCount Int      @default(0) // Current number of bookings
+  isAvailable Boolean  @default(true)
+
+  // Relationships
+  appointments Appointment[] // Appointments booked for this slot
+
+  // Optional: link to physiotherapist if needed
+  physiotherapistId Int?
+  physiotherapist   Physiotherapist? @relation(fields: [physiotherapistId], references: [id])
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([date, startTime, physiotherapistId]) // Ensure no duplicate slots
+  @@index([date]) // Index for faster queries by date
 }

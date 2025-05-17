@@ -82,12 +82,12 @@ export const authOptions: NextAuthOptions = {
       }
 
       // Log for debugging
-      console.log("JWT Token:", {
-        id: token.id,
-        email: token.email,
-        role: token.role,
-        hasPatientProfile: token.hasPatientProfile,
-      });
+      // console.log("JWT Token:", {
+      //   id: token.id,
+      //   email: token.email,
+      //   role: token.role,
+      //   hasPatientProfile: token.hasPatientProfile,
+      // });
 
       return token;
     },

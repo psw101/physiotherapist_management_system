@@ -3,16 +3,20 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import { Card, Button, Text, Flex, Box } from "@radix-ui/themes";
-import { CalendarIcon, ClockIcon, CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
+import { CalendarIcon, ClockIcon, CheckCircledIcon, CrossCircledIcon, PersonIcon } from "@radix-ui/react-icons";
 
+// Updated interface to match the AppointmentSlot table structure
 interface AppointmentSlot {
-  id: string;
-  date: string; // YYYY-MM-DD
-  time: string; // HH:MM format
+  id: number;
+  date: string; // Will be converted from DateTime
+  startTime: string;
+  endTime: string;
+  capacity: number;
+  bookedCount: number;
   isAvailable: boolean;
-  activeAppointments: number;
+  remainingCapacity?: number; // Computed property
 }
 
 export default function MakeAppointment() {
@@ -22,31 +26,24 @@ export default function MakeAppointment() {
   const [bookingSlot, setBookingSlot] = useState<AppointmentSlot | null>(null);
   const [error, setError] = useState("");
 
-  // Fetch available slots when component mounts
+  // Fetch available slots from the API
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       setLoading(true);
       try {
-        // For demo purposes, generate one slot per day for the next 10 days
-        const mockSlots: AppointmentSlot[] = [];
+        // Call the API to get available slots
+        const response = await axios.get("/api/slots/available");
         
-        // Create one slot per day for the next 10 days
-        for (let i = 0; i < 10; i++) {
-          const date = addDays(new Date(), i);
-          const formattedDate = format(date, "yyyy-MM-dd");
-          // Generate a fixed time for each day (e.g., 10:00 AM)
-          const time = "10:00";
-          
-          mockSlots.push({
-            id: `slot-${i}`,
-            date: formattedDate,
-            time,
-            isAvailable: Math.random() > 0.3, // 70% chance of being available
-            activeAppointments: Math.floor(Math.random() * 3) // 0-2 active appointments
-          });
-        }
+        // Process the data from the API
+        const slots = response.data.map((slot: any) => ({
+          ...slot,
+          // Format date for display (the API returns a full datetime)
+          date: slot.date, // Will be formatted for display later
+          // Calculate remaining capacity
+          remainingCapacity: slot.capacity - slot.bookedCount
+        }));
         
-        setAppointmentSlots(mockSlots);
+        setAppointmentSlots(slots);
         setError("");
       } catch (err) {
         console.error("Failed to fetch available slots:", err);
@@ -74,11 +71,12 @@ export default function MakeAppointment() {
       
       const appointmentData = {
         appointmentDate: slot.date,
-        startTime: slot.time,
+        startTime: slot.startTime,
         duration: 60,
         status: "pending",
-        reason: "Physiotherapy session",
-        patientId: patientId
+        slotId: slot.id, // Use the slot ID from the AppointmentSlot table
+        patientId: patientId,
+        reason: "Physiotherapy session"
       };
       
       console.log("Sending appointment data:", appointmentData);
@@ -139,28 +137,38 @@ export default function MakeAppointment() {
                   </Flex>
                   <Flex align="center" gap="2">
                     <ClockIcon />
-                    <Text>{format(new Date(slot.date), "EEEE").toUpperCase()} {slot.time}</Text>
+                    <Text>{format(new Date(slot.date), "EEEE").toUpperCase()} {slot.startTime} - {slot.endTime}</Text>
                   </Flex>
                   
-                  <Text size="1" color="gray" className="mt-1">
-                    Active Appointments: {slot.activeAppointments}
-                  </Text>
+                  <Flex align="center" gap="2" className="mt-1">
+                    <PersonIcon />
+                    <Text size="1" color="gray">
+                      {slot.bookedCount}/{slot.capacity} Booked
+                    </Text>
+                  </Flex>
                 </Flex>
                 
                 <Flex direction="column" align="end" gap="2">
                   <Flex align="center" gap="1">
-                    {slot.isAvailable ? (
+                    {slot.isAvailable && slot.remainingCapacity! > 0 ? (
                       <CheckCircledIcon className="text-green-500" />
                     ) : (
                       <CrossCircledIcon className="text-red-500" />
                     )}
-                    <Text color={slot.isAvailable ? "green" : "red"} weight="medium">
-                      {slot.isAvailable ? "Available" : "Booked"}
+                    <Text 
+                      color={slot.isAvailable && slot.remainingCapacity! > 0 ? "green" : "red"} 
+                      weight="medium"
+                    >
+                      {slot.isAvailable && slot.remainingCapacity! > 0 
+                        ? "Available" 
+                        : !slot.isAvailable 
+                          ? "Unavailable" 
+                          : "Fully Booked"}
                     </Text>
                   </Flex>
                   
                   <Button 
-                    disabled={!slot.isAvailable || !!bookingSlot} 
+                    disabled={!slot.isAvailable || slot.remainingCapacity! <= 0 || !!bookingSlot} 
                     onClick={() => handleBookAppointment(slot)}
                     color="indigo"
                     size="2"

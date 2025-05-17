@@ -63,6 +63,11 @@ export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
  * 
  */
 export type Physiotherapist = $Result.DefaultSelection<Prisma.$PhysiotherapistPayload>
+/**
+ * Model AppointmentSlot
+ * 
+ */
+export type AppointmentSlot = $Result.DefaultSelection<Prisma.$AppointmentSlotPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -288,6 +293,16 @@ export class PrismaClient<
     * ```
     */
   get physiotherapist(): Prisma.PhysiotherapistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.appointmentSlot`: Exposes CRUD operations for the **AppointmentSlot** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AppointmentSlots
+    * const appointmentSlots = await prisma.appointmentSlot.findMany()
+    * ```
+    */
+  get appointmentSlot(): Prisma.AppointmentSlotDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -737,7 +752,8 @@ export namespace Prisma {
     Product: 'Product',
     Appointment: 'Appointment',
     Payment: 'Payment',
-    Physiotherapist: 'Physiotherapist'
+    Physiotherapist: 'Physiotherapist',
+    AppointmentSlot: 'AppointmentSlot'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -756,7 +772,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "patient" | "product" | "appointment" | "payment" | "physiotherapist"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "patient" | "product" | "appointment" | "payment" | "physiotherapist" | "appointmentSlot"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1420,6 +1436,72 @@ export namespace Prisma {
           }
         }
       }
+      AppointmentSlot: {
+        payload: Prisma.$AppointmentSlotPayload<ExtArgs>
+        fields: Prisma.AppointmentSlotFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AppointmentSlotFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AppointmentSlotFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>
+          }
+          findFirst: {
+            args: Prisma.AppointmentSlotFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AppointmentSlotFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>
+          }
+          findMany: {
+            args: Prisma.AppointmentSlotFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>[]
+          }
+          create: {
+            args: Prisma.AppointmentSlotCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>
+          }
+          createMany: {
+            args: Prisma.AppointmentSlotCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.AppointmentSlotDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>
+          }
+          update: {
+            args: Prisma.AppointmentSlotUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>
+          }
+          deleteMany: {
+            args: Prisma.AppointmentSlotDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AppointmentSlotUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AppointmentSlotUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AppointmentSlotPayload>
+          }
+          aggregate: {
+            args: Prisma.AppointmentSlotAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAppointmentSlot>
+          }
+          groupBy: {
+            args: Prisma.AppointmentSlotGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AppointmentSlotGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AppointmentSlotCountArgs<ExtArgs>
+            result: $Utils.Optional<AppointmentSlotCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1514,6 +1596,7 @@ export namespace Prisma {
     appointment?: AppointmentOmit
     payment?: PaymentOmit
     physiotherapist?: PhysiotherapistOmit
+    appointmentSlot?: AppointmentSlotOmit
   }
 
   /* Types for Logging */
@@ -1698,10 +1781,12 @@ export namespace Prisma {
 
   export type PhysiotherapistCountOutputType = {
     appointments: number
+    appointmentSlots: number
   }
 
   export type PhysiotherapistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     appointments?: boolean | PhysiotherapistCountOutputTypeCountAppointmentsArgs
+    appointmentSlots?: boolean | PhysiotherapistCountOutputTypeCountAppointmentSlotsArgs
   }
 
   // Custom InputTypes
@@ -1719,6 +1804,44 @@ export namespace Prisma {
    * PhysiotherapistCountOutputType without action
    */
   export type PhysiotherapistCountOutputTypeCountAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentWhereInput
+  }
+
+  /**
+   * PhysiotherapistCountOutputType without action
+   */
+  export type PhysiotherapistCountOutputTypeCountAppointmentSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentSlotWhereInput
+  }
+
+
+  /**
+   * Count Type AppointmentSlotCountOutputType
+   */
+
+  export type AppointmentSlotCountOutputType = {
+    appointments: number
+  }
+
+  export type AppointmentSlotCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    appointments?: boolean | AppointmentSlotCountOutputTypeCountAppointmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AppointmentSlotCountOutputType without action
+   */
+  export type AppointmentSlotCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlotCountOutputType
+     */
+    select?: AppointmentSlotCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AppointmentSlotCountOutputType without action
+   */
+  export type AppointmentSlotCountOutputTypeCountAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AppointmentWhereInput
   }
 
@@ -8792,6 +8915,7 @@ export namespace Prisma {
 
   export type AppointmentAvgAggregateOutputType = {
     patientId: number | null
+    slotId: number | null
     physiotherapistId: number | null
     duration: number | null
     fee: number | null
@@ -8799,6 +8923,7 @@ export namespace Prisma {
 
   export type AppointmentSumAggregateOutputType = {
     patientId: number | null
+    slotId: number | null
     physiotherapistId: number | null
     duration: number | null
     fee: number | null
@@ -8807,6 +8932,7 @@ export namespace Prisma {
   export type AppointmentMinAggregateOutputType = {
     id: string | null
     patientId: number | null
+    slotId: number | null
     physiotherapistId: number | null
     appointmentDate: Date | null
     startTime: string | null
@@ -8823,6 +8949,7 @@ export namespace Prisma {
   export type AppointmentMaxAggregateOutputType = {
     id: string | null
     patientId: number | null
+    slotId: number | null
     physiotherapistId: number | null
     appointmentDate: Date | null
     startTime: string | null
@@ -8839,6 +8966,7 @@ export namespace Prisma {
   export type AppointmentCountAggregateOutputType = {
     id: number
     patientId: number
+    slotId: number
     physiotherapistId: number
     appointmentDate: number
     startTime: number
@@ -8856,6 +8984,7 @@ export namespace Prisma {
 
   export type AppointmentAvgAggregateInputType = {
     patientId?: true
+    slotId?: true
     physiotherapistId?: true
     duration?: true
     fee?: true
@@ -8863,6 +8992,7 @@ export namespace Prisma {
 
   export type AppointmentSumAggregateInputType = {
     patientId?: true
+    slotId?: true
     physiotherapistId?: true
     duration?: true
     fee?: true
@@ -8871,6 +9001,7 @@ export namespace Prisma {
   export type AppointmentMinAggregateInputType = {
     id?: true
     patientId?: true
+    slotId?: true
     physiotherapistId?: true
     appointmentDate?: true
     startTime?: true
@@ -8887,6 +9018,7 @@ export namespace Prisma {
   export type AppointmentMaxAggregateInputType = {
     id?: true
     patientId?: true
+    slotId?: true
     physiotherapistId?: true
     appointmentDate?: true
     startTime?: true
@@ -8903,6 +9035,7 @@ export namespace Prisma {
   export type AppointmentCountAggregateInputType = {
     id?: true
     patientId?: true
+    slotId?: true
     physiotherapistId?: true
     appointmentDate?: true
     startTime?: true
@@ -9006,6 +9139,7 @@ export namespace Prisma {
   export type AppointmentGroupByOutputType = {
     id: string
     patientId: number
+    slotId: number | null
     physiotherapistId: number | null
     appointmentDate: Date
     startTime: string
@@ -9041,6 +9175,7 @@ export namespace Prisma {
   export type AppointmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     patientId?: boolean
+    slotId?: boolean
     physiotherapistId?: boolean
     appointmentDate?: boolean
     startTime?: boolean
@@ -9053,6 +9188,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    appointmentSlot?: boolean | Appointment$appointmentSlotArgs<ExtArgs>
     physiotherapist?: boolean | Appointment$physiotherapistArgs<ExtArgs>
     payment?: boolean | Appointment$paymentArgs<ExtArgs>
   }, ExtArgs["result"]["appointment"]>
@@ -9062,6 +9198,7 @@ export namespace Prisma {
   export type AppointmentSelectScalar = {
     id?: boolean
     patientId?: boolean
+    slotId?: boolean
     physiotherapistId?: boolean
     appointmentDate?: boolean
     startTime?: boolean
@@ -9075,9 +9212,10 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "physiotherapistId" | "appointmentDate" | "startTime" | "duration" | "status" | "reason" | "notes" | "paymentStatus" | "fee" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "slotId" | "physiotherapistId" | "appointmentDate" | "startTime" | "duration" | "status" | "reason" | "notes" | "paymentStatus" | "fee" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
   export type AppointmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    appointmentSlot?: boolean | Appointment$appointmentSlotArgs<ExtArgs>
     physiotherapist?: boolean | Appointment$physiotherapistArgs<ExtArgs>
     payment?: boolean | Appointment$paymentArgs<ExtArgs>
   }
@@ -9086,12 +9224,14 @@ export namespace Prisma {
     name: "Appointment"
     objects: {
       patient: Prisma.$PatientPayload<ExtArgs>
+      appointmentSlot: Prisma.$AppointmentSlotPayload<ExtArgs> | null
       physiotherapist: Prisma.$PhysiotherapistPayload<ExtArgs> | null
       payment: Prisma.$PaymentPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       patientId: number
+      slotId: number | null
       physiotherapistId: number | null
       appointmentDate: Date
       startTime: string
@@ -9444,6 +9584,7 @@ export namespace Prisma {
   export interface Prisma__AppointmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     patient<T extends PatientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PatientDefaultArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    appointmentSlot<T extends Appointment$appointmentSlotArgs<ExtArgs> = {}>(args?: Subset<T, Appointment$appointmentSlotArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     physiotherapist<T extends Appointment$physiotherapistArgs<ExtArgs> = {}>(args?: Subset<T, Appointment$physiotherapistArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     payment<T extends Appointment$paymentArgs<ExtArgs> = {}>(args?: Subset<T, Appointment$paymentArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -9477,6 +9618,7 @@ export namespace Prisma {
   interface AppointmentFieldRefs {
     readonly id: FieldRef<"Appointment", 'String'>
     readonly patientId: FieldRef<"Appointment", 'Int'>
+    readonly slotId: FieldRef<"Appointment", 'Int'>
     readonly physiotherapistId: FieldRef<"Appointment", 'Int'>
     readonly appointmentDate: FieldRef<"Appointment", 'DateTime'>
     readonly startTime: FieldRef<"Appointment", 'String'>
@@ -9828,6 +9970,25 @@ export namespace Prisma {
      * Limit how many Appointments to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Appointment.appointmentSlot
+   */
+  export type Appointment$appointmentSlotArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    where?: AppointmentSlotWhereInput
   }
 
   /**
@@ -11204,6 +11365,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     appointments?: boolean | Physiotherapist$appointmentsArgs<ExtArgs>
+    appointmentSlots?: boolean | Physiotherapist$appointmentSlotsArgs<ExtArgs>
     _count?: boolean | PhysiotherapistCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["physiotherapist"]>
 
@@ -11230,6 +11392,7 @@ export namespace Prisma {
   export type PhysiotherapistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "contactNumber" | "specialization" | "experience" | "education" | "certifications" | "bio" | "availability" | "rating" | "imageUrl" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["physiotherapist"]>
   export type PhysiotherapistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     appointments?: boolean | Physiotherapist$appointmentsArgs<ExtArgs>
+    appointmentSlots?: boolean | Physiotherapist$appointmentSlotsArgs<ExtArgs>
     _count?: boolean | PhysiotherapistCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -11237,6 +11400,7 @@ export namespace Prisma {
     name: "Physiotherapist"
     objects: {
       appointments: Prisma.$AppointmentPayload<ExtArgs>[]
+      appointmentSlots: Prisma.$AppointmentSlotPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -11595,6 +11759,7 @@ export namespace Prisma {
   export interface Prisma__PhysiotherapistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     appointments<T extends Physiotherapist$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Physiotherapist$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    appointmentSlots<T extends Physiotherapist$appointmentSlotsArgs<ExtArgs> = {}>(args?: Subset<T, Physiotherapist$appointmentSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12006,6 +12171,30 @@ export namespace Prisma {
   }
 
   /**
+   * Physiotherapist.appointmentSlots
+   */
+  export type Physiotherapist$appointmentSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    where?: AppointmentSlotWhereInput
+    orderBy?: AppointmentSlotOrderByWithRelationInput | AppointmentSlotOrderByWithRelationInput[]
+    cursor?: AppointmentSlotWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppointmentSlotScalarFieldEnum | AppointmentSlotScalarFieldEnum[]
+  }
+
+  /**
    * Physiotherapist without action
    */
   export type PhysiotherapistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12021,6 +12210,1085 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PhysiotherapistInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AppointmentSlot
+   */
+
+  export type AggregateAppointmentSlot = {
+    _count: AppointmentSlotCountAggregateOutputType | null
+    _avg: AppointmentSlotAvgAggregateOutputType | null
+    _sum: AppointmentSlotSumAggregateOutputType | null
+    _min: AppointmentSlotMinAggregateOutputType | null
+    _max: AppointmentSlotMaxAggregateOutputType | null
+  }
+
+  export type AppointmentSlotAvgAggregateOutputType = {
+    id: number | null
+    capacity: number | null
+    bookedCount: number | null
+    physiotherapistId: number | null
+  }
+
+  export type AppointmentSlotSumAggregateOutputType = {
+    id: number | null
+    capacity: number | null
+    bookedCount: number | null
+    physiotherapistId: number | null
+  }
+
+  export type AppointmentSlotMinAggregateOutputType = {
+    id: number | null
+    date: Date | null
+    startTime: string | null
+    endTime: string | null
+    capacity: number | null
+    bookedCount: number | null
+    isAvailable: boolean | null
+    physiotherapistId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AppointmentSlotMaxAggregateOutputType = {
+    id: number | null
+    date: Date | null
+    startTime: string | null
+    endTime: string | null
+    capacity: number | null
+    bookedCount: number | null
+    isAvailable: boolean | null
+    physiotherapistId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AppointmentSlotCountAggregateOutputType = {
+    id: number
+    date: number
+    startTime: number
+    endTime: number
+    capacity: number
+    bookedCount: number
+    isAvailable: number
+    physiotherapistId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AppointmentSlotAvgAggregateInputType = {
+    id?: true
+    capacity?: true
+    bookedCount?: true
+    physiotherapistId?: true
+  }
+
+  export type AppointmentSlotSumAggregateInputType = {
+    id?: true
+    capacity?: true
+    bookedCount?: true
+    physiotherapistId?: true
+  }
+
+  export type AppointmentSlotMinAggregateInputType = {
+    id?: true
+    date?: true
+    startTime?: true
+    endTime?: true
+    capacity?: true
+    bookedCount?: true
+    isAvailable?: true
+    physiotherapistId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AppointmentSlotMaxAggregateInputType = {
+    id?: true
+    date?: true
+    startTime?: true
+    endTime?: true
+    capacity?: true
+    bookedCount?: true
+    isAvailable?: true
+    physiotherapistId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AppointmentSlotCountAggregateInputType = {
+    id?: true
+    date?: true
+    startTime?: true
+    endTime?: true
+    capacity?: true
+    bookedCount?: true
+    isAvailable?: true
+    physiotherapistId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AppointmentSlotAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AppointmentSlot to aggregate.
+     */
+    where?: AppointmentSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppointmentSlots to fetch.
+     */
+    orderBy?: AppointmentSlotOrderByWithRelationInput | AppointmentSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AppointmentSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppointmentSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppointmentSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AppointmentSlots
+    **/
+    _count?: true | AppointmentSlotCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AppointmentSlotAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AppointmentSlotSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AppointmentSlotMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AppointmentSlotMaxAggregateInputType
+  }
+
+  export type GetAppointmentSlotAggregateType<T extends AppointmentSlotAggregateArgs> = {
+        [P in keyof T & keyof AggregateAppointmentSlot]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAppointmentSlot[P]>
+      : GetScalarType<T[P], AggregateAppointmentSlot[P]>
+  }
+
+
+
+
+  export type AppointmentSlotGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AppointmentSlotWhereInput
+    orderBy?: AppointmentSlotOrderByWithAggregationInput | AppointmentSlotOrderByWithAggregationInput[]
+    by: AppointmentSlotScalarFieldEnum[] | AppointmentSlotScalarFieldEnum
+    having?: AppointmentSlotScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AppointmentSlotCountAggregateInputType | true
+    _avg?: AppointmentSlotAvgAggregateInputType
+    _sum?: AppointmentSlotSumAggregateInputType
+    _min?: AppointmentSlotMinAggregateInputType
+    _max?: AppointmentSlotMaxAggregateInputType
+  }
+
+  export type AppointmentSlotGroupByOutputType = {
+    id: number
+    date: Date
+    startTime: string
+    endTime: string
+    capacity: number
+    bookedCount: number
+    isAvailable: boolean
+    physiotherapistId: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AppointmentSlotCountAggregateOutputType | null
+    _avg: AppointmentSlotAvgAggregateOutputType | null
+    _sum: AppointmentSlotSumAggregateOutputType | null
+    _min: AppointmentSlotMinAggregateOutputType | null
+    _max: AppointmentSlotMaxAggregateOutputType | null
+  }
+
+  type GetAppointmentSlotGroupByPayload<T extends AppointmentSlotGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AppointmentSlotGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AppointmentSlotGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AppointmentSlotGroupByOutputType[P]>
+            : GetScalarType<T[P], AppointmentSlotGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AppointmentSlotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    date?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    capacity?: boolean
+    bookedCount?: boolean
+    isAvailable?: boolean
+    physiotherapistId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    appointments?: boolean | AppointmentSlot$appointmentsArgs<ExtArgs>
+    physiotherapist?: boolean | AppointmentSlot$physiotherapistArgs<ExtArgs>
+    _count?: boolean | AppointmentSlotCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["appointmentSlot"]>
+
+
+
+  export type AppointmentSlotSelectScalar = {
+    id?: boolean
+    date?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    capacity?: boolean
+    bookedCount?: boolean
+    isAvailable?: boolean
+    physiotherapistId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AppointmentSlotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "startTime" | "endTime" | "capacity" | "bookedCount" | "isAvailable" | "physiotherapistId" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSlot"]>
+  export type AppointmentSlotInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    appointments?: boolean | AppointmentSlot$appointmentsArgs<ExtArgs>
+    physiotherapist?: boolean | AppointmentSlot$physiotherapistArgs<ExtArgs>
+    _count?: boolean | AppointmentSlotCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $AppointmentSlotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AppointmentSlot"
+    objects: {
+      appointments: Prisma.$AppointmentPayload<ExtArgs>[]
+      physiotherapist: Prisma.$PhysiotherapistPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      date: Date
+      startTime: string
+      endTime: string
+      capacity: number
+      bookedCount: number
+      isAvailable: boolean
+      physiotherapistId: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["appointmentSlot"]>
+    composites: {}
+  }
+
+  type AppointmentSlotGetPayload<S extends boolean | null | undefined | AppointmentSlotDefaultArgs> = $Result.GetResult<Prisma.$AppointmentSlotPayload, S>
+
+  type AppointmentSlotCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AppointmentSlotFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AppointmentSlotCountAggregateInputType | true
+    }
+
+  export interface AppointmentSlotDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AppointmentSlot'], meta: { name: 'AppointmentSlot' } }
+    /**
+     * Find zero or one AppointmentSlot that matches the filter.
+     * @param {AppointmentSlotFindUniqueArgs} args - Arguments to find a AppointmentSlot
+     * @example
+     * // Get one AppointmentSlot
+     * const appointmentSlot = await prisma.appointmentSlot.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AppointmentSlotFindUniqueArgs>(args: SelectSubset<T, AppointmentSlotFindUniqueArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AppointmentSlot that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AppointmentSlotFindUniqueOrThrowArgs} args - Arguments to find a AppointmentSlot
+     * @example
+     * // Get one AppointmentSlot
+     * const appointmentSlot = await prisma.appointmentSlot.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AppointmentSlotFindUniqueOrThrowArgs>(args: SelectSubset<T, AppointmentSlotFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AppointmentSlot that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotFindFirstArgs} args - Arguments to find a AppointmentSlot
+     * @example
+     * // Get one AppointmentSlot
+     * const appointmentSlot = await prisma.appointmentSlot.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AppointmentSlotFindFirstArgs>(args?: SelectSubset<T, AppointmentSlotFindFirstArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AppointmentSlot that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotFindFirstOrThrowArgs} args - Arguments to find a AppointmentSlot
+     * @example
+     * // Get one AppointmentSlot
+     * const appointmentSlot = await prisma.appointmentSlot.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AppointmentSlotFindFirstOrThrowArgs>(args?: SelectSubset<T, AppointmentSlotFindFirstOrThrowArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AppointmentSlots that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AppointmentSlots
+     * const appointmentSlots = await prisma.appointmentSlot.findMany()
+     * 
+     * // Get first 10 AppointmentSlots
+     * const appointmentSlots = await prisma.appointmentSlot.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const appointmentSlotWithIdOnly = await prisma.appointmentSlot.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AppointmentSlotFindManyArgs>(args?: SelectSubset<T, AppointmentSlotFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AppointmentSlot.
+     * @param {AppointmentSlotCreateArgs} args - Arguments to create a AppointmentSlot.
+     * @example
+     * // Create one AppointmentSlot
+     * const AppointmentSlot = await prisma.appointmentSlot.create({
+     *   data: {
+     *     // ... data to create a AppointmentSlot
+     *   }
+     * })
+     * 
+     */
+    create<T extends AppointmentSlotCreateArgs>(args: SelectSubset<T, AppointmentSlotCreateArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AppointmentSlots.
+     * @param {AppointmentSlotCreateManyArgs} args - Arguments to create many AppointmentSlots.
+     * @example
+     * // Create many AppointmentSlots
+     * const appointmentSlot = await prisma.appointmentSlot.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AppointmentSlotCreateManyArgs>(args?: SelectSubset<T, AppointmentSlotCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a AppointmentSlot.
+     * @param {AppointmentSlotDeleteArgs} args - Arguments to delete one AppointmentSlot.
+     * @example
+     * // Delete one AppointmentSlot
+     * const AppointmentSlot = await prisma.appointmentSlot.delete({
+     *   where: {
+     *     // ... filter to delete one AppointmentSlot
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AppointmentSlotDeleteArgs>(args: SelectSubset<T, AppointmentSlotDeleteArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AppointmentSlot.
+     * @param {AppointmentSlotUpdateArgs} args - Arguments to update one AppointmentSlot.
+     * @example
+     * // Update one AppointmentSlot
+     * const appointmentSlot = await prisma.appointmentSlot.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AppointmentSlotUpdateArgs>(args: SelectSubset<T, AppointmentSlotUpdateArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AppointmentSlots.
+     * @param {AppointmentSlotDeleteManyArgs} args - Arguments to filter AppointmentSlots to delete.
+     * @example
+     * // Delete a few AppointmentSlots
+     * const { count } = await prisma.appointmentSlot.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AppointmentSlotDeleteManyArgs>(args?: SelectSubset<T, AppointmentSlotDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AppointmentSlots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AppointmentSlots
+     * const appointmentSlot = await prisma.appointmentSlot.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AppointmentSlotUpdateManyArgs>(args: SelectSubset<T, AppointmentSlotUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AppointmentSlot.
+     * @param {AppointmentSlotUpsertArgs} args - Arguments to update or create a AppointmentSlot.
+     * @example
+     * // Update or create a AppointmentSlot
+     * const appointmentSlot = await prisma.appointmentSlot.upsert({
+     *   create: {
+     *     // ... data to create a AppointmentSlot
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AppointmentSlot we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AppointmentSlotUpsertArgs>(args: SelectSubset<T, AppointmentSlotUpsertArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AppointmentSlots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotCountArgs} args - Arguments to filter AppointmentSlots to count.
+     * @example
+     * // Count the number of AppointmentSlots
+     * const count = await prisma.appointmentSlot.count({
+     *   where: {
+     *     // ... the filter for the AppointmentSlots we want to count
+     *   }
+     * })
+    **/
+    count<T extends AppointmentSlotCountArgs>(
+      args?: Subset<T, AppointmentSlotCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AppointmentSlotCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AppointmentSlot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AppointmentSlotAggregateArgs>(args: Subset<T, AppointmentSlotAggregateArgs>): Prisma.PrismaPromise<GetAppointmentSlotAggregateType<T>>
+
+    /**
+     * Group by AppointmentSlot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AppointmentSlotGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AppointmentSlotGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AppointmentSlotGroupByArgs['orderBy'] }
+        : { orderBy?: AppointmentSlotGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AppointmentSlotGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAppointmentSlotGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AppointmentSlot model
+   */
+  readonly fields: AppointmentSlotFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AppointmentSlot.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AppointmentSlotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    appointments<T extends AppointmentSlot$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, AppointmentSlot$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    physiotherapist<T extends AppointmentSlot$physiotherapistArgs<ExtArgs> = {}>(args?: Subset<T, AppointmentSlot$physiotherapistArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AppointmentSlot model
+   */
+  interface AppointmentSlotFieldRefs {
+    readonly id: FieldRef<"AppointmentSlot", 'Int'>
+    readonly date: FieldRef<"AppointmentSlot", 'DateTime'>
+    readonly startTime: FieldRef<"AppointmentSlot", 'String'>
+    readonly endTime: FieldRef<"AppointmentSlot", 'String'>
+    readonly capacity: FieldRef<"AppointmentSlot", 'Int'>
+    readonly bookedCount: FieldRef<"AppointmentSlot", 'Int'>
+    readonly isAvailable: FieldRef<"AppointmentSlot", 'Boolean'>
+    readonly physiotherapistId: FieldRef<"AppointmentSlot", 'Int'>
+    readonly createdAt: FieldRef<"AppointmentSlot", 'DateTime'>
+    readonly updatedAt: FieldRef<"AppointmentSlot", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AppointmentSlot findUnique
+   */
+  export type AppointmentSlotFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which AppointmentSlot to fetch.
+     */
+    where: AppointmentSlotWhereUniqueInput
+  }
+
+  /**
+   * AppointmentSlot findUniqueOrThrow
+   */
+  export type AppointmentSlotFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which AppointmentSlot to fetch.
+     */
+    where: AppointmentSlotWhereUniqueInput
+  }
+
+  /**
+   * AppointmentSlot findFirst
+   */
+  export type AppointmentSlotFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which AppointmentSlot to fetch.
+     */
+    where?: AppointmentSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppointmentSlots to fetch.
+     */
+    orderBy?: AppointmentSlotOrderByWithRelationInput | AppointmentSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AppointmentSlots.
+     */
+    cursor?: AppointmentSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppointmentSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppointmentSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AppointmentSlots.
+     */
+    distinct?: AppointmentSlotScalarFieldEnum | AppointmentSlotScalarFieldEnum[]
+  }
+
+  /**
+   * AppointmentSlot findFirstOrThrow
+   */
+  export type AppointmentSlotFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which AppointmentSlot to fetch.
+     */
+    where?: AppointmentSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppointmentSlots to fetch.
+     */
+    orderBy?: AppointmentSlotOrderByWithRelationInput | AppointmentSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AppointmentSlots.
+     */
+    cursor?: AppointmentSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppointmentSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppointmentSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AppointmentSlots.
+     */
+    distinct?: AppointmentSlotScalarFieldEnum | AppointmentSlotScalarFieldEnum[]
+  }
+
+  /**
+   * AppointmentSlot findMany
+   */
+  export type AppointmentSlotFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which AppointmentSlots to fetch.
+     */
+    where?: AppointmentSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AppointmentSlots to fetch.
+     */
+    orderBy?: AppointmentSlotOrderByWithRelationInput | AppointmentSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AppointmentSlots.
+     */
+    cursor?: AppointmentSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AppointmentSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AppointmentSlots.
+     */
+    skip?: number
+    distinct?: AppointmentSlotScalarFieldEnum | AppointmentSlotScalarFieldEnum[]
+  }
+
+  /**
+   * AppointmentSlot create
+   */
+  export type AppointmentSlotCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AppointmentSlot.
+     */
+    data: XOR<AppointmentSlotCreateInput, AppointmentSlotUncheckedCreateInput>
+  }
+
+  /**
+   * AppointmentSlot createMany
+   */
+  export type AppointmentSlotCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AppointmentSlots.
+     */
+    data: AppointmentSlotCreateManyInput | AppointmentSlotCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AppointmentSlot update
+   */
+  export type AppointmentSlotUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AppointmentSlot.
+     */
+    data: XOR<AppointmentSlotUpdateInput, AppointmentSlotUncheckedUpdateInput>
+    /**
+     * Choose, which AppointmentSlot to update.
+     */
+    where: AppointmentSlotWhereUniqueInput
+  }
+
+  /**
+   * AppointmentSlot updateMany
+   */
+  export type AppointmentSlotUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AppointmentSlots.
+     */
+    data: XOR<AppointmentSlotUpdateManyMutationInput, AppointmentSlotUncheckedUpdateManyInput>
+    /**
+     * Filter which AppointmentSlots to update
+     */
+    where?: AppointmentSlotWhereInput
+    /**
+     * Limit how many AppointmentSlots to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AppointmentSlot upsert
+   */
+  export type AppointmentSlotUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AppointmentSlot to update in case it exists.
+     */
+    where: AppointmentSlotWhereUniqueInput
+    /**
+     * In case the AppointmentSlot found by the `where` argument doesn't exist, create a new AppointmentSlot with this data.
+     */
+    create: XOR<AppointmentSlotCreateInput, AppointmentSlotUncheckedCreateInput>
+    /**
+     * In case the AppointmentSlot was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AppointmentSlotUpdateInput, AppointmentSlotUncheckedUpdateInput>
+  }
+
+  /**
+   * AppointmentSlot delete
+   */
+  export type AppointmentSlotDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
+    /**
+     * Filter which AppointmentSlot to delete.
+     */
+    where: AppointmentSlotWhereUniqueInput
+  }
+
+  /**
+   * AppointmentSlot deleteMany
+   */
+  export type AppointmentSlotDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AppointmentSlots to delete
+     */
+    where?: AppointmentSlotWhereInput
+    /**
+     * Limit how many AppointmentSlots to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AppointmentSlot.appointments
+   */
+  export type AppointmentSlot$appointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Appointment
+     */
+    select?: AppointmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Appointment
+     */
+    omit?: AppointmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentInclude<ExtArgs> | null
+    where?: AppointmentWhereInput
+    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
+    cursor?: AppointmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
+  }
+
+  /**
+   * AppointmentSlot.physiotherapist
+   */
+  export type AppointmentSlot$physiotherapistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Physiotherapist
+     */
+    select?: PhysiotherapistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Physiotherapist
+     */
+    omit?: PhysiotherapistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhysiotherapistInclude<ExtArgs> | null
+    where?: PhysiotherapistWhereInput
+  }
+
+  /**
+   * AppointmentSlot without action
+   */
+  export type AppointmentSlotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AppointmentSlot
+     */
+    select?: AppointmentSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AppointmentSlot
+     */
+    omit?: AppointmentSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AppointmentSlotInclude<ExtArgs> | null
   }
 
 
@@ -12145,6 +13413,7 @@ export namespace Prisma {
   export const AppointmentScalarFieldEnum: {
     id: 'id',
     patientId: 'patientId',
+    slotId: 'slotId',
     physiotherapistId: 'physiotherapistId',
     appointmentDate: 'appointmentDate',
     startTime: 'startTime',
@@ -12195,6 +13464,22 @@ export namespace Prisma {
   };
 
   export type PhysiotherapistScalarFieldEnum = (typeof PhysiotherapistScalarFieldEnum)[keyof typeof PhysiotherapistScalarFieldEnum]
+
+
+  export const AppointmentSlotScalarFieldEnum: {
+    id: 'id',
+    date: 'date',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    capacity: 'capacity',
+    bookedCount: 'bookedCount',
+    isAvailable: 'isAvailable',
+    physiotherapistId: 'physiotherapistId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AppointmentSlotScalarFieldEnum = (typeof AppointmentSlotScalarFieldEnum)[keyof typeof AppointmentSlotScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12356,6 +13641,14 @@ export namespace Prisma {
   };
 
   export type PhysiotherapistOrderByRelevanceFieldEnum = (typeof PhysiotherapistOrderByRelevanceFieldEnum)[keyof typeof PhysiotherapistOrderByRelevanceFieldEnum]
+
+
+  export const AppointmentSlotOrderByRelevanceFieldEnum: {
+    startTime: 'startTime',
+    endTime: 'endTime'
+  };
+
+  export type AppointmentSlotOrderByRelevanceFieldEnum = (typeof AppointmentSlotOrderByRelevanceFieldEnum)[keyof typeof AppointmentSlotOrderByRelevanceFieldEnum]
 
 
   /**
@@ -12968,6 +14261,7 @@ export namespace Prisma {
     NOT?: AppointmentWhereInput | AppointmentWhereInput[]
     id?: StringFilter<"Appointment"> | string
     patientId?: IntFilter<"Appointment"> | number
+    slotId?: IntNullableFilter<"Appointment"> | number | null
     physiotherapistId?: IntNullableFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeFilter<"Appointment"> | Date | string
     startTime?: StringFilter<"Appointment"> | string
@@ -12980,6 +14274,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
+    appointmentSlot?: XOR<AppointmentSlotNullableScalarRelationFilter, AppointmentSlotWhereInput> | null
     physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
   }
@@ -12987,6 +14282,7 @@ export namespace Prisma {
   export type AppointmentOrderByWithRelationInput = {
     id?: SortOrder
     patientId?: SortOrder
+    slotId?: SortOrderInput | SortOrder
     physiotherapistId?: SortOrderInput | SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
@@ -12999,6 +14295,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     patient?: PatientOrderByWithRelationInput
+    appointmentSlot?: AppointmentSlotOrderByWithRelationInput
     physiotherapist?: PhysiotherapistOrderByWithRelationInput
     payment?: PaymentOrderByWithRelationInput
     _relevance?: AppointmentOrderByRelevanceInput
@@ -13010,6 +14307,7 @@ export namespace Prisma {
     OR?: AppointmentWhereInput[]
     NOT?: AppointmentWhereInput | AppointmentWhereInput[]
     patientId?: IntFilter<"Appointment"> | number
+    slotId?: IntNullableFilter<"Appointment"> | number | null
     physiotherapistId?: IntNullableFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeFilter<"Appointment"> | Date | string
     startTime?: StringFilter<"Appointment"> | string
@@ -13022,6 +14320,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
+    appointmentSlot?: XOR<AppointmentSlotNullableScalarRelationFilter, AppointmentSlotWhereInput> | null
     physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
   }, "id">
@@ -13029,6 +14328,7 @@ export namespace Prisma {
   export type AppointmentOrderByWithAggregationInput = {
     id?: SortOrder
     patientId?: SortOrder
+    slotId?: SortOrderInput | SortOrder
     physiotherapistId?: SortOrderInput | SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
@@ -13053,6 +14353,7 @@ export namespace Prisma {
     NOT?: AppointmentScalarWhereWithAggregatesInput | AppointmentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Appointment"> | string
     patientId?: IntWithAggregatesFilter<"Appointment"> | number
+    slotId?: IntNullableWithAggregatesFilter<"Appointment"> | number | null
     physiotherapistId?: IntNullableWithAggregatesFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
     startTime?: StringWithAggregatesFilter<"Appointment"> | string
@@ -13167,6 +14468,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Physiotherapist"> | Date | string
     updatedAt?: DateTimeFilter<"Physiotherapist"> | Date | string
     appointments?: AppointmentListRelationFilter
+    appointmentSlots?: AppointmentSlotListRelationFilter
   }
 
   export type PhysiotherapistOrderByWithRelationInput = {
@@ -13186,6 +14488,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     appointments?: AppointmentOrderByRelationAggregateInput
+    appointmentSlots?: AppointmentSlotOrderByRelationAggregateInput
     _relevance?: PhysiotherapistOrderByRelevanceInput
   }
 
@@ -13209,6 +14512,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Physiotherapist"> | Date | string
     updatedAt?: DateTimeFilter<"Physiotherapist"> | Date | string
     appointments?: AppointmentListRelationFilter
+    appointmentSlots?: AppointmentSlotListRelationFilter
   }, "id" | "email">
 
   export type PhysiotherapistOrderByWithAggregationInput = {
@@ -13253,6 +14557,93 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"Physiotherapist"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Physiotherapist"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Physiotherapist"> | Date | string
+  }
+
+  export type AppointmentSlotWhereInput = {
+    AND?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
+    OR?: AppointmentSlotWhereInput[]
+    NOT?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
+    id?: IntFilter<"AppointmentSlot"> | number
+    date?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    startTime?: StringFilter<"AppointmentSlot"> | string
+    endTime?: StringFilter<"AppointmentSlot"> | string
+    capacity?: IntFilter<"AppointmentSlot"> | number
+    bookedCount?: IntFilter<"AppointmentSlot"> | number
+    isAvailable?: BoolFilter<"AppointmentSlot"> | boolean
+    physiotherapistId?: IntNullableFilter<"AppointmentSlot"> | number | null
+    createdAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    updatedAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    appointments?: AppointmentListRelationFilter
+    physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
+  }
+
+  export type AppointmentSlotOrderByWithRelationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    isAvailable?: SortOrder
+    physiotherapistId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    appointments?: AppointmentOrderByRelationAggregateInput
+    physiotherapist?: PhysiotherapistOrderByWithRelationInput
+    _relevance?: AppointmentSlotOrderByRelevanceInput
+  }
+
+  export type AppointmentSlotWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    date_startTime_physiotherapistId?: AppointmentSlotDateStartTimePhysiotherapistIdCompoundUniqueInput
+    AND?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
+    OR?: AppointmentSlotWhereInput[]
+    NOT?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
+    date?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    startTime?: StringFilter<"AppointmentSlot"> | string
+    endTime?: StringFilter<"AppointmentSlot"> | string
+    capacity?: IntFilter<"AppointmentSlot"> | number
+    bookedCount?: IntFilter<"AppointmentSlot"> | number
+    isAvailable?: BoolFilter<"AppointmentSlot"> | boolean
+    physiotherapistId?: IntNullableFilter<"AppointmentSlot"> | number | null
+    createdAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    updatedAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    appointments?: AppointmentListRelationFilter
+    physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
+  }, "id" | "date_startTime_physiotherapistId">
+
+  export type AppointmentSlotOrderByWithAggregationInput = {
+    id?: SortOrder
+    date?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    isAvailable?: SortOrder
+    physiotherapistId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AppointmentSlotCountOrderByAggregateInput
+    _avg?: AppointmentSlotAvgOrderByAggregateInput
+    _max?: AppointmentSlotMaxOrderByAggregateInput
+    _min?: AppointmentSlotMinOrderByAggregateInput
+    _sum?: AppointmentSlotSumOrderByAggregateInput
+  }
+
+  export type AppointmentSlotScalarWhereWithAggregatesInput = {
+    AND?: AppointmentSlotScalarWhereWithAggregatesInput | AppointmentSlotScalarWhereWithAggregatesInput[]
+    OR?: AppointmentSlotScalarWhereWithAggregatesInput[]
+    NOT?: AppointmentSlotScalarWhereWithAggregatesInput | AppointmentSlotScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"AppointmentSlot"> | number
+    date?: DateTimeWithAggregatesFilter<"AppointmentSlot"> | Date | string
+    startTime?: StringWithAggregatesFilter<"AppointmentSlot"> | string
+    endTime?: StringWithAggregatesFilter<"AppointmentSlot"> | string
+    capacity?: IntWithAggregatesFilter<"AppointmentSlot"> | number
+    bookedCount?: IntWithAggregatesFilter<"AppointmentSlot"> | number
+    isAvailable?: BoolWithAggregatesFilter<"AppointmentSlot"> | boolean
+    physiotherapistId?: IntNullableWithAggregatesFilter<"AppointmentSlot"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"AppointmentSlot"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AppointmentSlot"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -13863,6 +15254,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     patient: PatientCreateNestedOneWithoutAppointmentsInput
+    appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
     physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
     payment?: PaymentCreateNestedOneWithoutAppointmentInput
   }
@@ -13870,6 +15262,7 @@ export namespace Prisma {
   export type AppointmentUncheckedCreateInput = {
     id?: string
     patientId: number
+    slotId?: number | null
     physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
@@ -13897,6 +15290,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
+    appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
     physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
     payment?: PaymentUpdateOneWithoutAppointmentNestedInput
   }
@@ -13904,6 +15298,7 @@ export namespace Prisma {
   export type AppointmentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
     physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -13921,6 +15316,7 @@ export namespace Prisma {
   export type AppointmentCreateManyInput = {
     id?: string
     patientId: number
+    slotId?: number | null
     physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
@@ -13951,6 +15347,7 @@ export namespace Prisma {
   export type AppointmentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
     physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -14062,6 +15459,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     appointments?: AppointmentCreateNestedManyWithoutPhysiotherapistInput
+    appointmentSlots?: AppointmentSlotCreateNestedManyWithoutPhysiotherapistInput
   }
 
   export type PhysiotherapistUncheckedCreateInput = {
@@ -14081,6 +15479,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPhysiotherapistInput
+    appointmentSlots?: AppointmentSlotUncheckedCreateNestedManyWithoutPhysiotherapistInput
   }
 
   export type PhysiotherapistUpdateInput = {
@@ -14099,6 +15498,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     appointments?: AppointmentUpdateManyWithoutPhysiotherapistNestedInput
+    appointmentSlots?: AppointmentSlotUpdateManyWithoutPhysiotherapistNestedInput
   }
 
   export type PhysiotherapistUncheckedUpdateInput = {
@@ -14118,6 +15518,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     appointments?: AppointmentUncheckedUpdateManyWithoutPhysiotherapistNestedInput
+    appointmentSlots?: AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistNestedInput
   }
 
   export type PhysiotherapistCreateManyInput = {
@@ -14169,6 +15570,97 @@ export namespace Prisma {
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentSlotCreateInput = {
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentCreateNestedManyWithoutAppointmentSlotInput
+    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentSlotsInput
+  }
+
+  export type AppointmentSlotUncheckedCreateInput = {
+    id?: number
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    physiotherapistId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutAppointmentSlotInput
+  }
+
+  export type AppointmentSlotUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUpdateManyWithoutAppointmentSlotNestedInput
+    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentSlotsNestedInput
+  }
+
+  export type AppointmentSlotUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUncheckedUpdateManyWithoutAppointmentSlotNestedInput
+  }
+
+  export type AppointmentSlotCreateManyInput = {
+    id?: number
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    physiotherapistId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentSlotUpdateManyMutationInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentSlotUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14833,6 +16325,11 @@ export namespace Prisma {
     isNot?: PatientWhereInput
   }
 
+  export type AppointmentSlotNullableScalarRelationFilter = {
+    is?: AppointmentSlotWhereInput | null
+    isNot?: AppointmentSlotWhereInput | null
+  }
+
   export type PhysiotherapistNullableScalarRelationFilter = {
     is?: PhysiotherapistWhereInput | null
     isNot?: PhysiotherapistWhereInput | null
@@ -14852,6 +16349,7 @@ export namespace Prisma {
   export type AppointmentCountOrderByAggregateInput = {
     id?: SortOrder
     patientId?: SortOrder
+    slotId?: SortOrder
     physiotherapistId?: SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
@@ -14867,6 +16365,7 @@ export namespace Prisma {
 
   export type AppointmentAvgOrderByAggregateInput = {
     patientId?: SortOrder
+    slotId?: SortOrder
     physiotherapistId?: SortOrder
     duration?: SortOrder
     fee?: SortOrder
@@ -14875,6 +16374,7 @@ export namespace Prisma {
   export type AppointmentMaxOrderByAggregateInput = {
     id?: SortOrder
     patientId?: SortOrder
+    slotId?: SortOrder
     physiotherapistId?: SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
@@ -14891,6 +16391,7 @@ export namespace Prisma {
   export type AppointmentMinOrderByAggregateInput = {
     id?: SortOrder
     patientId?: SortOrder
+    slotId?: SortOrder
     physiotherapistId?: SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
@@ -14906,6 +16407,7 @@ export namespace Prisma {
 
   export type AppointmentSumOrderByAggregateInput = {
     patientId?: SortOrder
+    slotId?: SortOrder
     physiotherapistId?: SortOrder
     duration?: SortOrder
     fee?: SortOrder
@@ -14995,6 +16497,16 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type AppointmentSlotListRelationFilter = {
+    every?: AppointmentSlotWhereInput
+    some?: AppointmentSlotWhereInput
+    none?: AppointmentSlotWhereInput
+  }
+
+  export type AppointmentSlotOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PhysiotherapistOrderByRelevanceInput = {
     fields: PhysiotherapistOrderByRelevanceFieldEnum | PhysiotherapistOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -15079,6 +16591,71 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type AppointmentSlotOrderByRelevanceInput = {
+    fields: AppointmentSlotOrderByRelevanceFieldEnum | AppointmentSlotOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type AppointmentSlotDateStartTimePhysiotherapistIdCompoundUniqueInput = {
+    date: Date | string
+    startTime: string
+    physiotherapistId: number
+  }
+
+  export type AppointmentSlotCountOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    isAvailable?: SortOrder
+    physiotherapistId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AppointmentSlotAvgOrderByAggregateInput = {
+    id?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    physiotherapistId?: SortOrder
+  }
+
+  export type AppointmentSlotMaxOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    isAvailable?: SortOrder
+    physiotherapistId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AppointmentSlotMinOrderByAggregateInput = {
+    id?: SortOrder
+    date?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    isAvailable?: SortOrder
+    physiotherapistId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AppointmentSlotSumOrderByAggregateInput = {
+    id?: SortOrder
+    capacity?: SortOrder
+    bookedCount?: SortOrder
+    physiotherapistId?: SortOrder
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -15425,6 +17002,12 @@ export namespace Prisma {
     connect?: PatientWhereUniqueInput
   }
 
+  export type AppointmentSlotCreateNestedOneWithoutAppointmentsInput = {
+    create?: XOR<AppointmentSlotCreateWithoutAppointmentsInput, AppointmentSlotUncheckedCreateWithoutAppointmentsInput>
+    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutAppointmentsInput
+    connect?: AppointmentSlotWhereUniqueInput
+  }
+
   export type PhysiotherapistCreateNestedOneWithoutAppointmentsInput = {
     create?: XOR<PhysiotherapistCreateWithoutAppointmentsInput, PhysiotherapistUncheckedCreateWithoutAppointmentsInput>
     connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentsInput
@@ -15457,6 +17040,16 @@ export namespace Prisma {
     upsert?: PatientUpsertWithoutAppointmentsInput
     connect?: PatientWhereUniqueInput
     update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutAppointmentsInput, PatientUpdateWithoutAppointmentsInput>, PatientUncheckedUpdateWithoutAppointmentsInput>
+  }
+
+  export type AppointmentSlotUpdateOneWithoutAppointmentsNestedInput = {
+    create?: XOR<AppointmentSlotCreateWithoutAppointmentsInput, AppointmentSlotUncheckedCreateWithoutAppointmentsInput>
+    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutAppointmentsInput
+    upsert?: AppointmentSlotUpsertWithoutAppointmentsInput
+    disconnect?: AppointmentSlotWhereInput | boolean
+    delete?: AppointmentSlotWhereInput | boolean
+    connect?: AppointmentSlotWhereUniqueInput
+    update?: XOR<XOR<AppointmentSlotUpdateToOneWithWhereWithoutAppointmentsInput, AppointmentSlotUpdateWithoutAppointmentsInput>, AppointmentSlotUncheckedUpdateWithoutAppointmentsInput>
   }
 
   export type PhysiotherapistUpdateOneWithoutAppointmentsNestedInput = {
@@ -15526,11 +17119,25 @@ export namespace Prisma {
     connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
   }
 
+  export type AppointmentSlotCreateNestedManyWithoutPhysiotherapistInput = {
+    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
+    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
+    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
+    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+  }
+
   export type AppointmentUncheckedCreateNestedManyWithoutPhysiotherapistInput = {
     create?: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput> | AppointmentCreateWithoutPhysiotherapistInput[] | AppointmentUncheckedCreateWithoutPhysiotherapistInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutPhysiotherapistInput | AppointmentCreateOrConnectWithoutPhysiotherapistInput[]
     createMany?: AppointmentCreateManyPhysiotherapistInputEnvelope
     connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type AppointmentSlotUncheckedCreateNestedManyWithoutPhysiotherapistInput = {
+    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
+    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
+    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
+    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -15555,6 +17162,20 @@ export namespace Prisma {
     deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
   }
 
+  export type AppointmentSlotUpdateManyWithoutPhysiotherapistNestedInput = {
+    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
+    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
+    upsert?: AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput[]
+    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
+    set?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    disconnect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    delete?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    update?: AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
+    updateMany?: AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput[]
+    deleteMany?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
+  }
+
   export type AppointmentUncheckedUpdateManyWithoutPhysiotherapistNestedInput = {
     create?: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput> | AppointmentCreateWithoutPhysiotherapistInput[] | AppointmentUncheckedCreateWithoutPhysiotherapistInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutPhysiotherapistInput | AppointmentCreateOrConnectWithoutPhysiotherapistInput[]
@@ -15566,6 +17187,78 @@ export namespace Prisma {
     connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
     update?: AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
     updateMany?: AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistNestedInput = {
+    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
+    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
+    upsert?: AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput[]
+    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
+    set?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    disconnect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    delete?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
+    update?: AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
+    updateMany?: AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput[]
+    deleteMany?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
+  }
+
+  export type AppointmentCreateNestedManyWithoutAppointmentSlotInput = {
+    create?: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput> | AppointmentCreateWithoutAppointmentSlotInput[] | AppointmentUncheckedCreateWithoutAppointmentSlotInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutAppointmentSlotInput | AppointmentCreateOrConnectWithoutAppointmentSlotInput[]
+    createMany?: AppointmentCreateManyAppointmentSlotInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type PhysiotherapistCreateNestedOneWithoutAppointmentSlotsInput = {
+    create?: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
+    connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentSlotsInput
+    connect?: PhysiotherapistWhereUniqueInput
+  }
+
+  export type AppointmentUncheckedCreateNestedManyWithoutAppointmentSlotInput = {
+    create?: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput> | AppointmentCreateWithoutAppointmentSlotInput[] | AppointmentUncheckedCreateWithoutAppointmentSlotInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutAppointmentSlotInput | AppointmentCreateOrConnectWithoutAppointmentSlotInput[]
+    createMany?: AppointmentCreateManyAppointmentSlotInputEnvelope
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+  }
+
+  export type AppointmentUpdateManyWithoutAppointmentSlotNestedInput = {
+    create?: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput> | AppointmentCreateWithoutAppointmentSlotInput[] | AppointmentUncheckedCreateWithoutAppointmentSlotInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutAppointmentSlotInput | AppointmentCreateOrConnectWithoutAppointmentSlotInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutAppointmentSlotInput | AppointmentUpsertWithWhereUniqueWithoutAppointmentSlotInput[]
+    createMany?: AppointmentCreateManyAppointmentSlotInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput | AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput | AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput[]
+    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
+  }
+
+  export type PhysiotherapistUpdateOneWithoutAppointmentSlotsNestedInput = {
+    create?: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
+    connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentSlotsInput
+    upsert?: PhysiotherapistUpsertWithoutAppointmentSlotsInput
+    disconnect?: PhysiotherapistWhereInput | boolean
+    delete?: PhysiotherapistWhereInput | boolean
+    connect?: PhysiotherapistWhereUniqueInput
+    update?: XOR<XOR<PhysiotherapistUpdateToOneWithWhereWithoutAppointmentSlotsInput, PhysiotherapistUpdateWithoutAppointmentSlotsInput>, PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput>
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutAppointmentSlotNestedInput = {
+    create?: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput> | AppointmentCreateWithoutAppointmentSlotInput[] | AppointmentUncheckedCreateWithoutAppointmentSlotInput[]
+    connectOrCreate?: AppointmentCreateOrConnectWithoutAppointmentSlotInput | AppointmentCreateOrConnectWithoutAppointmentSlotInput[]
+    upsert?: AppointmentUpsertWithWhereUniqueWithoutAppointmentSlotInput | AppointmentUpsertWithWhereUniqueWithoutAppointmentSlotInput[]
+    createMany?: AppointmentCreateManyAppointmentSlotInputEnvelope
+    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
+    update?: AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput | AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput[]
+    updateMany?: AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput | AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput[]
     deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
   }
 
@@ -16405,12 +18098,14 @@ export namespace Prisma {
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
     physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
     payment?: PaymentCreateNestedOneWithoutAppointmentInput
   }
 
   export type AppointmentUncheckedCreateWithoutPatientInput = {
     id?: string
+    slotId?: number | null
     physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
@@ -16534,6 +18229,7 @@ export namespace Prisma {
     NOT?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
     id?: StringFilter<"Appointment"> | string
     patientId?: IntFilter<"Appointment"> | number
+    slotId?: IntNullableFilter<"Appointment"> | number | null
     physiotherapistId?: IntNullableFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeFilter<"Appointment"> | Date | string
     startTime?: StringFilter<"Appointment"> | string
@@ -16614,6 +18310,36 @@ export namespace Prisma {
     create: XOR<PatientCreateWithoutAppointmentsInput, PatientUncheckedCreateWithoutAppointmentsInput>
   }
 
+  export type AppointmentSlotCreateWithoutAppointmentsInput = {
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentSlotsInput
+  }
+
+  export type AppointmentSlotUncheckedCreateWithoutAppointmentsInput = {
+    id?: number
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    physiotherapistId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentSlotCreateOrConnectWithoutAppointmentsInput = {
+    where: AppointmentSlotWhereUniqueInput
+    create: XOR<AppointmentSlotCreateWithoutAppointmentsInput, AppointmentSlotUncheckedCreateWithoutAppointmentsInput>
+  }
+
   export type PhysiotherapistCreateWithoutAppointmentsInput = {
     name: string
     email: string
@@ -16629,6 +18355,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    appointmentSlots?: AppointmentSlotCreateNestedManyWithoutPhysiotherapistInput
   }
 
   export type PhysiotherapistUncheckedCreateWithoutAppointmentsInput = {
@@ -16647,6 +18374,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    appointmentSlots?: AppointmentSlotUncheckedCreateNestedManyWithoutPhysiotherapistInput
   }
 
   export type PhysiotherapistCreateOrConnectWithoutAppointmentsInput = {
@@ -16723,6 +18451,42 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
   }
 
+  export type AppointmentSlotUpsertWithoutAppointmentsInput = {
+    update: XOR<AppointmentSlotUpdateWithoutAppointmentsInput, AppointmentSlotUncheckedUpdateWithoutAppointmentsInput>
+    create: XOR<AppointmentSlotCreateWithoutAppointmentsInput, AppointmentSlotUncheckedCreateWithoutAppointmentsInput>
+    where?: AppointmentSlotWhereInput
+  }
+
+  export type AppointmentSlotUpdateToOneWithWhereWithoutAppointmentsInput = {
+    where?: AppointmentSlotWhereInput
+    data: XOR<AppointmentSlotUpdateWithoutAppointmentsInput, AppointmentSlotUncheckedUpdateWithoutAppointmentsInput>
+  }
+
+  export type AppointmentSlotUpdateWithoutAppointmentsInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentSlotsNestedInput
+  }
+
+  export type AppointmentSlotUncheckedUpdateWithoutAppointmentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PhysiotherapistUpsertWithoutAppointmentsInput = {
     update: XOR<PhysiotherapistUpdateWithoutAppointmentsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentsInput>
     create: XOR<PhysiotherapistCreateWithoutAppointmentsInput, PhysiotherapistUncheckedCreateWithoutAppointmentsInput>
@@ -16749,6 +18513,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointmentSlots?: AppointmentSlotUpdateManyWithoutPhysiotherapistNestedInput
   }
 
   export type PhysiotherapistUncheckedUpdateWithoutAppointmentsInput = {
@@ -16767,6 +18532,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointmentSlots?: AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistNestedInput
   }
 
   export type PaymentUpsertWithoutAppointmentInput = {
@@ -16815,12 +18581,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     patient: PatientCreateNestedOneWithoutAppointmentsInput
+    appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
     physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
   }
 
   export type AppointmentUncheckedCreateWithoutPaymentInput = {
     id?: string
     patientId: number
+    slotId?: number | null
     physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
@@ -16899,12 +18667,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
+    appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
     physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
   }
 
   export type AppointmentUncheckedUpdateWithoutPaymentInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
     physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -16973,12 +18743,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     patient: PatientCreateNestedOneWithoutAppointmentsInput
+    appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
     payment?: PaymentCreateNestedOneWithoutAppointmentInput
   }
 
   export type AppointmentUncheckedCreateWithoutPhysiotherapistInput = {
     id?: string
     patientId: number
+    slotId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -17002,6 +18774,41 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AppointmentSlotCreateWithoutPhysiotherapistInput = {
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentCreateNestedManyWithoutAppointmentSlotInput
+  }
+
+  export type AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput = {
+    id?: number
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutAppointmentSlotInput
+  }
+
+  export type AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput = {
+    where: AppointmentSlotWhereUniqueInput
+    create: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput>
+  }
+
+  export type AppointmentSlotCreateManyPhysiotherapistInputEnvelope = {
+    data: AppointmentSlotCreateManyPhysiotherapistInput | AppointmentSlotCreateManyPhysiotherapistInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AppointmentUpsertWithWhereUniqueWithoutPhysiotherapistInput = {
     where: AppointmentWhereUniqueInput
     update: XOR<AppointmentUpdateWithoutPhysiotherapistInput, AppointmentUncheckedUpdateWithoutPhysiotherapistInput>
@@ -17016,6 +18823,188 @@ export namespace Prisma {
   export type AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput = {
     where: AppointmentScalarWhereInput
     data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutPhysiotherapistInput>
+  }
+
+  export type AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput = {
+    where: AppointmentSlotWhereUniqueInput
+    update: XOR<AppointmentSlotUpdateWithoutPhysiotherapistInput, AppointmentSlotUncheckedUpdateWithoutPhysiotherapistInput>
+    create: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput>
+  }
+
+  export type AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput = {
+    where: AppointmentSlotWhereUniqueInput
+    data: XOR<AppointmentSlotUpdateWithoutPhysiotherapistInput, AppointmentSlotUncheckedUpdateWithoutPhysiotherapistInput>
+  }
+
+  export type AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput = {
+    where: AppointmentSlotScalarWhereInput
+    data: XOR<AppointmentSlotUpdateManyMutationInput, AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistInput>
+  }
+
+  export type AppointmentSlotScalarWhereInput = {
+    AND?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
+    OR?: AppointmentSlotScalarWhereInput[]
+    NOT?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
+    id?: IntFilter<"AppointmentSlot"> | number
+    date?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    startTime?: StringFilter<"AppointmentSlot"> | string
+    endTime?: StringFilter<"AppointmentSlot"> | string
+    capacity?: IntFilter<"AppointmentSlot"> | number
+    bookedCount?: IntFilter<"AppointmentSlot"> | number
+    isAvailable?: BoolFilter<"AppointmentSlot"> | boolean
+    physiotherapistId?: IntNullableFilter<"AppointmentSlot"> | number | null
+    createdAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
+    updatedAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
+  }
+
+  export type AppointmentCreateWithoutAppointmentSlotInput = {
+    id?: string
+    appointmentDate: Date | string
+    startTime: string
+    duration: number
+    status?: string
+    reason?: string | null
+    notes?: string | null
+    paymentStatus?: string
+    fee?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    patient: PatientCreateNestedOneWithoutAppointmentsInput
+    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
+    payment?: PaymentCreateNestedOneWithoutAppointmentInput
+  }
+
+  export type AppointmentUncheckedCreateWithoutAppointmentSlotInput = {
+    id?: string
+    patientId: number
+    physiotherapistId?: number | null
+    appointmentDate: Date | string
+    startTime: string
+    duration: number
+    status?: string
+    reason?: string | null
+    notes?: string | null
+    paymentStatus?: string
+    fee?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payment?: PaymentUncheckedCreateNestedOneWithoutAppointmentInput
+  }
+
+  export type AppointmentCreateOrConnectWithoutAppointmentSlotInput = {
+    where: AppointmentWhereUniqueInput
+    create: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput>
+  }
+
+  export type AppointmentCreateManyAppointmentSlotInputEnvelope = {
+    data: AppointmentCreateManyAppointmentSlotInput | AppointmentCreateManyAppointmentSlotInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PhysiotherapistCreateWithoutAppointmentSlotsInput = {
+    name: string
+    email: string
+    contactNumber: string
+    specialization: string
+    experience?: number
+    education?: string | null
+    certifications?: string | null
+    bio?: string | null
+    availability?: NullableJsonNullValueInput | InputJsonValue
+    rating?: number | null
+    imageUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentCreateNestedManyWithoutPhysiotherapistInput
+  }
+
+  export type PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput = {
+    id?: number
+    name: string
+    email: string
+    contactNumber: string
+    specialization: string
+    experience?: number
+    education?: string | null
+    certifications?: string | null
+    bio?: string | null
+    availability?: NullableJsonNullValueInput | InputJsonValue
+    rating?: number | null
+    imageUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutPhysiotherapistInput
+  }
+
+  export type PhysiotherapistCreateOrConnectWithoutAppointmentSlotsInput = {
+    where: PhysiotherapistWhereUniqueInput
+    create: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
+  }
+
+  export type AppointmentUpsertWithWhereUniqueWithoutAppointmentSlotInput = {
+    where: AppointmentWhereUniqueInput
+    update: XOR<AppointmentUpdateWithoutAppointmentSlotInput, AppointmentUncheckedUpdateWithoutAppointmentSlotInput>
+    create: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput>
+  }
+
+  export type AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput = {
+    where: AppointmentWhereUniqueInput
+    data: XOR<AppointmentUpdateWithoutAppointmentSlotInput, AppointmentUncheckedUpdateWithoutAppointmentSlotInput>
+  }
+
+  export type AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput = {
+    where: AppointmentScalarWhereInput
+    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutAppointmentSlotInput>
+  }
+
+  export type PhysiotherapistUpsertWithoutAppointmentSlotsInput = {
+    update: XOR<PhysiotherapistUpdateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput>
+    create: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
+    where?: PhysiotherapistWhereInput
+  }
+
+  export type PhysiotherapistUpdateToOneWithWhereWithoutAppointmentSlotsInput = {
+    where?: PhysiotherapistWhereInput
+    data: XOR<PhysiotherapistUpdateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput>
+  }
+
+  export type PhysiotherapistUpdateWithoutAppointmentSlotsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    specialization?: StringFieldUpdateOperationsInput | string
+    experience?: IntFieldUpdateOperationsInput | number
+    education?: NullableStringFieldUpdateOperationsInput | string | null
+    certifications?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: NullableJsonNullValueInput | InputJsonValue
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUpdateManyWithoutPhysiotherapistNestedInput
+  }
+
+  export type PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    specialization?: StringFieldUpdateOperationsInput | string
+    experience?: IntFieldUpdateOperationsInput | number
+    education?: NullableStringFieldUpdateOperationsInput | string | null
+    certifications?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: NullableJsonNullValueInput | InputJsonValue
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUncheckedUpdateManyWithoutPhysiotherapistNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -17160,6 +19149,7 @@ export namespace Prisma {
 
   export type AppointmentCreateManyPatientInput = {
     id?: string
+    slotId?: number | null
     physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
@@ -17196,12 +19186,14 @@ export namespace Prisma {
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
     physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
     payment?: PaymentUpdateOneWithoutAppointmentNestedInput
   }
 
   export type AppointmentUncheckedUpdateWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
     physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -17218,6 +19210,7 @@ export namespace Prisma {
 
   export type AppointmentUncheckedUpdateManyWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
     physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -17267,6 +19260,7 @@ export namespace Prisma {
   export type AppointmentCreateManyPhysiotherapistInput = {
     id?: string
     patientId: number
+    slotId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -17275,6 +19269,18 @@ export namespace Prisma {
     notes?: string | null
     paymentStatus?: string
     fee?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentSlotCreateManyPhysiotherapistInput = {
+    id?: number
+    date: Date | string
+    startTime: string
+    endTime: string
+    capacity?: number
+    bookedCount?: number
+    isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17292,12 +19298,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
+    appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
     payment?: PaymentUpdateOneWithoutAppointmentNestedInput
   }
 
   export type AppointmentUncheckedUpdateWithoutPhysiotherapistInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -17314,6 +19322,110 @@ export namespace Prisma {
   export type AppointmentUncheckedUpdateManyWithoutPhysiotherapistInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
+    slotId?: NullableIntFieldUpdateOperationsInput | number | null
+    appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    duration?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    fee?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentSlotUpdateWithoutPhysiotherapistInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUpdateManyWithoutAppointmentSlotNestedInput
+  }
+
+  export type AppointmentSlotUncheckedUpdateWithoutPhysiotherapistInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    appointments?: AppointmentUncheckedUpdateManyWithoutAppointmentSlotNestedInput
+  }
+
+  export type AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    bookedCount?: IntFieldUpdateOperationsInput | number
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AppointmentCreateManyAppointmentSlotInput = {
+    id?: string
+    patientId: number
+    physiotherapistId?: number | null
+    appointmentDate: Date | string
+    startTime: string
+    duration: number
+    status?: string
+    reason?: string | null
+    notes?: string | null
+    paymentStatus?: string
+    fee?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AppointmentUpdateWithoutAppointmentSlotInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    duration?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    fee?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
+    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
+    payment?: PaymentUpdateOneWithoutAppointmentNestedInput
+  }
+
+  export type AppointmentUncheckedUpdateWithoutAppointmentSlotInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientId?: IntFieldUpdateOperationsInput | number
+    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
+    appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    duration?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    fee?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payment?: PaymentUncheckedUpdateOneWithoutAppointmentNestedInput
+  }
+
+  export type AppointmentUncheckedUpdateManyWithoutAppointmentSlotInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientId?: IntFieldUpdateOperationsInput | number
+    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number

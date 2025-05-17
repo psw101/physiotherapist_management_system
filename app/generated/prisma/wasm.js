@@ -206,6 +206,7 @@ exports.Prisma.ProductScalarFieldEnum = {
 exports.Prisma.AppointmentScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
+  slotId: 'slotId',
   physiotherapistId: 'physiotherapistId',
   appointmentDate: 'appointmentDate',
   startTime: 'startTime',
@@ -245,6 +246,19 @@ exports.Prisma.PhysiotherapistScalarFieldEnum = {
   rating: 'rating',
   imageUrl: 'imageUrl',
   isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AppointmentSlotScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  capacity: 'capacity',
+  bookedCount: 'bookedCount',
+  isAvailable: 'isAvailable',
+  physiotherapistId: 'physiotherapistId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -365,6 +379,11 @@ exports.Prisma.PhysiotherapistOrderByRelevanceFieldEnum = {
   imageUrl: 'imageUrl'
 };
 
+exports.Prisma.AppointmentSlotOrderByRelevanceFieldEnum = {
+  startTime: 'startTime',
+  endTime: 'endTime'
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -376,7 +395,8 @@ exports.Prisma.ModelName = {
   Product: 'Product',
   Appointment: 'Appointment',
   Payment: 'Payment',
-  Physiotherapist: 'Physiotherapist'
+  Physiotherapist: 'Physiotherapist',
+  AppointmentSlot: 'AppointmentSlot'
 };
 
 /**

@@ -43,3 +43,5 @@ next-env.d.ts
 # Uploads directory - ignore user-uploaded files
 public/uploads/
 public/uploads/*
+
+.react-email/
