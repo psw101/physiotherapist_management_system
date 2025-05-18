@@ -169,3 +169,31 @@ physiotherapist_management_system/
 │
 ├── prisma/
 │   └── schema.prisma                          # Database schema definition
+
+
+
+
+
+
+
+app/
+├── checkout/
+│   ├── success/
+│   │   ├── components/
+│   │   │   └── BaseSuccessPage.tsx  # Shared logic for payment verification
+│   │   └── page.tsx                 # Keep as a fallback or redirect page
+│   ├── appointment-success/
+│   │   └── page.tsx                 # Specific for handling appointment payments
+│   └── product-success/
+│       └── page.tsx                 # Specific for handling product payments
+├── api/
+│   ├── payment/
+│   │   └── create/
+│   │       └── route.tsx            # Payment creation API
+│   ├── appointments/
+│   │   └── create/
+│   │       └── route.tsx            # Appointment creation API
+│   ├── orders/
+│   │   └── route.tsx                # Order creation API
+│   └── verify-checkout/
+│       └── route.tsx                # Verify the Stripe session

@@ -158,6 +158,9 @@ model ProductOrder {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
+  // Add the payment relation
+  payment           Payment?
+
   @@index([userId])
   @@index([productId])
 }
@@ -191,17 +194,28 @@ model Appointment {
 }
 
 model Payment {
-  id            String      @id @default(cuid())
-  appointmentId String      @unique
-  appointment   Appointment @relation(fields: [appointmentId], references: [id])
-  amount        Float
-  method        String // card, cash, etc.
-  status        String // pending, completed, failed, refunded
-  transactionId String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  Patient       Patient?    @relation(fields: [patientId], references: [id])
-  patientId     Int?
+  id                String       @id @default(cuid())
+  amount            Float
+  method            String       // card, cash, etc.
+  status            String       // pending, completed, failed, refunded
+  transactionId     String?
+  paymentType       String?      // "appointment" or "product" - made optional
+  isAdvancePayment  Boolean      @default(false)
+  
+  // Relationships - make both optional with ?
+  appointmentId     String?      @unique
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
+  
+  // Add relationship to product orders
+  productOrderId    String?      @unique
+  productOrder      ProductOrder? @relation(fields: [productOrderId], references: [id])
+  
+  // Keep patient relation
+  patientId         Int?
+  patient           Patient?    @relation(fields: [patientId], references: [id])
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 }
 
 model Physiotherapist {

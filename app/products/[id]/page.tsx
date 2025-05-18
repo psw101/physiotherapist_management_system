@@ -146,58 +146,34 @@ const ProductDetailPage = () => {
       // Calculate advance amount (10%)
       const advanceAmount = Math.round(totalPrice * 0.1);
       
-      if (payAdvance) {
-        // Redirect to payment
-        const response = await axios.post('/api/checkout', {
-          items: [{
-            name: product.name,
-            price: advanceAmount,
-            quantity: 1
-          }],
-          orderId: `${product.id}-${Date.now()}`,
-          orderDetails: {
-            productId: product.id,
-            quantity: selectedQuantity,
-            totalPrice: totalPrice,
-            customizations: customValues,
-            advancePayment: true
-          },
-          returnUrl: `/products/${productId}`
-        });
-        
-        // Redirect to Stripe
-        if (response.data.id) {
-          const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-          await stripe?.redirectToCheckout({ sessionId: response.data.id });
-        }
-      } else {
-        // Create order without advance payment
-        const response = await axios.post("/api/orders", {
+      // Create checkout session with proper metadata
+      const response = await axios.post('/api/checkout', {
+        items: [{
+          name: product.name,
+          price: payAdvance ? advanceAmount : totalPrice,
+          quantity: 1,
+          description: `${product.name} x ${selectedQuantity}${payAdvance ? ' (10% Advance)' : ''}`
+        }],
+        orderDetails: {
+          type: "product",
           productId: product.id,
           quantity: selectedQuantity,
           totalPrice: totalPrice,
           customizations: customValues,
-          advancePayment: false
-        });
-        
-        // Show success message
-        toast.success("Order placed successfully! Waiting for admin approval.", {
-          position: "bottom-right",
-          autoClose: 5000
-        });
-        
-        setOrderPlaced(true);
-        
-        // Redirect to orders page after a delay
-        setTimeout(() => {
-          router.push("/orders");
-        }, 3000);
+          advancePayment: payAdvance
+        }
+      });
+      
+      // Redirect to Stripe checkout
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+      if (stripe && response.data.id) {
+        await stripe.redirectToCheckout({ sessionId: response.data.id });
+      } else {
+        throw new Error('Failed to initialize payment');
       }
     } catch (error) {
-      console.error("Error placing order:", error);
-      toast.error("Failed to place order. Please try again.", {
-        position: "bottom-right"
-      });
+      console.error("Error processing order:", error);
+      setOrderError("Failed to process your order. Please try again.");
     } finally {
       setSubmitting(false);
       setConfirmDialogOpen(false);
@@ -532,3 +508,7 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
+function setOrderError(arg0: string) {
+  throw new Error("Function not implemented.");
+}
+

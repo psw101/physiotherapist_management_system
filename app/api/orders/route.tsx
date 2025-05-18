@@ -6,56 +6,52 @@ import { prisma } from "@/prisma/client";
 // Create a new order
 export async function POST(request: NextRequest) {
   try {
+    console.log("API: Order creation started");
     // Get the authenticated user
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    
+    if (!session || !session.user) {
       return NextResponse.json(
-        { error: "You must be logged in to place an order" },
+        { error: "You must be logged in to create an order" },
         { status: 401 }
       );
     }
-
+    
+    const userId = session.user.id;
     // Parse the request body
     const body = await request.json();
-    const { productId, quantity, totalPrice, customizations } = body;
-
+    console.log("API: Order request body:", body);
+    
+    const { productId, quantity, totalPrice, customizations, status = "pending" } = body;
+    
     // Validate required fields
-    if (!productId || !quantity || !totalPrice) {
+    if (!productId) {
       return NextResponse.json(
-        { error: "Product ID, quantity, and total price are required" },
+        { error: "productId is required" },
         { status: 400 }
       );
     }
-
-    // Check if product exists
-    const product = await prisma.product.findUnique({
-      where: { id: productId },
-    });
-
-    if (!product) {
-      return NextResponse.json(
-        { error: "Product not found" },
-        { status: 404 }
-      );
-    }
-
+    
     // Create the order
     const order = await prisma.productOrder.create({
       data: {
-        userId: session.user.id,
-        productId: productId,
-        quantity: quantity,
-        totalPrice: totalPrice,
+        userId,
+        productId: parseInt(productId.toString()),
+        quantity: quantity || 1,
+        totalPrice: totalPrice || 0,
         customizations: customizations || {},
-        status: "pending", // Default status
+        status
       },
     });
-
+    
+    console.log("API: Order created:", order);
+    
     return NextResponse.json(order, { status: 201 });
-  } catch (error) {
-    console.error("Error creating order:", error);
+  } catch (error: any) {
+    console.error("API: Error creating order:", error);
+    
     return NextResponse.json(
-      { error: "Failed to create order" },
+      { error: error.message || "Failed to create order" },
       { status: 500 }
     );
   }

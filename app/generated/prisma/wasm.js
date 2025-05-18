@@ -238,14 +238,17 @@ exports.Prisma.AppointmentScalarFieldEnum = {
 
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
-  appointmentId: 'appointmentId',
   amount: 'amount',
   method: 'method',
   status: 'status',
   transactionId: 'transactionId',
+  paymentType: 'paymentType',
+  isAdvancePayment: 'isAdvancePayment',
+  appointmentId: 'appointmentId',
+  productOrderId: 'productOrderId',
+  patientId: 'patientId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  patientId: 'patientId'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PhysiotherapistScalarFieldEnum = {
@@ -406,10 +409,12 @@ exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
 
 exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
   id: 'id',
-  appointmentId: 'appointmentId',
   method: 'method',
   status: 'status',
-  transactionId: 'transactionId'
+  transactionId: 'transactionId',
+  paymentType: 'paymentType',
+  appointmentId: 'appointmentId',
+  productOrderId: 'productOrderId'
 };
 
 exports.Prisma.PhysiotherapistOrderByRelevanceFieldEnum = {

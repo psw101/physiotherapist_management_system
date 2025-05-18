@@ -84,8 +84,9 @@ export async function POST(request: NextRequest) {
     console.error("Error creating patient:", error);
     
     // Check for unique constraint violations
-    if (error.code === 'P2002') {
-      const field = error.meta?.target[0] || 'field'; 
+    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2002') {
+      const prismaError = error as { meta?: { target: string[] } };
+      const field = prismaError.meta?.target[0] || 'field'; 
       return NextResponse.json(
         { error: `A patient with this ${field} already exists` }, 
         { status: 409 }

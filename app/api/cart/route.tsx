@@ -7,7 +7,6 @@ import { prisma } from '@/prisma/client';
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    console.log("Session:", session);
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
