@@ -77,13 +77,7 @@ export async function GET(request: NextRequest) {
           capacity: true,
           bookedCount: true,
           isAvailable: true,
-          physiotherapistId: true,
           // Safer way to include relationships with optional checks
-          physiotherapist: {
-            select: {
-              name: true
-            }
-          },
           // Count appointments instead of including them all
           _count: {
             select: {

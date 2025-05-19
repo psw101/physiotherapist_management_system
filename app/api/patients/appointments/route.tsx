@@ -29,14 +29,6 @@ export async function GET() {
       where: {
         patientId: patientId
       },
-      include: {
-        physiotherapist: {
-          select: {
-            name: true,
-            specialization: true
-          }
-        }
-      },
       orderBy: {
         appointmentDate: 'desc'
       }
