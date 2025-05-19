@@ -3,20 +3,16 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
 import { Card, Button, Text, Flex, Box } from "@radix-ui/themes";
-import { CalendarIcon, ClockIcon, CheckCircledIcon, CrossCircledIcon, PersonIcon } from "@radix-ui/react-icons";
+import { CalendarIcon, ClockIcon, CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 
-// Updated interface to match the AppointmentSlot table structure
 interface AppointmentSlot {
-  id: number;
-  date: string; // Will be converted from DateTime
-  startTime: string;
-  endTime: string;
-  capacity: number;
-  bookedCount: number;
+  id: string;
+  date: string; // YYYY-MM-DD
+  time: string; // HH:MM format
   isAvailable: boolean;
-  remainingCapacity?: number; // Computed property
+  activeAppointments: number;
 }
 
 export default function MakeAppointment() {
@@ -25,37 +21,52 @@ export default function MakeAppointment() {
   const [appointmentSlots, setAppointmentSlots] = useState<AppointmentSlot[]>([]);
   const [bookingSlot, setBookingSlot] = useState<AppointmentSlot | null>(null);
   const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
 
-  // Fetch available slots from the API
+  // Fetch available slots when component mounts
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       setLoading(true);
+      setError("");
+      
       try {
-        // Call the API to get available slots
-        const response = await axios.get("/api/slots/available");
+        // Call the API for available slots with parameters to show all slots
+        const response = await axios.get("/api/slots/available?includeAll=true");
+        console.log("API response:", response.data);
         
-        // Process the data from the API
-        const slots = response.data.map((slot: any) => ({
-          ...slot,
-          // Format date for display (the API returns a full datetime)
-          date: slot.date, // Will be formatted for display later
-          // Calculate remaining capacity
-          remainingCapacity: slot.capacity - slot.bookedCount
-        }));
-        
-        setAppointmentSlots(slots);
-        setError("");
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          // Use the data from the API
+          setAppointmentSlots(response.data);
+        } else {
+          // No slots available
+          setError("No available appointment slots found. Please check back later.");
+          setAppointmentSlots([]);
+        }
       } catch (err) {
         console.error("Failed to fetch available slots:", err);
-        setError("Failed to load available appointment slots. Please try again later.");
+        
+        if (axios.isAxiosError(err)) {
+          const statusCode = err.response?.status;
+          const errorMessage = err.response?.data?.error || err.message;
+          
+          if (statusCode === 404) {
+            setError("No appointment slots are currently available. Please check back later.");
+          } else {
+            setError(`Error loading appointments: ${errorMessage}`);
+          }
+        } else {
+          setError("Failed to load available appointment slots. Please try again later.");
+        }
+        
+        setAppointmentSlots([]);
       } finally {
         setLoading(false);
       }
     };
     
     fetchAvailableSlots();
-  }, []);
-
+  }, [retryCount]);
+  
   // Handle booking an appointment
   const handleBookAppointment = async (slot: AppointmentSlot) => {
     try {
@@ -69,17 +80,29 @@ export default function MakeAppointment() {
         patientId = Number(storedId);
       }
       
+      // Make sure slotId is correctly formatted as a number if possible
+      // Backend expects it as a number, but frontend may have it as a string
+      const slotId = typeof slot.id === 'string' ? parseInt(slot.id) : slot.id;
+      
+      if (isNaN(slotId)) {
+        throw new Error(`Invalid slot ID: ${slot.id}`);
+      }
+      
       const appointmentData = {
         appointmentDate: slot.date,
-        startTime: slot.startTime,
+        startTime: slot.time,
         duration: 60,
         status: "pending",
-        slotId: slot.id, // Use the slot ID from the AppointmentSlot table
+        reason: "Physiotherapy session",
         patientId: patientId,
-        reason: "Physiotherapy session"
+        slotId: slotId,
+        fee: 2500 // Include standard fee
       };
       
       console.log("Sending appointment data:", appointmentData);
+      
+      // Disable the button for this slot during the API call
+      setBookingSlot(slot);
       
       // Add explicit error handling for the appointment creation
       const response = await axios.post("/api/appointments", appointmentData);
@@ -92,6 +115,18 @@ export default function MakeAppointment() {
       if (!appointmentId) {
         throw new Error("No appointment ID returned from server");
       }
+      
+      // After successful booking, update local state to mark slot as booked
+      setAppointmentSlots(prev => 
+        prev.map(s => 
+          s.id === slot.id 
+            ? { ...s, isAvailable: false, activeAppointments: s.activeAppointments + 1 }
+            : s
+        )
+      );
+      
+      // Show success message
+      alert("Appointment booked successfully! Redirecting to payment page...");
       
       // Redirect to payment page with the appointment ID
       router.push(`/appointments/payment/${appointmentId}`);
@@ -110,13 +145,28 @@ export default function MakeAppointment() {
     }
   };
 
+  // Handler to manually refresh the data
+  const handleRefresh = () => {
+    setRetryCount(prev => prev + 1);
+  };
+
   return (
     <div className="p-6 bg-slate-50">
       <h1 className="text-2xl font-bold mb-6 text-slate-800">Available Appointments</h1>
       
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded text-red-600">
-          {error}
+          <p>{error}</p>
+          <div className="mt-3">
+            <Button 
+              onClick={handleRefresh} 
+              variant="soft" 
+              color="gray" 
+              size="2"
+            >
+              Refresh Appointments
+            </Button>
+          </div>
         </div>
       )}
       
@@ -137,38 +187,28 @@ export default function MakeAppointment() {
                   </Flex>
                   <Flex align="center" gap="2">
                     <ClockIcon />
-                    <Text>{format(new Date(slot.date), "EEEE").toUpperCase()} {slot.startTime} - {slot.endTime}</Text>
+                    <Text>{format(new Date(slot.date), "EEEE").toUpperCase()} {slot.time}</Text>
                   </Flex>
                   
-                  <Flex align="center" gap="2" className="mt-1">
-                    <PersonIcon />
-                    <Text size="1" color="gray">
-                      {slot.bookedCount}/{slot.capacity} Booked
-                    </Text>
-                  </Flex>
+                  <Text size="1" color="gray" className="mt-1">
+                    Active Appointments: {slot.activeAppointments}
+                  </Text>
                 </Flex>
                 
                 <Flex direction="column" align="end" gap="2">
                   <Flex align="center" gap="1">
-                    {slot.isAvailable && slot.remainingCapacity! > 0 ? (
+                    {slot.isAvailable ? (
                       <CheckCircledIcon className="text-green-500" />
                     ) : (
                       <CrossCircledIcon className="text-red-500" />
                     )}
-                    <Text 
-                      color={slot.isAvailable && slot.remainingCapacity! > 0 ? "green" : "red"} 
-                      weight="medium"
-                    >
-                      {slot.isAvailable && slot.remainingCapacity! > 0 
-                        ? "Available" 
-                        : !slot.isAvailable 
-                          ? "Unavailable" 
-                          : "Fully Booked"}
+                    <Text color={slot.isAvailable ? "green" : "red"} weight="medium">
+                      {slot.isAvailable ? "Available" : "Booked"}
                     </Text>
                   </Flex>
                   
                   <Button 
-                    disabled={!slot.isAvailable || slot.remainingCapacity! <= 0 || !!bookingSlot} 
+                    disabled={!slot.isAvailable || !!bookingSlot} 
                     onClick={() => handleBookAppointment(slot)}
                     color="indigo"
                     size="2"
@@ -180,11 +220,19 @@ export default function MakeAppointment() {
             </Card>
           ))}
         </div>
-      ) : (
+      ) : !error ? (
         <Box className="p-8 text-center bg-gray-50 rounded-lg">
-          <Text size="3" color="gray">No available appointments at this time. Please check back later.</Text>
+          <Text size="3" color="gray">No available appointments at this time.</Text>
+          <Button 
+            onClick={handleRefresh} 
+            variant="soft" 
+            color="gray" 
+            className="mt-4"
+          >
+            Refresh Appointments
+          </Button>
         </Box>
-      )}
+      ) : null}
     </div>
   );
 }

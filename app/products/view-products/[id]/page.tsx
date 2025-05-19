@@ -15,13 +15,22 @@ interface Specification {
 }
 
 interface Product {
-  id: number;
+  id: number; // This is a number
   name: string;
   price: number;
   description: string;
   specification: Specification[];
   imageUrl?: string;
   videoUrl?: string;
+}
+
+export interface CartItem {
+  id: string | number;
+  name: string;
+  price: number;
+  quantity: number;
+  imageUrl?: string;
+  option: string;
 }
 
 const ProductDetailPage = () => {
@@ -62,9 +71,9 @@ const ProductDetailPage = () => {
     // Calculate correct price based on option
     const priceWithOption = getOptionPrice(selectedOption);
 
-    // Add product to cart
+    // Add product to cart - convert ID to string to match CartItem interface
     addToCart({
-      id: product.id,
+      id: String(product.id), // Convert number to string
       name: product.name,
       price: priceWithOption,
       quantity: selectedQuantity,

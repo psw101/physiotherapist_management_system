@@ -142,7 +142,7 @@ export default function ForgotPasswordPage() {
       
       // Redirect to login page after 2 seconds
       setTimeout(() => {
-        router.push("/Login");
+        router.push("/login");
       }, 2000);
     } catch (err) {
       console.error("Error resetting password:", err);

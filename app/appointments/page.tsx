@@ -40,7 +40,12 @@ export default function AppointmentsPage() {
         const response = await axios.get("/api/patients/appointments");
         console.log("Appointments response:", response.data);
         
-        setAppointments(response.data);
+        // Filter to only include paid appointments
+        const paidAppointments = response.data.filter(
+          (appointment: Appointment) => appointment.paymentStatus === "paid"
+        );
+        
+        setAppointments(paidAppointments);
       } catch (err) {
         console.error("Failed to fetch appointments:", err);
         setError("Failed to load your appointments. Please try again later.");
@@ -81,29 +86,23 @@ export default function AppointmentsPage() {
     }
   };
 
-  // Determine appointment sections without changing the original array order
-  const getAppointmentSections = () => {
+  // Get upcoming appointments (only showing scheduled appointments)
+  const getUpcomingAppointments = () => {
     // Create a copy of the array to avoid modifying the original
     const sortedAppointments = [...appointments];
 
-    // First sort by date (most recent first)
+    // Sort by date (most recent first)
     sortedAppointments.sort((a, b) => {
       // Convert strings to Date objects for comparison
       const dateA = new Date(`${a.appointmentDate} ${a.startTime}`);
       const dateB = new Date(`${b.appointmentDate} ${b.startTime}`);
-      return dateB.getTime() - dateA.getTime();
+      return dateA.getTime() - dateB.getTime(); // Chronological order
     });
 
-    // Then filter for upcoming and past
-    const upcoming = sortedAppointments.filter(a => 
+    // Only return appointments with status "pending" or "scheduled"
+    return sortedAppointments.filter(a => 
       ["pending", "scheduled"].includes(a.status.toLowerCase())
     );
-    
-    const past = sortedAppointments.filter(a => 
-      ["completed", "cancelled"].includes(a.status.toLowerCase())
-    );
-
-    return { upcoming, past };
   };
 
   if (loading) {
@@ -138,57 +137,36 @@ export default function AppointmentsPage() {
     );
   }
 
-  // Get appointment sections using the helper function
-  const { upcoming: upcomingAppointments, past: pastAppointments } = getAppointmentSections();
+  // Get upcoming appointments
+  const upcomingAppointments = getUpcomingAppointments();
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <Flex justify="between" align="center" className="mb-6">
         <Heading size="6">My Appointments</Heading>
-        <Button onClick={() => router.push("/appointments/make-appointments")}>
+        <Button onClick={() => router.push("/appointments/book-appointments")}>
           Book New Appointment
         </Button>
       </Flex>
       
-      {appointments.length === 0 ? (
+      {upcomingAppointments.length === 0 ? (
         <div className="text-center py-12">
-          <Text size="5" className="mb-4">You have no appointments</Text>
-          <Button onClick={() => router.push("/appointments/make-appointments")}>
-            Book an Appointment
-          </Button>
+          <Text size="5" className="mb-4">You have no upcoming appointments</Text>
         </div>
       ) : (
-        <>
-          {upcomingAppointments.length > 0 && (
-            <div className="mb-8">
-              <Heading size="4" className="mb-4">Upcoming Appointments</Heading>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {upcomingAppointments.map(appointment => (
-                  <AppointmentCard
-                    key={appointment.id}
-                    appointment={appointment}
-                    onCancel={handleCancelAppointment}
-                    isCancelling={cancellingId === appointment.id}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {pastAppointments.length > 0 && (
-            <div>
-              <Heading size="4" className="mb-4">Past Appointments</Heading>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {pastAppointments.map(appointment => (
-                  <AppointmentCard
-                    key={appointment.id}
-                    appointment={appointment}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </>
+        <div>
+          <Heading size="4" className="mb-4">Upcoming Appointments</Heading>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {upcomingAppointments.map(appointment => (
+              <AppointmentCard
+                key={appointment.id}
+                appointment={appointment}
+                onCancel={handleCancelAppointment}
+                isCancelling={cancellingId === appointment.id}
+              />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

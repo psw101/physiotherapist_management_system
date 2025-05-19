@@ -35,6 +35,9 @@ model User {
   // Add relation to Patient model
   patientProfile Patient?
 
+  // Add this relation
+  cart Cart?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -219,4 +222,30 @@ model AppointmentSlot {
 
   @@unique([date, startTime, physiotherapistId]) // Ensure no duplicate slots
   @@index([date]) // Index for faster queries by date
+}
+
+// These models should be added to your schema.prisma file
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String // Store as string to match your product IDs
+  name      String // Store name for easier access and display
+  price     Float // Store price at time of adding to cart
+  quantity  Int
+  imageUrl  String? // Optional image URL
+  option    String // For variations like size, color, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cartId])
 }

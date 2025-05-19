@@ -31,6 +31,55 @@ export async function POST(request: Request) {
       );
     }
     
+    // Validate slotId - this is required to connect appointment to slot
+    if (!data.slotId) {
+      console.error("Missing slotId in request");
+      return NextResponse.json(
+        { error: "Appointment slot ID is required" },
+        { status: 400 }
+      );
+    }
+    
+    // Convert slotId to a number if it's a string
+    const slotId = typeof data.slotId === 'string' ? parseInt(data.slotId) : data.slotId;
+    
+    if (isNaN(slotId)) {
+      console.error("Invalid slotId format:", data.slotId);
+      return NextResponse.json(
+        { error: "Invalid appointment slot ID format" },
+        { status: 400 }
+      );
+    }
+    
+    // Verify the slot exists and is available
+    const slot = await prisma.appointmentSlot.findUnique({
+      where: { id: slotId }
+    });
+    
+    if (!slot) {
+      console.error("Slot not found:", slotId);
+      return NextResponse.json(
+        { error: "Appointment slot not found" },
+        { status: 404 }
+      );
+    }
+    
+    if (!slot.isAvailable) {
+      console.error("Slot is not available:", slotId);
+      return NextResponse.json(
+        { error: "This appointment slot is no longer available" },
+        { status: 400 }
+      );
+    }
+    
+    if (slot.bookedCount >= slot.capacity) {
+      console.error("Slot is at full capacity:", slotId);
+      return NextResponse.json(
+        { error: "This appointment slot is fully booked" },
+        { status: 400 }
+      );
+    }
+    
     // Set default fee
     const fee = Number(data.fee || 2500);
     
@@ -52,6 +101,7 @@ export async function POST(request: Request) {
     
     console.log("Creating appointment with data:", {
       patientId: numericPatientId,
+      slotId: slotId,
       appointmentDate: appointmentDate.toISOString(),
       startTime: data.startTime,
       duration: Number(data.duration || 60),
@@ -60,21 +110,44 @@ export async function POST(request: Request) {
       fee
     });
     
-    // Create the appointment with explicit type conversions
-    const appointment = await prisma.appointment.create({
-      data: {
-        patientId: numericPatientId,
-        appointmentDate,
-        startTime: data.startTime || "10:00",
-        duration: Number(data.duration || 60),
-        status: data.status || "pending",
-        reason: data.reason || "Physiotherapy session",
-        paymentStatus: "unpaid",
-        fee
-      }
-    });
+    // Use a transaction to create the appointment and update the slot's bookedCount
+    const [appointment, updatedSlot] = await prisma.$transaction([
+      // Create the appointment with explicit type conversions
+      prisma.appointment.create({
+        data: {
+          patientId: numericPatientId,
+          appointmentDate,
+          startTime: data.startTime || "10:00",
+          duration: Number(data.duration || 60),
+          status: data.status || "pending",
+          reason: data.reason || "Physiotherapy session",
+          paymentStatus: "unpaid",
+          fee,
+          
+          // Connect to the appointment slot using the correct field name
+          // from your Prisma schema (likely "slotId")
+          slotId: slotId,
+          
+          // Also connect to physiotherapist if available from slot
+          physiotherapistId: slot.physiotherapistId
+        }
+      }),
+      
+      // Increment the bookedCount of the slot
+      prisma.appointmentSlot.update({
+        where: { id: slotId },
+        data: {
+          bookedCount: {
+            increment: 1
+          },
+          // If we reach capacity, can also mark as unavailable
+          isAvailable: slot.bookedCount + 1 < slot.capacity
+        }
+      })
+    ]);
     
     console.log("Created appointment:", appointment);
+    console.log("Updated slot:", updatedSlot);
     
     return NextResponse.json(appointment);
   } catch (error) {

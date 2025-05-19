@@ -4,14 +4,52 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { IoChevronBackOutline, IoTrashOutline } from "react-icons/io5";
+import { useSession } from "next-auth/react";
+import { AlertCircle } from "lucide-react"; // Or use any icon library you prefer
 
 export default function CartPage() {
   const router = useRouter();
-  const { cart, removeFromCart, updateQuantity, totalPrice } = useCart();
+  const { data: session, status } = useSession();
+  const { cart, removeFromCart, updateQuantity, totalPrice, isLoading, error } = useCart();
   
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-16 px-4 text-center">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mx-auto mb-8"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto mb-12"></div>
+          <div className="h-10 bg-gray-200 rounded w-1/4 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+  
+  // Show error banner if there's an error
+  const errorBanner = error ? (
+    <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-4 mb-6 flex items-start">
+      <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+      <div>
+        <p className="font-medium">There was a problem with your cart</p>
+        <p className="text-sm mt-1">{error}</p>
+      </div>
+    </div>
+  ) : null;
+  
+  // Prompt login for checkout
+  const handleCheckout = () => {
+    if (status === "unauthenticated") {
+      router.push("/Login?redirect=/checkout");
+    } else {
+      router.push("/checkout");
+    }
+  };
+  
+  // Show empty cart message if cart is empty
   if (cart.length === 0) {
     return (
       <div className="container mx-auto py-16 px-4 text-center">
+        {errorBanner}
         <h1 className="text-2xl font-bold mb-6">Your Cart is Empty</h1>
         <p className="mb-8">You haven't added any products to your cart yet.</p>
         <Link 
@@ -27,9 +65,12 @@ export default function CartPage() {
   
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
+      {errorBanner}
       <h1 className="text-2xl font-bold mb-8">Your Shopping Cart</h1>
       
+      {/* Cart contents section */}
       <div className="grid md:grid-cols-3 gap-8">
+        {/* Cart items display */}
         <div className="md:col-span-2 space-y-4">
           {cart.map((item) => (
             <div key={`${item.id}-${item.option}`} className="bg-white rounded-lg shadow p-4 grid grid-cols-[100px_1fr] gap-4">
@@ -75,6 +116,7 @@ export default function CartPage() {
           ))}
         </div>
         
+        {/* Order summary panel */}
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-medium mb-4">Order Summary</h3>
           
@@ -94,11 +136,18 @@ export default function CartPage() {
             <span>Rs. {totalPrice.toLocaleString()}</span>
           </div>
           
+          {/* Display login notice for guests */}
+          {status === "unauthenticated" && (
+            <div className="text-sm text-gray-600 mb-4 bg-gray-50 p-3 rounded border">
+              You'll need to log in to complete your purchase
+            </div>
+          )}
+          
           <button
-            onClick={() => router.push("/checkout")}
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md font-medium transition"
+            onClick={handleCheckout}
+            className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md font-medium transition"
           >
-            Proceed to Checkout
+            {status === "unauthenticated" ? "Sign In to Checkout" : "Proceed to Checkout"}
           </button>
           
           <Link href="/products/view-products">

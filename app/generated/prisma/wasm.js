@@ -263,6 +263,26 @@ exports.Prisma.AppointmentSlotScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CartScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CartItemScalarFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  name: 'name',
+  price: 'price',
+  quantity: 'quantity',
+  imageUrl: 'imageUrl',
+  option: 'option',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -384,6 +404,20 @@ exports.Prisma.AppointmentSlotOrderByRelevanceFieldEnum = {
   endTime: 'endTime'
 };
 
+exports.Prisma.CartOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId'
+};
+
+exports.Prisma.CartItemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  option: 'option'
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -396,7 +430,9 @@ exports.Prisma.ModelName = {
   Appointment: 'Appointment',
   Payment: 'Payment',
   Physiotherapist: 'Physiotherapist',
-  AppointmentSlot: 'AppointmentSlot'
+  AppointmentSlot: 'AppointmentSlot',
+  Cart: 'Cart',
+  CartItem: 'CartItem'
 };
 
 /**

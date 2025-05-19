@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
       where.isAvailable = available === "true";
     }
     
-    // Get slots with booking information
+    // Get slots with booking information, including appointments data
     const slots = await prisma.appointmentSlot.findMany({
       where,
       orderBy: [
@@ -58,18 +58,55 @@ export async function GET(request: NextRequest) {
         { startTime: "asc" }
       ],
       include: {
+        physiotherapist: {
+          select: {
+            name: true,
+            specialization: true
+          }
+        },
         _count: {
           select: { appointments: true }
+        },
+        // Include appointments to count by status
+        appointments: {
+          select: {
+            id: true,
+            status: true,
+            paymentStatus: true
+          }
         }
       }
     });
     
     // Format response for easier consumption
-    const formattedSlots = slots.map(slot => ({
-      ...slot,
-      isFull: slot.bookedCount >= slot.capacity,
-      appointmentCount: slot._count.appointments
-    }));
+    const formattedSlots = slots.map(slot => {
+      // Count pending appointments
+      const pendingAppointments = slot.appointments.filter(
+        appointment => appointment.status.toLowerCase() === "pending"
+      ).length;
+      
+      // Count scheduled appointments
+      const scheduledAppointments = slot.appointments.filter(
+        appointment => appointment.status.toLowerCase() === "scheduled"
+      ).length;
+      
+      // Count appointments by payment status
+      const unpaidAppointments = slot.appointments.filter(
+        appointment => appointment.paymentStatus.toLowerCase() === "unpaid"
+      ).length;
+      
+      return {
+        ...slot,
+        isFull: slot.bookedCount >= slot.capacity,
+        appointmentCount: slot._count.appointments,
+        pendingAppointments,
+        scheduledAppointments,
+        activeAppointments: pendingAppointments + scheduledAppointments,
+        unpaidAppointments,
+        physiotherapistName: slot.physiotherapist?.name || "Unassigned",
+        remainingCapacity: Math.max(0, slot.capacity - slot.bookedCount)
+      };
+    });
     
     return NextResponse.json(formattedSlots);
   } catch (error) {

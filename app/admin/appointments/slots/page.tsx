@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Heading, Text, Box, Card, Dialog, Flex, Table, IconButton, Switch, TextField, Badge, Checkbox } from "@radix-ui/themes";
+import { Button, Heading, Text, Box, Card, Dialog, Flex, Table, IconButton, Switch, TextField, Badge, Checkbox, Tooltip } from "@radix-ui/themes";
 import axios from "axios";
 import { CalendarIcon, PlusIcon, ClockIcon, TrashIcon, UserGroupIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import { useForm } from "react-hook-form";
@@ -197,50 +197,74 @@ export default function AppointmentSlotsPage() {
           </Text>
         </Card>
       ) : (
-        <Table.Root variant="surface">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>Date</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Time</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Capacity</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Booked</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Available</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {slots.map((slot) => (
-              <Table.Row key={slot.id}>
-                <Table.Cell>
-                  <Text weight="medium">
-                    {formatDate(slot.date)}
-                  </Text>
-                </Table.Cell>
-                <Table.Cell>
-                  <Text>
-                    {slot.startTime} - {slot.endTime}
-                  </Text>
-                </Table.Cell>
-                <Table.Cell>{slot.capacity}</Table.Cell>
-                <Table.Cell>
-                  <Badge color={slot.isFull ? "red" : "blue"}>
-                    {slot.bookedCount}/{slot.capacity}
-                  </Badge>
-                </Table.Cell>
-                <Table.Cell>
-                  <Switch checked={slot.isAvailable} onCheckedChange={() => toggleAvailability(slot)} disabled={slot.isFull} />
-                </Table.Cell>
-                <Table.Cell>
-                  <Flex gap="2">
-                    <IconButton size="1" variant="soft" color="red" onClick={() => handleDeleteSlot(slot.id)} title="Delete Slot" disabled={slot.bookedCount > 0}>
-                      <TrashIcon className="h-4 w-4" />
-                    </IconButton>
-                  </Flex>
-                </Table.Cell>
+        <>
+          <Card className="mb-6 p-4">
+            <Flex gap="9" wrap="wrap">
+              <Box className="min-w-[200px]">
+                <Text size="1" color="gray">Total Slots</Text>
+                <Heading size="4">{slots.length}</Heading>
+              </Box>
+              <Box className="min-w-[200px]">
+                <Text size="1" color="gray">Total Capacity</Text>
+                <Heading size="4">{slots.reduce((sum, slot) => sum + slot.capacity, 0)}</Heading>
+              </Box>
+              <Box className="min-w-[200px]">
+                <Text size="1" color="gray">Total Booked</Text>
+                <Heading size="4">{slots.reduce((sum, slot) => sum + slot.bookedCount, 0)}</Heading>
+              </Box>
+              <Box className="min-w-[200px]">
+                <Text size="1" color="gray">Active Appointments</Text>
+                <Heading size="4">{slots.reduce((sum, slot) => sum + slot.activeAppointments, 0)}</Heading>
+              </Box>
+            </Flex>
+          </Card>
+
+          <Table.Root variant="surface">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeaderCell>Date</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Time</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Capacity</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Booked</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Active</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Available</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
+            </Table.Header>
+            <Table.Body>
+              {slots.map((slot) => (
+                <Table.Row key={slot.id}>
+                  <Table.Cell>
+                    <Text weight="medium">
+                      {formatDate(slot.date)}
+                    </Text>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Text>
+                      {slot.startTime} - {slot.endTime}
+                    </Text>
+                  </Table.Cell>
+                  <Table.Cell>{slot.capacity}</Table.Cell>
+                  <Table.Cell>
+                    <Badge color={slot.isFull ? "red" : "blue"}>
+                      {slot.bookedCount}/{slot.capacity}
+                    </Badge>
+                  </Table.Cell>  
+                  <Table.Cell>
+                    <Switch checked={slot.isAvailable} onCheckedChange={() => toggleAvailability(slot)} disabled={slot.isFull} />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Flex gap="2">
+                      <IconButton size="1" variant="soft" color="red" onClick={() => handleDeleteSlot(slot.id)} title="Delete Slot" disabled={slot.bookedCount > 0}>
+                        <TrashIcon className="h-4 w-4" />
+                      </IconButton>
+                    </Flex>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </>
       )}
 
       {/* Add Slot Dialog */}
