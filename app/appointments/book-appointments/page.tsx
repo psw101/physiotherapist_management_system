@@ -1,14 +1,11 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { format } from "date-fns";
-import { loadStripe } from "@stripe/stripe-js";
-import { Dialog, Transition } from '@headlessui/react';
-
-// Load Stripe outside of component render
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+import { format, addDays } from "date-fns";
+import { Card, Button, Text, Flex, Box } from "@radix-ui/themes";
+import { CalendarIcon, ClockIcon, CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 
 interface AppointmentSlot {
   id: string;
@@ -20,15 +17,11 @@ interface AppointmentSlot {
 
 export default function MakeAppointment() {
   const router = useRouter();
-  const [appointmentSlots, setAppointmentSlots] = useState<AppointmentSlot[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [appointmentSlots, setAppointmentSlots] = useState<AppointmentSlot[]>([]);
   const [bookingSlot, setBookingSlot] = useState<AppointmentSlot | null>(null);
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  
-  // Add state for confirmation dialog
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<AppointmentSlot | null>(null);
+  const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
 
   // Fetch available slots when component mounts
   useEffect(() => {
@@ -72,22 +65,12 @@ export default function MakeAppointment() {
     };
     
     fetchAvailableSlots();
-  }, []);
+  }, [retryCount]);
   
-  // Handle initiating booking process
-  const handleInitiateBooking = (slot: AppointmentSlot) => {
-    setSelectedSlot(slot);
-    setConfirmDialogOpen(true);
-  };
-
-  // Handle booking an appointment after confirmation
-  const handleBookAppointment = async () => {
-    if (!selectedSlot) return;
-    
+  // Handle booking an appointment
+  const handleBookAppointment = async (slot: AppointmentSlot) => {
     try {
-      setBookingSlot(selectedSlot);
-      setIsProcessingPayment(true);
-      setConfirmDialogOpen(false);
+      setBookingSlot(slot);
       
       // Get patientId from localStorage and ensure it's a number
       let patientId = 6; // Default to your test patient ID
@@ -98,63 +81,57 @@ export default function MakeAppointment() {
       }
       
       // Make sure slotId is correctly formatted as a number if possible
-      const slotId = typeof selectedSlot.id === 'string' ? parseInt(selectedSlot.id) : selectedSlot.id;
+      // Backend expects it as a number, but frontend may have it as a string
+      const slotId = typeof slot.id === 'string' ? parseInt(slot.id) : slot.id;
       
       if (isNaN(slotId)) {
-        throw new Error(`Invalid slot ID: ${selectedSlot.id}`);
+        throw new Error(`Invalid slot ID: ${slot.id}`);
       }
       
-      // Generate a unique reference for this booking
-      const bookingRef = `APT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const appointmentData = {
+        appointmentDate: slot.date,
+        startTime: slot.time,
+        duration: 60,
+        status: "pending",
+        reason: "Physiotherapy session",
+        patientId: patientId,
+        slotId: slotId,
+        fee: 2500 // Include standard fee
+      };
       
-      // Skip temporary appointment creation and go straight to checkout
-      const checkoutResponse = await axios.post("/api/checkout", {
-        items: [
-          {
-            name: `Physiotherapy Appointment - ${format(new Date(selectedSlot.date), "MMM dd, yyyy")} at ${selectedSlot.time}`,
-            description: "60-minute physiotherapy session",
-            price: 2500, // LKR 2,500
-            quantity: 1
-          }
-        ],
-        orderId: bookingRef,
-        orderDetails: {
-          type: "appointment",
-          appointmentDate: selectedSlot.date,
-          appointmentTime: selectedSlot.time,
-          slotId: slotId,
-          patientId: patientId,
-          duration: 60,
-          reason: "Physiotherapy session",
-          fee: 2500
-        }
-      });
+      console.log("Sending appointment data:", appointmentData);
       
-      // Get the Stripe checkout session
-      const { id: checkoutSessionId } = checkoutResponse.data;
+      // Disable the button for this slot during the API call
+      setBookingSlot(slot);
       
-      if (!checkoutSessionId) {
-        throw new Error("Failed to create checkout session");
+      // Add explicit error handling for the appointment creation
+      const response = await axios.post("/api/appointments", appointmentData);
+      
+      console.log("Appointment created:", response.data);
+      
+      // Get the appointment ID from the response
+      const appointmentId = response.data.id;
+      
+      if (!appointmentId) {
+        throw new Error("No appointment ID returned from server");
       }
       
-      console.log("Redirecting to Stripe checkout...");
+      // After successful booking, update local state to mark slot as booked
+      setAppointmentSlots(prev => 
+        prev.map(s => 
+          s.id === slot.id 
+            ? { ...s, isAvailable: false, activeAppointments: s.activeAppointments + 1 }
+            : s
+        )
+      );
       
-      // Redirect to Stripe Checkout
-      const stripe = await stripePromise;
-      if (!stripe) {
-        throw new Error("Failed to load Stripe");
-      }
+      // Show success message
+      alert("Appointment booked successfully! Redirecting to payment page...");
       
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: checkoutSessionId
-      });
-      
-      if (error) {
-        throw new Error(error.message);
-      }
-      
+      // Redirect to payment page with the appointment ID
+      router.push(`/appointments/payment/${appointmentId}`);
     } catch (err) {
-      console.error("Failed to process appointment booking:", err);
+      console.error("Failed to book appointment:", err);
       
       // Show detailed error message
       if (axios.isAxiosError(err) && err.response) {
@@ -165,11 +142,14 @@ export default function MakeAppointment() {
       }
     } finally {
       setBookingSlot(null);
-      setIsProcessingPayment(false);
     }
   };
 
-  // Render your page components
+  // Handler to manually refresh the data
+  const handleRefresh = () => {
+    setRetryCount(prev => prev + 1);
+  };
+
   return (
     <div className="p-6 bg-slate-50">
       <h1 className="text-2xl font-bold mb-6 text-slate-800">Available Appointments</h1>
@@ -178,12 +158,14 @@ export default function MakeAppointment() {
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded text-red-600">
           <p>{error}</p>
           <div className="mt-3">
-            <button 
-              onClick={() => setLoading(true)} 
-              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            <Button 
+              onClick={handleRefresh} 
+              variant="soft" 
+              color="gray" 
+              size="2"
             >
               Refresh Appointments
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -196,142 +178,61 @@ export default function MakeAppointment() {
       ) : appointmentSlots.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {appointmentSlots.map((slot) => (
-            <div key={slot.id} className={`p-4 rounded-lg shadow bg-white ${!slot.isAvailable ? 'opacity-60' : ''}`}>
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="flex items-center mb-1">
-                    <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span className="font-medium">{format(new Date(slot.date), "MMM dd, yyyy")}</span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{format(new Date(slot.date), "EEEE").toUpperCase()} {slot.time}</span>
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    Active Appointments: {slot.activeAppointments}
-                  </div>
-                </div>
-                
-                <div className="flex flex-col items-end">
-                  <div className="mb-2">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${slot.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {slot.isAvailable ? "Available" : "Booked"}
-                    </span>
-                  </div>
+            <Card key={slot.id} className={`p-4 ${!slot.isAvailable ? 'opacity-60' : ''}`}>
+              <Flex justify="between" align="center">
+                <Flex direction="column" gap="1">
+                  <Flex align="center" gap="2">
+                    <CalendarIcon />
+                    <Text weight="medium">{format(new Date(slot.date), "MMM dd, yyyy")}</Text>
+                  </Flex>
+                  <Flex align="center" gap="2">
+                    <ClockIcon />
+                    <Text>{format(new Date(slot.date), "EEEE").toUpperCase()} {slot.time}</Text>
+                  </Flex>
                   
-                  <button 
-                    disabled={!slot.isAvailable || !!bookingSlot || isProcessingPayment} 
-                    onClick={() => handleInitiateBooking(slot)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  <Text size="1" color="gray" className="mt-1">
+                    Active Appointments: {slot.activeAppointments}
+                  </Text>
+                </Flex>
+                
+                <Flex direction="column" align="end" gap="2">
+                  <Flex align="center" gap="1">
+                    {slot.isAvailable ? (
+                      <CheckCircledIcon className="text-green-500" />
+                    ) : (
+                      <CrossCircledIcon className="text-red-500" />
+                    )}
+                    <Text color={slot.isAvailable ? "green" : "red"} weight="medium">
+                      {slot.isAvailable ? "Available" : "Booked"}
+                    </Text>
+                  </Flex>
+                  
+                  <Button 
+                    disabled={!slot.isAvailable || !!bookingSlot} 
+                    onClick={() => handleBookAppointment(slot)}
+                    color="indigo"
+                    size="2"
                   >
-                    {bookingSlot?.id === slot.id ? "Processing..." : "Book Appointment"}
-                  </button>
-                </div>
-              </div>
-            </div>
+                    {bookingSlot?.id === slot.id ? "Booking..." : "Book"}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Card>
           ))}
         </div>
       ) : !error ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg">
-          <p className="text-lg text-gray-500">No available appointments at this time.</p>
-          <button 
-            onClick={() => setLoading(true)} 
-            className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+        <Box className="p-8 text-center bg-gray-50 rounded-lg">
+          <Text size="3" color="gray">No available appointments at this time.</Text>
+          <Button 
+            onClick={handleRefresh} 
+            variant="soft" 
+            color="gray" 
+            className="mt-4"
           >
             Refresh Appointments
-          </button>
-        </div>
+          </Button>
+        </Box>
       ) : null}
-      
-      {/* Confirmation Dialog */}
-      <Transition appear show={confirmDialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setConfirmDialogOpen(false)}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                    Confirm Your Appointment
-                  </Dialog.Title>
-                  
-                  {selectedSlot && (
-                    <div className="mt-4">
-                      <div className="mb-4 p-4 bg-blue-50 rounded-lg">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium">Date:</span>
-                          <span>{format(new Date(selectedSlot.date), "MMMM dd, yyyy")}</span>
-                        </div>
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium">Day:</span>
-                          <span>{format(new Date(selectedSlot.date), "EEEE")}</span>
-                        </div>
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium">Time:</span>
-                          <span>{selectedSlot.time}</span>
-                        </div>
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium">Duration:</span>
-                          <span>60 minutes</span>
-                        </div>
-                        <div className="flex justify-between items-center mt-4 pt-4 border-t border-blue-100">
-                          <span className="font-bold">Fee:</span>
-                          <span className="font-bold">LKR 2,500.00</span>
-                        </div>
-                      </div>
-                      
-                      <p className="text-sm text-gray-500 mb-4">
-                        By clicking "Confirm & Pay", you agree to our terms and conditions for appointments. 
-                        Payment is required to secure your booking.
-                      </p>
-                      
-                      <div className="mt-6 flex justify-between gap-3">
-                        <button
-                          type="button"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-300 focus:outline-none"
-                          onClick={() => setConfirmDialogOpen(false)}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="button"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none"
-                          onClick={handleBookAppointment}
-                        >
-                          Confirm & Pay
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
     </div>
   );
 }

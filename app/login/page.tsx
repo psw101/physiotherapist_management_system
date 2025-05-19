@@ -21,7 +21,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +64,7 @@ export default function LoginPage() {
         router.push("/admin");
       } else {
         console.log("Redirecting to user dashboard");
-        router.push("/dashboard");
+        router.push("/");
       }
     }
     } catch (error) {
