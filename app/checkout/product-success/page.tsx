@@ -15,50 +15,62 @@ export default function ProductSuccessPage() {
     const transactionId = typeof sessionData.payment_intent === 'object' ? 
       sessionData.payment_intent.id : sessionData.payment_intent;
     
+    console.log("Transaction ID:", transactionId);
+    
     try {
       // First check if payment with this transaction ID already exists
-      const checkResponse = await axios.get(`/api/payment/check?transactionId=${transactionId}`);
+      const checkUrl = `/api/payment/check?transactionId=${transactionId}`;
+      console.log("Checking payment at URL:", checkUrl);
       
-      if (checkResponse.data.exists) {
-        console.log("Payment already processed:", checkResponse.data.payment);
-        return; // Exit early if payment already exists
+      try {
+        const checkResponse = await axios.get(checkUrl);
+        console.log("Check response:", checkResponse.data);
+        
+        if (checkResponse.data.exists) {
+          console.log("Payment already exists, skipping processing");
+          return;
+        }
+      } catch (checkError: any) {
+        console.error("Error checking payment:", checkError.message);
+        console.error("Response:", checkError.response?.data);
+        // Continue anyway to create the payment
       }
       
-      // Continue with order creation since this is a new payment
-      console.log("Creating product order with data:", {
-        productId: orderDetails.productId,
-        quantity: orderDetails.quantity || 1,
-        totalPrice: orderDetails.totalPrice || sessionData.amount_total / 100,
-        customizations: orderDetails.customizations || {},
-        status: "pending"
-      });
-      
       // Create the order
-      const orderResp = await axios.post("/api/orders", {
+      const orderData = {
         productId: parseInt(orderDetails.productId),
         quantity: parseInt(orderDetails.quantity || "1"),
         totalPrice: parseFloat((sessionData.amount_total / 100).toFixed(2)),
         customizations: orderDetails.customizations || {},
         status: "pending"
-      });
+      };
       
-      console.log("Product order created successfully:", orderResp.data);
-      const orderId = orderResp.data.id;
+      const orderUrl = "/api/orders";
+      console.log("Creating order at URL:", orderUrl);
+      console.log("Order data:", orderData);
       
-      // Create the payment record
-      const paymentResp = await axios.post("/api/payment/create", {
-        productOrderId: orderId,
+      const orderResp = await axios.post(orderUrl, orderData);
+      console.log("Order created:", orderResp.data);
+      
+      // Create payment record
+      const paymentData = {
+        productOrderId: orderResp.data.id,
         amount: parseFloat((sessionData.amount_total / 100).toFixed(2)),
         method: "card",
         status: "completed",
         transactionId: transactionId,
-        paymentType: "product",
-        isAdvancePayment: Boolean(orderDetails.advancePayment)
-      });
+        paymentType: "product"
+      };
       
-      console.log("Payment record created successfully:", paymentResp.data);
+      const paymentUrl = "/api/payment/create";
+      console.log("Creating payment at URL:", paymentUrl);
+      console.log("Payment data:", paymentData);
+      
+      const paymentResp = await axios.post(paymentUrl, paymentData);
+      console.log("Payment created:", paymentResp.data);
     } catch (error: any) {
       console.error("Error processing payment:", error);
+      console.error("Error response:", error.response?.data);
       throw new Error(`Payment processing failed: ${error.message}`);
     }
   };

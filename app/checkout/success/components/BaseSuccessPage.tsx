@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // Add useRef
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
 import Link from "next/link";
 
@@ -21,17 +21,18 @@ export default function BaseSuccessPage({
   const [error, setError] = useState("");
   const [sessionData, setSessionData] = useState<any>(null);
   const [success, setSuccess] = useState(false);
+  const hasProcessed = useRef(false); // Add a ref to track if we've processed payment
 
   useEffect(() => {
+    // Skip if already processed or no session ID
+    if (hasProcessed.current || !sessionId) return;
+    
     const verifyCheckout = async () => {
       try {
         console.log("Starting checkout verification with session ID:", sessionId);
-
-        if (!sessionId) {
-          setError("No session ID found");
-          setLoading(false);
-          return;
-        }
+        
+        // Mark as processed immediately to prevent duplicate runs
+        hasProcessed.current = true;
 
         // Verify the session with your backend
         console.log("Fetching session data from API...");
@@ -73,7 +74,7 @@ export default function BaseSuccessPage({
     };
 
     verifyCheckout();
-  }, [sessionId, verifyPayment]);
+  }, [sessionId]); // Remove verifyPayment from dependencies
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
