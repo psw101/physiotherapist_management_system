@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("Received data:", body);
     
     // Validate request body with Zod
     const validation = patientSchema.safeParse(body);
@@ -34,40 +35,38 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Format date of birth - handle string to Date conversion
+    const dateOfBirth = body.dateOfBirth ? new Date(body.dateOfBirth) : new Date();
+    
     // Hash password once
     const hashedPassword = await bcrypt.hash(body.password, 10);
     
     // Use a transaction to ensure both records are created or none
     const result = await prisma.$transaction(async (tx) => {
-      // Create patient record
-      const patient = await tx.patient.create({
-        data: {
-          name: body.name,
-          username: body.username,
-          age: body.age,
-          contactNumber: body.contactNumber,
-          email: body.email,
-          area: body.area,
-          nic: body.nic,
-          address: body.address,
-        },
-      });
-      
-      // Create user record with proper relation to patient
+      // Create the user first
       const user = await tx.user.create({
         data: {
           name: body.name,
           username: body.username,
           email: body.email,
           hashedPassword,
-          // Use the proper relation field based on your schema
-          // Either this way:
-          patientProfile: {
-            connect: {
-              id: patient.id
-            }
-          }
-          // DO NOT use patientId directly as it's not in your schema
+          role: "PATIENT",
+        },
+      });
+      
+      // Then create the patient with reference to the user
+      const patient = await tx.patient.create({
+        data: {
+          name: body.name,
+          username: body.username,
+          dateOfBirth,
+          contactNumber: body.contactNumber,
+          email: body.email,
+          area: body.area,
+          nic: body.nic,
+          address: body.address,
+          // Connect to user using userId
+          userId: user.id
         },
       });
       
@@ -76,6 +75,7 @@ export async function POST(request: NextRequest) {
     
     // Return both created records
     return NextResponse.json({
+      message: "Registration successful",
       patient: result.patient,
       user: result.user
     }, { status: 201 });
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
     }
     
     return NextResponse.json(
-      { error: "Failed to create patient" }, 
+      { error: error instanceof Error ? error.message : "Failed to create patient" }, 
       { status: 500 }
     );
   }
@@ -107,7 +107,7 @@ export async function GET() {
       select: {
         id: true,
         name: true,
-        age: true,
+        dateOfBirth: true,
         contactNumber: true,
         email: true,
         area: true,

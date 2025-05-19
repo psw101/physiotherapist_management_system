@@ -1,8 +1,0 @@
--- AlterTable
-ALTER TABLE `appointments` MODIFY `address` VARCHAR(191) NULL,
-    MODIFY `age` INTEGER NULL,
-    MODIFY `contactNumber` VARCHAR(191) NULL,
-    MODIFY `email` VARCHAR(191) NULL,
-    MODIFY `name` VARCHAR(191) NULL,
-    MODIFY `nic` VARCHAR(191) NULL,
-    MODIFY `appointmentDate` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3);

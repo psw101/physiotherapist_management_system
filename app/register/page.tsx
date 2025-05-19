@@ -81,9 +81,7 @@ const Patients = () => {
           <Callout.Icon>
             <CheckCircledIcon />
           </Callout.Icon>
-          <Callout.Text>
-            Registration successful! Redirecting to home page...
-          </Callout.Text>
+          <Callout.Text>Registration successful! Redirecting to home page...</Callout.Text>
         </Callout.Root>
       )}
 
@@ -129,11 +127,7 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Confirm Password
           </Text>
-          <TextField.Root
-            type="password"
-            placeholder="Confirm your password"
-            {...register("confirmPassword")}
-          />
+          <TextField.Root type="password" placeholder="Confirm your password" {...register("confirmPassword")} />
           {errors.confirmPassword && (
             <Text color="red" size="1">
               {errors.confirmPassword.message}
@@ -175,11 +169,7 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Email
           </Text>
-          <TextField.Root
-            type="email"
-            placeholder="Enter email address"
-            {...register("email")}
-          />
+          <TextField.Root type="email" placeholder="Enter email address" {...register("email")} />
           {errors.email && (
             <Text color="red" size="1">
               {errors.email.message}
@@ -222,18 +212,20 @@ const Patients = () => {
             </Text>
           )}
         </div>
+   
+   
+        <input type="date" className="w-full border rounded p-2" {...register("dateOfBirth")} />
+        {errors.dateOfBirth && (
+          <Text color="red" size="1">
+            {errors.dateOfBirth.message}
+          </Text>
+        )}
 
         <div className="flex gap-4 pt-4">
           <Button type="submit" disabled={isSubmitting || success}>
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
-          <Button
-            type="button"
-            variant="soft"
-            color="gray"
-            onClick={() => reset()}
-            disabled={isSubmitting || success}
-          >
+          <Button type="button" variant="soft" color="gray" onClick={() => reset()} disabled={isSubmitting || success}>
             Cancel
           </Button>
         </div>

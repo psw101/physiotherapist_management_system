@@ -58,12 +58,6 @@ export async function GET(request: NextRequest) {
         { startTime: "asc" }
       ],
       include: {
-        physiotherapist: {
-          select: {
-            name: true,
-            specialization: true
-          }
-        },
         _count: {
           select: { appointments: true }
         },
@@ -92,7 +86,7 @@ export async function GET(request: NextRequest) {
       
       // Count appointments by payment status
       const unpaidAppointments = slot.appointments.filter(
-        appointment => appointment.paymentStatus.toLowerCase() === "unpaid"
+        appointment => appointment.paymentStatus!.toLowerCase() === "unpaid"
       ).length;
       
       return {
@@ -103,7 +97,7 @@ export async function GET(request: NextRequest) {
         scheduledAppointments,
         activeAppointments: pendingAppointments + scheduledAppointments,
         unpaidAppointments,
-        physiotherapistName: slot.physiotherapist?.name || "Unassigned",
+        // physiotherapistName: slot.physiotherapist?.name || "Unassigned",
         remainingCapacity: Math.max(0, slot.capacity - slot.bookedCount)
       };
     });

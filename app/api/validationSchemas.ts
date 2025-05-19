@@ -51,6 +51,7 @@ const patientSchema = z.object({
         .min(1, { message: "NIC/Passport number is required" }),
     address: z.string()
         .min(5, { message: "Please provide a complete address" }),
+    dateOfBirth: z.string().min(1, { message: "Date of birth is required" }),
 });
 
 // Updated Appointment validation schema

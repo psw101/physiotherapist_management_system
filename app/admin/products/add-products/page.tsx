@@ -102,11 +102,10 @@ const AddProductPage = () => {
       setSubmitting(true);
       setError("");
 
-      // Create the product data with defaults for arrays
       const productData = {
         ...data,
-        specification: specs || [], // Ensure it's always an array
-        customOptions: customOptions || [], // Ensure it's always an array
+        specification: specs || [], 
+        customOptions: customOptions || [], 
       };
 
       await axios.post("/api/products", productData);

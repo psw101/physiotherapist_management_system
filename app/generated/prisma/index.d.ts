@@ -64,25 +64,10 @@ export type Appointment = $Result.DefaultSelection<Prisma.$AppointmentPayload>
  */
 export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
 /**
- * Model Physiotherapist
- * 
- */
-export type Physiotherapist = $Result.DefaultSelection<Prisma.$PhysiotherapistPayload>
-/**
  * Model AppointmentSlot
  * 
  */
 export type AppointmentSlot = $Result.DefaultSelection<Prisma.$AppointmentSlotPayload>
-/**
- * Model Cart
- * 
- */
-export type Cart = $Result.DefaultSelection<Prisma.$CartPayload>
-/**
- * Model CartItem
- * 
- */
-export type CartItem = $Result.DefaultSelection<Prisma.$CartItemPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -310,16 +295,6 @@ export class PrismaClient<
   get payment(): Prisma.PaymentDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.physiotherapist`: Exposes CRUD operations for the **Physiotherapist** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Physiotherapists
-    * const physiotherapists = await prisma.physiotherapist.findMany()
-    * ```
-    */
-  get physiotherapist(): Prisma.PhysiotherapistDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.appointmentSlot`: Exposes CRUD operations for the **AppointmentSlot** model.
     * Example usage:
     * ```ts
@@ -328,26 +303,6 @@ export class PrismaClient<
     * ```
     */
   get appointmentSlot(): Prisma.AppointmentSlotDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.cart`: Exposes CRUD operations for the **Cart** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Carts
-    * const carts = await prisma.cart.findMany()
-    * ```
-    */
-  get cart(): Prisma.CartDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.cartItem`: Exposes CRUD operations for the **CartItem** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more CartItems
-    * const cartItems = await prisma.cartItem.findMany()
-    * ```
-    */
-  get cartItem(): Prisma.CartItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -798,10 +753,7 @@ export namespace Prisma {
     ProductOrder: 'ProductOrder',
     Appointment: 'Appointment',
     Payment: 'Payment',
-    Physiotherapist: 'Physiotherapist',
-    AppointmentSlot: 'AppointmentSlot',
-    Cart: 'Cart',
-    CartItem: 'CartItem'
+    AppointmentSlot: 'AppointmentSlot'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -820,7 +772,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "patient" | "product" | "productOrder" | "appointment" | "payment" | "physiotherapist" | "appointmentSlot" | "cart" | "cartItem"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "patient" | "product" | "productOrder" | "appointment" | "payment" | "appointmentSlot"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1484,72 +1436,6 @@ export namespace Prisma {
           }
         }
       }
-      Physiotherapist: {
-        payload: Prisma.$PhysiotherapistPayload<ExtArgs>
-        fields: Prisma.PhysiotherapistFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.PhysiotherapistFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.PhysiotherapistFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>
-          }
-          findFirst: {
-            args: Prisma.PhysiotherapistFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.PhysiotherapistFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>
-          }
-          findMany: {
-            args: Prisma.PhysiotherapistFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>[]
-          }
-          create: {
-            args: Prisma.PhysiotherapistCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>
-          }
-          createMany: {
-            args: Prisma.PhysiotherapistCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.PhysiotherapistDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>
-          }
-          update: {
-            args: Prisma.PhysiotherapistUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>
-          }
-          deleteMany: {
-            args: Prisma.PhysiotherapistDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.PhysiotherapistUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.PhysiotherapistUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PhysiotherapistPayload>
-          }
-          aggregate: {
-            args: Prisma.PhysiotherapistAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePhysiotherapist>
-          }
-          groupBy: {
-            args: Prisma.PhysiotherapistGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PhysiotherapistGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.PhysiotherapistCountArgs<ExtArgs>
-            result: $Utils.Optional<PhysiotherapistCountAggregateOutputType> | number
-          }
-        }
-      }
       AppointmentSlot: {
         payload: Prisma.$AppointmentSlotPayload<ExtArgs>
         fields: Prisma.AppointmentSlotFieldRefs
@@ -1613,138 +1499,6 @@ export namespace Prisma {
           count: {
             args: Prisma.AppointmentSlotCountArgs<ExtArgs>
             result: $Utils.Optional<AppointmentSlotCountAggregateOutputType> | number
-          }
-        }
-      }
-      Cart: {
-        payload: Prisma.$CartPayload<ExtArgs>
-        fields: Prisma.CartFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CartFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CartFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>
-          }
-          findFirst: {
-            args: Prisma.CartFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CartFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>
-          }
-          findMany: {
-            args: Prisma.CartFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>[]
-          }
-          create: {
-            args: Prisma.CartCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>
-          }
-          createMany: {
-            args: Prisma.CartCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.CartDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>
-          }
-          update: {
-            args: Prisma.CartUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>
-          }
-          deleteMany: {
-            args: Prisma.CartDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CartUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.CartUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartPayload>
-          }
-          aggregate: {
-            args: Prisma.CartAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCart>
-          }
-          groupBy: {
-            args: Prisma.CartGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CartGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CartCountArgs<ExtArgs>
-            result: $Utils.Optional<CartCountAggregateOutputType> | number
-          }
-        }
-      }
-      CartItem: {
-        payload: Prisma.$CartItemPayload<ExtArgs>
-        fields: Prisma.CartItemFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CartItemFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CartItemFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
-          }
-          findFirst: {
-            args: Prisma.CartItemFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CartItemFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
-          }
-          findMany: {
-            args: Prisma.CartItemFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
-          }
-          create: {
-            args: Prisma.CartItemCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
-          }
-          createMany: {
-            args: Prisma.CartItemCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.CartItemDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
-          }
-          update: {
-            args: Prisma.CartItemUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
-          }
-          deleteMany: {
-            args: Prisma.CartItemDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CartItemUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.CartItemUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
-          }
-          aggregate: {
-            args: Prisma.CartItemAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCartItem>
-          }
-          groupBy: {
-            args: Prisma.CartItemGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CartItemGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CartItemCountArgs<ExtArgs>
-            result: $Utils.Optional<CartItemCountAggregateOutputType> | number
           }
         }
       }
@@ -1842,10 +1596,7 @@ export namespace Prisma {
     productOrder?: ProductOrderOmit
     appointment?: AppointmentOmit
     payment?: PaymentOmit
-    physiotherapist?: PhysiotherapistOmit
     appointmentSlot?: AppointmentSlotOmit
-    cart?: CartOmit
-    cartItem?: CartItemOmit
   }
 
   /* Types for Logging */
@@ -2065,46 +1816,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type PhysiotherapistCountOutputType
-   */
-
-  export type PhysiotherapistCountOutputType = {
-    appointments: number
-    appointmentSlots: number
-  }
-
-  export type PhysiotherapistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    appointments?: boolean | PhysiotherapistCountOutputTypeCountAppointmentsArgs
-    appointmentSlots?: boolean | PhysiotherapistCountOutputTypeCountAppointmentSlotsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * PhysiotherapistCountOutputType without action
-   */
-  export type PhysiotherapistCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PhysiotherapistCountOutputType
-     */
-    select?: PhysiotherapistCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * PhysiotherapistCountOutputType without action
-   */
-  export type PhysiotherapistCountOutputTypeCountAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AppointmentWhereInput
-  }
-
-  /**
-   * PhysiotherapistCountOutputType without action
-   */
-  export type PhysiotherapistCountOutputTypeCountAppointmentSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AppointmentSlotWhereInput
-  }
-
-
-  /**
    * Count Type AppointmentSlotCountOutputType
    */
 
@@ -2132,37 +1843,6 @@ export namespace Prisma {
    */
   export type AppointmentSlotCountOutputTypeCountAppointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AppointmentWhereInput
-  }
-
-
-  /**
-   * Count Type CartCountOutputType
-   */
-
-  export type CartCountOutputType = {
-    items: number
-  }
-
-  export type CartCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    items?: boolean | CartCountOutputTypeCountItemsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CartCountOutputType without action
-   */
-  export type CartCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartCountOutputType
-     */
-    select?: CartCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CartCountOutputType without action
-   */
-  export type CartCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CartItemWhereInput
   }
 
 
@@ -2385,8 +2065,7 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     Authenticator?: boolean | User$AuthenticatorArgs<ExtArgs>
-    patientProfile?: boolean | User$patientProfileArgs<ExtArgs>
-    cart?: boolean | User$cartArgs<ExtArgs>
+    patient?: boolean | User$patientArgs<ExtArgs>
     productOrders?: boolean | User$productOrdersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -2412,8 +2091,7 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     Authenticator?: boolean | User$AuthenticatorArgs<ExtArgs>
-    patientProfile?: boolean | User$patientProfileArgs<ExtArgs>
-    cart?: boolean | User$cartArgs<ExtArgs>
+    patient?: boolean | User$patientArgs<ExtArgs>
     productOrders?: boolean | User$productOrdersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2424,8 +2102,7 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       Authenticator: Prisma.$AuthenticatorPayload<ExtArgs>[]
-      patientProfile: Prisma.$PatientPayload<ExtArgs> | null
-      cart: Prisma.$CartPayload<ExtArgs> | null
+      patient: Prisma.$PatientPayload<ExtArgs> | null
       productOrders: Prisma.$ProductOrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2783,8 +2460,7 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Authenticator<T extends User$AuthenticatorArgs<ExtArgs> = {}>(args?: Subset<T, User$AuthenticatorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthenticatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    patientProfile<T extends User$patientProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$patientProfileArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    cart<T extends User$cartArgs<ExtArgs> = {}>(args?: Subset<T, User$cartArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    patient<T extends User$patientArgs<ExtArgs> = {}>(args?: Subset<T, User$patientArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     productOrders<T extends User$productOrdersArgs<ExtArgs> = {}>(args?: Subset<T, User$productOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3241,9 +2917,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.patientProfile
+   * User.patient
    */
-  export type User$patientProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$patientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Patient
      */
@@ -3257,25 +2933,6 @@ export namespace Prisma {
      */
     include?: PatientInclude<ExtArgs> | null
     where?: PatientWhereInput
-  }
-
-  /**
-   * User.cart
-   */
-  export type User$cartArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    where?: CartWhereInput
   }
 
   /**
@@ -7227,19 +6884,17 @@ export namespace Prisma {
 
   export type PatientAvgAggregateOutputType = {
     id: number | null
-    age: number | null
   }
 
   export type PatientSumAggregateOutputType = {
     id: number | null
-    age: number | null
   }
 
   export type PatientMinAggregateOutputType = {
     id: number | null
     name: string | null
     username: string | null
-    age: number | null
+    dateOfBirth: Date | null
     contactNumber: string | null
     email: string | null
     area: string | null
@@ -7254,7 +6909,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     username: string | null
-    age: number | null
+    dateOfBirth: Date | null
     contactNumber: string | null
     email: string | null
     area: string | null
@@ -7269,7 +6924,7 @@ export namespace Prisma {
     id: number
     name: number
     username: number
-    age: number
+    dateOfBirth: number
     contactNumber: number
     email: number
     area: number
@@ -7284,19 +6939,17 @@ export namespace Prisma {
 
   export type PatientAvgAggregateInputType = {
     id?: true
-    age?: true
   }
 
   export type PatientSumAggregateInputType = {
     id?: true
-    age?: true
   }
 
   export type PatientMinAggregateInputType = {
     id?: true
     name?: true
     username?: true
-    age?: true
+    dateOfBirth?: true
     contactNumber?: true
     email?: true
     area?: true
@@ -7311,7 +6964,7 @@ export namespace Prisma {
     id?: true
     name?: true
     username?: true
-    age?: true
+    dateOfBirth?: true
     contactNumber?: true
     email?: true
     area?: true
@@ -7326,7 +6979,7 @@ export namespace Prisma {
     id?: true
     name?: true
     username?: true
-    age?: true
+    dateOfBirth?: true
     contactNumber?: true
     email?: true
     area?: true
@@ -7428,7 +7081,7 @@ export namespace Prisma {
     id: number
     name: string
     username: string
-    age: number
+    dateOfBirth: Date
     contactNumber: string
     email: string
     area: string
@@ -7436,7 +7089,7 @@ export namespace Prisma {
     address: string
     createdAt: Date
     updatedAt: Date
-    userId: string | null
+    userId: string
     _count: PatientCountAggregateOutputType | null
     _avg: PatientAvgAggregateOutputType | null
     _sum: PatientSumAggregateOutputType | null
@@ -7462,7 +7115,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     username?: boolean
-    age?: boolean
+    dateOfBirth?: boolean
     contactNumber?: boolean
     email?: boolean
     area?: boolean
@@ -7471,7 +7124,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    user?: boolean | Patient$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     appointments?: boolean | Patient$appointmentsArgs<ExtArgs>
     payments?: boolean | Patient$paymentsArgs<ExtArgs>
     _count?: boolean | PatientCountOutputTypeDefaultArgs<ExtArgs>
@@ -7483,7 +7136,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     username?: boolean
-    age?: boolean
+    dateOfBirth?: boolean
     contactNumber?: boolean
     email?: boolean
     area?: boolean
@@ -7494,9 +7147,9 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "age" | "contactNumber" | "email" | "area" | "nic" | "address" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["patient"]>
+  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "dateOfBirth" | "contactNumber" | "email" | "area" | "nic" | "address" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["patient"]>
   export type PatientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Patient$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     appointments?: boolean | Patient$appointmentsArgs<ExtArgs>
     payments?: boolean | Patient$paymentsArgs<ExtArgs>
     _count?: boolean | PatientCountOutputTypeDefaultArgs<ExtArgs>
@@ -7505,7 +7158,7 @@ export namespace Prisma {
   export type $PatientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Patient"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs>
       appointments: Prisma.$AppointmentPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
     }
@@ -7513,7 +7166,7 @@ export namespace Prisma {
       id: number
       name: string
       username: string
-      age: number
+      dateOfBirth: Date
       contactNumber: string
       email: string
       area: string
@@ -7521,7 +7174,7 @@ export namespace Prisma {
       address: string
       createdAt: Date
       updatedAt: Date
-      userId: string | null
+      userId: string
     }, ExtArgs["result"]["patient"]>
     composites: {}
   }
@@ -7862,7 +7515,7 @@ export namespace Prisma {
    */
   export interface Prisma__PatientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Patient$userArgs<ExtArgs> = {}>(args?: Subset<T, Patient$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     appointments<T extends Patient$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Patient$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends Patient$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Patient$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -7897,7 +7550,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Patient", 'Int'>
     readonly name: FieldRef<"Patient", 'String'>
     readonly username: FieldRef<"Patient", 'String'>
-    readonly age: FieldRef<"Patient", 'Int'>
+    readonly dateOfBirth: FieldRef<"Patient", 'DateTime'>
     readonly contactNumber: FieldRef<"Patient", 'String'>
     readonly email: FieldRef<"Patient", 'String'>
     readonly area: FieldRef<"Patient", 'String'>
@@ -8246,25 +7899,6 @@ export namespace Prisma {
      * Limit how many Patients to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Patient.user
-   */
-  export type Patient$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
   }
 
   /**
@@ -10423,7 +10057,6 @@ export namespace Prisma {
   export type AppointmentAvgAggregateOutputType = {
     patientId: number | null
     slotId: number | null
-    physiotherapistId: number | null
     duration: number | null
     fee: number | null
   }
@@ -10431,7 +10064,6 @@ export namespace Prisma {
   export type AppointmentSumAggregateOutputType = {
     patientId: number | null
     slotId: number | null
-    physiotherapistId: number | null
     duration: number | null
     fee: number | null
   }
@@ -10440,7 +10072,6 @@ export namespace Prisma {
     id: string | null
     patientId: number | null
     slotId: number | null
-    physiotherapistId: number | null
     appointmentDate: Date | null
     startTime: string | null
     duration: number | null
@@ -10458,7 +10089,6 @@ export namespace Prisma {
     id: string | null
     patientId: number | null
     slotId: number | null
-    physiotherapistId: number | null
     appointmentDate: Date | null
     startTime: string | null
     duration: number | null
@@ -10476,7 +10106,6 @@ export namespace Prisma {
     id: number
     patientId: number
     slotId: number
-    physiotherapistId: number
     appointmentDate: number
     startTime: number
     duration: number
@@ -10495,7 +10124,6 @@ export namespace Prisma {
   export type AppointmentAvgAggregateInputType = {
     patientId?: true
     slotId?: true
-    physiotherapistId?: true
     duration?: true
     fee?: true
   }
@@ -10503,7 +10131,6 @@ export namespace Prisma {
   export type AppointmentSumAggregateInputType = {
     patientId?: true
     slotId?: true
-    physiotherapistId?: true
     duration?: true
     fee?: true
   }
@@ -10512,7 +10139,6 @@ export namespace Prisma {
     id?: true
     patientId?: true
     slotId?: true
-    physiotherapistId?: true
     appointmentDate?: true
     startTime?: true
     duration?: true
@@ -10530,7 +10156,6 @@ export namespace Prisma {
     id?: true
     patientId?: true
     slotId?: true
-    physiotherapistId?: true
     appointmentDate?: true
     startTime?: true
     duration?: true
@@ -10548,7 +10173,6 @@ export namespace Prisma {
     id?: true
     patientId?: true
     slotId?: true
-    physiotherapistId?: true
     appointmentDate?: true
     startTime?: true
     duration?: true
@@ -10653,7 +10277,6 @@ export namespace Prisma {
     id: string
     patientId: number
     slotId: number | null
-    physiotherapistId: number | null
     appointmentDate: Date
     startTime: string
     duration: number
@@ -10690,7 +10313,6 @@ export namespace Prisma {
     id?: boolean
     patientId?: boolean
     slotId?: boolean
-    physiotherapistId?: boolean
     appointmentDate?: boolean
     startTime?: boolean
     duration?: boolean
@@ -10704,7 +10326,6 @@ export namespace Prisma {
     updatedAt?: boolean
     patient?: boolean | PatientDefaultArgs<ExtArgs>
     appointmentSlot?: boolean | Appointment$appointmentSlotArgs<ExtArgs>
-    physiotherapist?: boolean | Appointment$physiotherapistArgs<ExtArgs>
     payment?: boolean | Appointment$paymentArgs<ExtArgs>
   }, ExtArgs["result"]["appointment"]>
 
@@ -10714,7 +10335,6 @@ export namespace Prisma {
     id?: boolean
     patientId?: boolean
     slotId?: boolean
-    physiotherapistId?: boolean
     appointmentDate?: boolean
     startTime?: boolean
     duration?: boolean
@@ -10728,11 +10348,10 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "slotId" | "physiotherapistId" | "appointmentDate" | "startTime" | "duration" | "status" | "reason" | "notes" | "paymentId" | "paymentStatus" | "fee" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "slotId" | "appointmentDate" | "startTime" | "duration" | "status" | "reason" | "notes" | "paymentId" | "paymentStatus" | "fee" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
   export type AppointmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientDefaultArgs<ExtArgs>
     appointmentSlot?: boolean | Appointment$appointmentSlotArgs<ExtArgs>
-    physiotherapist?: boolean | Appointment$physiotherapistArgs<ExtArgs>
     payment?: boolean | Appointment$paymentArgs<ExtArgs>
   }
 
@@ -10741,14 +10360,12 @@ export namespace Prisma {
     objects: {
       patient: Prisma.$PatientPayload<ExtArgs>
       appointmentSlot: Prisma.$AppointmentSlotPayload<ExtArgs> | null
-      physiotherapist: Prisma.$PhysiotherapistPayload<ExtArgs> | null
       payment: Prisma.$PaymentPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       patientId: number
       slotId: number | null
-      physiotherapistId: number | null
       appointmentDate: Date
       startTime: string
       duration: number
@@ -11102,7 +10719,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     patient<T extends PatientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PatientDefaultArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     appointmentSlot<T extends Appointment$appointmentSlotArgs<ExtArgs> = {}>(args?: Subset<T, Appointment$appointmentSlotArgs<ExtArgs>>): Prisma__AppointmentSlotClient<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    physiotherapist<T extends Appointment$physiotherapistArgs<ExtArgs> = {}>(args?: Subset<T, Appointment$physiotherapistArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     payment<T extends Appointment$paymentArgs<ExtArgs> = {}>(args?: Subset<T, Appointment$paymentArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11136,7 +10752,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Appointment", 'String'>
     readonly patientId: FieldRef<"Appointment", 'Int'>
     readonly slotId: FieldRef<"Appointment", 'Int'>
-    readonly physiotherapistId: FieldRef<"Appointment", 'Int'>
     readonly appointmentDate: FieldRef<"Appointment", 'DateTime'>
     readonly startTime: FieldRef<"Appointment", 'String'>
     readonly duration: FieldRef<"Appointment", 'Int'>
@@ -11507,25 +11122,6 @@ export namespace Prisma {
      */
     include?: AppointmentSlotInclude<ExtArgs> | null
     where?: AppointmentSlotWhereInput
-  }
-
-  /**
-   * Appointment.physiotherapist
-   */
-  export type Appointment$physiotherapistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    where?: PhysiotherapistWhereInput
   }
 
   /**
@@ -12676,1137 +12272,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Physiotherapist
-   */
-
-  export type AggregatePhysiotherapist = {
-    _count: PhysiotherapistCountAggregateOutputType | null
-    _avg: PhysiotherapistAvgAggregateOutputType | null
-    _sum: PhysiotherapistSumAggregateOutputType | null
-    _min: PhysiotherapistMinAggregateOutputType | null
-    _max: PhysiotherapistMaxAggregateOutputType | null
-  }
-
-  export type PhysiotherapistAvgAggregateOutputType = {
-    id: number | null
-    experience: number | null
-    rating: number | null
-  }
-
-  export type PhysiotherapistSumAggregateOutputType = {
-    id: number | null
-    experience: number | null
-    rating: number | null
-  }
-
-  export type PhysiotherapistMinAggregateOutputType = {
-    id: number | null
-    name: string | null
-    email: string | null
-    contactNumber: string | null
-    specialization: string | null
-    experience: number | null
-    education: string | null
-    certifications: string | null
-    bio: string | null
-    rating: number | null
-    imageUrl: string | null
-    isActive: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type PhysiotherapistMaxAggregateOutputType = {
-    id: number | null
-    name: string | null
-    email: string | null
-    contactNumber: string | null
-    specialization: string | null
-    experience: number | null
-    education: string | null
-    certifications: string | null
-    bio: string | null
-    rating: number | null
-    imageUrl: string | null
-    isActive: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type PhysiotherapistCountAggregateOutputType = {
-    id: number
-    name: number
-    email: number
-    contactNumber: number
-    specialization: number
-    experience: number
-    education: number
-    certifications: number
-    bio: number
-    availability: number
-    rating: number
-    imageUrl: number
-    isActive: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type PhysiotherapistAvgAggregateInputType = {
-    id?: true
-    experience?: true
-    rating?: true
-  }
-
-  export type PhysiotherapistSumAggregateInputType = {
-    id?: true
-    experience?: true
-    rating?: true
-  }
-
-  export type PhysiotherapistMinAggregateInputType = {
-    id?: true
-    name?: true
-    email?: true
-    contactNumber?: true
-    specialization?: true
-    experience?: true
-    education?: true
-    certifications?: true
-    bio?: true
-    rating?: true
-    imageUrl?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type PhysiotherapistMaxAggregateInputType = {
-    id?: true
-    name?: true
-    email?: true
-    contactNumber?: true
-    specialization?: true
-    experience?: true
-    education?: true
-    certifications?: true
-    bio?: true
-    rating?: true
-    imageUrl?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type PhysiotherapistCountAggregateInputType = {
-    id?: true
-    name?: true
-    email?: true
-    contactNumber?: true
-    specialization?: true
-    experience?: true
-    education?: true
-    certifications?: true
-    bio?: true
-    availability?: true
-    rating?: true
-    imageUrl?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type PhysiotherapistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Physiotherapist to aggregate.
-     */
-    where?: PhysiotherapistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Physiotherapists to fetch.
-     */
-    orderBy?: PhysiotherapistOrderByWithRelationInput | PhysiotherapistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: PhysiotherapistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Physiotherapists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Physiotherapists.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Physiotherapists
-    **/
-    _count?: true | PhysiotherapistCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: PhysiotherapistAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PhysiotherapistSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: PhysiotherapistMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: PhysiotherapistMaxAggregateInputType
-  }
-
-  export type GetPhysiotherapistAggregateType<T extends PhysiotherapistAggregateArgs> = {
-        [P in keyof T & keyof AggregatePhysiotherapist]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregatePhysiotherapist[P]>
-      : GetScalarType<T[P], AggregatePhysiotherapist[P]>
-  }
-
-
-
-
-  export type PhysiotherapistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PhysiotherapistWhereInput
-    orderBy?: PhysiotherapistOrderByWithAggregationInput | PhysiotherapistOrderByWithAggregationInput[]
-    by: PhysiotherapistScalarFieldEnum[] | PhysiotherapistScalarFieldEnum
-    having?: PhysiotherapistScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: PhysiotherapistCountAggregateInputType | true
-    _avg?: PhysiotherapistAvgAggregateInputType
-    _sum?: PhysiotherapistSumAggregateInputType
-    _min?: PhysiotherapistMinAggregateInputType
-    _max?: PhysiotherapistMaxAggregateInputType
-  }
-
-  export type PhysiotherapistGroupByOutputType = {
-    id: number
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience: number
-    education: string | null
-    certifications: string | null
-    bio: string | null
-    availability: JsonValue | null
-    rating: number | null
-    imageUrl: string | null
-    isActive: boolean
-    createdAt: Date
-    updatedAt: Date
-    _count: PhysiotherapistCountAggregateOutputType | null
-    _avg: PhysiotherapistAvgAggregateOutputType | null
-    _sum: PhysiotherapistSumAggregateOutputType | null
-    _min: PhysiotherapistMinAggregateOutputType | null
-    _max: PhysiotherapistMaxAggregateOutputType | null
-  }
-
-  type GetPhysiotherapistGroupByPayload<T extends PhysiotherapistGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<PhysiotherapistGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof PhysiotherapistGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], PhysiotherapistGroupByOutputType[P]>
-            : GetScalarType<T[P], PhysiotherapistGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type PhysiotherapistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    contactNumber?: boolean
-    specialization?: boolean
-    experience?: boolean
-    education?: boolean
-    certifications?: boolean
-    bio?: boolean
-    availability?: boolean
-    rating?: boolean
-    imageUrl?: boolean
-    isActive?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    appointments?: boolean | Physiotherapist$appointmentsArgs<ExtArgs>
-    appointmentSlots?: boolean | Physiotherapist$appointmentSlotsArgs<ExtArgs>
-    _count?: boolean | PhysiotherapistCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["physiotherapist"]>
-
-
-
-  export type PhysiotherapistSelectScalar = {
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    contactNumber?: boolean
-    specialization?: boolean
-    experience?: boolean
-    education?: boolean
-    certifications?: boolean
-    bio?: boolean
-    availability?: boolean
-    rating?: boolean
-    imageUrl?: boolean
-    isActive?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type PhysiotherapistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "contactNumber" | "specialization" | "experience" | "education" | "certifications" | "bio" | "availability" | "rating" | "imageUrl" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["physiotherapist"]>
-  export type PhysiotherapistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    appointments?: boolean | Physiotherapist$appointmentsArgs<ExtArgs>
-    appointmentSlots?: boolean | Physiotherapist$appointmentSlotsArgs<ExtArgs>
-    _count?: boolean | PhysiotherapistCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $PhysiotherapistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Physiotherapist"
-    objects: {
-      appointments: Prisma.$AppointmentPayload<ExtArgs>[]
-      appointmentSlots: Prisma.$AppointmentSlotPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      name: string
-      email: string
-      contactNumber: string
-      specialization: string
-      experience: number
-      education: string | null
-      certifications: string | null
-      bio: string | null
-      availability: Prisma.JsonValue | null
-      rating: number | null
-      imageUrl: string | null
-      isActive: boolean
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["physiotherapist"]>
-    composites: {}
-  }
-
-  type PhysiotherapistGetPayload<S extends boolean | null | undefined | PhysiotherapistDefaultArgs> = $Result.GetResult<Prisma.$PhysiotherapistPayload, S>
-
-  type PhysiotherapistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PhysiotherapistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: PhysiotherapistCountAggregateInputType | true
-    }
-
-  export interface PhysiotherapistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Physiotherapist'], meta: { name: 'Physiotherapist' } }
-    /**
-     * Find zero or one Physiotherapist that matches the filter.
-     * @param {PhysiotherapistFindUniqueArgs} args - Arguments to find a Physiotherapist
-     * @example
-     * // Get one Physiotherapist
-     * const physiotherapist = await prisma.physiotherapist.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends PhysiotherapistFindUniqueArgs>(args: SelectSubset<T, PhysiotherapistFindUniqueArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Physiotherapist that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {PhysiotherapistFindUniqueOrThrowArgs} args - Arguments to find a Physiotherapist
-     * @example
-     * // Get one Physiotherapist
-     * const physiotherapist = await prisma.physiotherapist.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends PhysiotherapistFindUniqueOrThrowArgs>(args: SelectSubset<T, PhysiotherapistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Physiotherapist that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistFindFirstArgs} args - Arguments to find a Physiotherapist
-     * @example
-     * // Get one Physiotherapist
-     * const physiotherapist = await prisma.physiotherapist.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends PhysiotherapistFindFirstArgs>(args?: SelectSubset<T, PhysiotherapistFindFirstArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Physiotherapist that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistFindFirstOrThrowArgs} args - Arguments to find a Physiotherapist
-     * @example
-     * // Get one Physiotherapist
-     * const physiotherapist = await prisma.physiotherapist.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends PhysiotherapistFindFirstOrThrowArgs>(args?: SelectSubset<T, PhysiotherapistFindFirstOrThrowArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Physiotherapists that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Physiotherapists
-     * const physiotherapists = await prisma.physiotherapist.findMany()
-     * 
-     * // Get first 10 Physiotherapists
-     * const physiotherapists = await prisma.physiotherapist.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const physiotherapistWithIdOnly = await prisma.physiotherapist.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends PhysiotherapistFindManyArgs>(args?: SelectSubset<T, PhysiotherapistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Physiotherapist.
-     * @param {PhysiotherapistCreateArgs} args - Arguments to create a Physiotherapist.
-     * @example
-     * // Create one Physiotherapist
-     * const Physiotherapist = await prisma.physiotherapist.create({
-     *   data: {
-     *     // ... data to create a Physiotherapist
-     *   }
-     * })
-     * 
-     */
-    create<T extends PhysiotherapistCreateArgs>(args: SelectSubset<T, PhysiotherapistCreateArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Physiotherapists.
-     * @param {PhysiotherapistCreateManyArgs} args - Arguments to create many Physiotherapists.
-     * @example
-     * // Create many Physiotherapists
-     * const physiotherapist = await prisma.physiotherapist.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends PhysiotherapistCreateManyArgs>(args?: SelectSubset<T, PhysiotherapistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Physiotherapist.
-     * @param {PhysiotherapistDeleteArgs} args - Arguments to delete one Physiotherapist.
-     * @example
-     * // Delete one Physiotherapist
-     * const Physiotherapist = await prisma.physiotherapist.delete({
-     *   where: {
-     *     // ... filter to delete one Physiotherapist
-     *   }
-     * })
-     * 
-     */
-    delete<T extends PhysiotherapistDeleteArgs>(args: SelectSubset<T, PhysiotherapistDeleteArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Physiotherapist.
-     * @param {PhysiotherapistUpdateArgs} args - Arguments to update one Physiotherapist.
-     * @example
-     * // Update one Physiotherapist
-     * const physiotherapist = await prisma.physiotherapist.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends PhysiotherapistUpdateArgs>(args: SelectSubset<T, PhysiotherapistUpdateArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Physiotherapists.
-     * @param {PhysiotherapistDeleteManyArgs} args - Arguments to filter Physiotherapists to delete.
-     * @example
-     * // Delete a few Physiotherapists
-     * const { count } = await prisma.physiotherapist.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends PhysiotherapistDeleteManyArgs>(args?: SelectSubset<T, PhysiotherapistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Physiotherapists.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Physiotherapists
-     * const physiotherapist = await prisma.physiotherapist.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends PhysiotherapistUpdateManyArgs>(args: SelectSubset<T, PhysiotherapistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Physiotherapist.
-     * @param {PhysiotherapistUpsertArgs} args - Arguments to update or create a Physiotherapist.
-     * @example
-     * // Update or create a Physiotherapist
-     * const physiotherapist = await prisma.physiotherapist.upsert({
-     *   create: {
-     *     // ... data to create a Physiotherapist
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Physiotherapist we want to update
-     *   }
-     * })
-     */
-    upsert<T extends PhysiotherapistUpsertArgs>(args: SelectSubset<T, PhysiotherapistUpsertArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Physiotherapists.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistCountArgs} args - Arguments to filter Physiotherapists to count.
-     * @example
-     * // Count the number of Physiotherapists
-     * const count = await prisma.physiotherapist.count({
-     *   where: {
-     *     // ... the filter for the Physiotherapists we want to count
-     *   }
-     * })
-    **/
-    count<T extends PhysiotherapistCountArgs>(
-      args?: Subset<T, PhysiotherapistCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], PhysiotherapistCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Physiotherapist.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends PhysiotherapistAggregateArgs>(args: Subset<T, PhysiotherapistAggregateArgs>): Prisma.PrismaPromise<GetPhysiotherapistAggregateType<T>>
-
-    /**
-     * Group by Physiotherapist.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PhysiotherapistGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends PhysiotherapistGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PhysiotherapistGroupByArgs['orderBy'] }
-        : { orderBy?: PhysiotherapistGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, PhysiotherapistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPhysiotherapistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Physiotherapist model
-   */
-  readonly fields: PhysiotherapistFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Physiotherapist.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__PhysiotherapistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    appointments<T extends Physiotherapist$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, Physiotherapist$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    appointmentSlots<T extends Physiotherapist$appointmentSlotsArgs<ExtArgs> = {}>(args?: Subset<T, Physiotherapist$appointmentSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Physiotherapist model
-   */
-  interface PhysiotherapistFieldRefs {
-    readonly id: FieldRef<"Physiotherapist", 'Int'>
-    readonly name: FieldRef<"Physiotherapist", 'String'>
-    readonly email: FieldRef<"Physiotherapist", 'String'>
-    readonly contactNumber: FieldRef<"Physiotherapist", 'String'>
-    readonly specialization: FieldRef<"Physiotherapist", 'String'>
-    readonly experience: FieldRef<"Physiotherapist", 'Int'>
-    readonly education: FieldRef<"Physiotherapist", 'String'>
-    readonly certifications: FieldRef<"Physiotherapist", 'String'>
-    readonly bio: FieldRef<"Physiotherapist", 'String'>
-    readonly availability: FieldRef<"Physiotherapist", 'Json'>
-    readonly rating: FieldRef<"Physiotherapist", 'Float'>
-    readonly imageUrl: FieldRef<"Physiotherapist", 'String'>
-    readonly isActive: FieldRef<"Physiotherapist", 'Boolean'>
-    readonly createdAt: FieldRef<"Physiotherapist", 'DateTime'>
-    readonly updatedAt: FieldRef<"Physiotherapist", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Physiotherapist findUnique
-   */
-  export type PhysiotherapistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * Filter, which Physiotherapist to fetch.
-     */
-    where: PhysiotherapistWhereUniqueInput
-  }
-
-  /**
-   * Physiotherapist findUniqueOrThrow
-   */
-  export type PhysiotherapistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * Filter, which Physiotherapist to fetch.
-     */
-    where: PhysiotherapistWhereUniqueInput
-  }
-
-  /**
-   * Physiotherapist findFirst
-   */
-  export type PhysiotherapistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * Filter, which Physiotherapist to fetch.
-     */
-    where?: PhysiotherapistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Physiotherapists to fetch.
-     */
-    orderBy?: PhysiotherapistOrderByWithRelationInput | PhysiotherapistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Physiotherapists.
-     */
-    cursor?: PhysiotherapistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Physiotherapists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Physiotherapists.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Physiotherapists.
-     */
-    distinct?: PhysiotherapistScalarFieldEnum | PhysiotherapistScalarFieldEnum[]
-  }
-
-  /**
-   * Physiotherapist findFirstOrThrow
-   */
-  export type PhysiotherapistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * Filter, which Physiotherapist to fetch.
-     */
-    where?: PhysiotherapistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Physiotherapists to fetch.
-     */
-    orderBy?: PhysiotherapistOrderByWithRelationInput | PhysiotherapistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Physiotherapists.
-     */
-    cursor?: PhysiotherapistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Physiotherapists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Physiotherapists.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Physiotherapists.
-     */
-    distinct?: PhysiotherapistScalarFieldEnum | PhysiotherapistScalarFieldEnum[]
-  }
-
-  /**
-   * Physiotherapist findMany
-   */
-  export type PhysiotherapistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * Filter, which Physiotherapists to fetch.
-     */
-    where?: PhysiotherapistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Physiotherapists to fetch.
-     */
-    orderBy?: PhysiotherapistOrderByWithRelationInput | PhysiotherapistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Physiotherapists.
-     */
-    cursor?: PhysiotherapistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Physiotherapists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Physiotherapists.
-     */
-    skip?: number
-    distinct?: PhysiotherapistScalarFieldEnum | PhysiotherapistScalarFieldEnum[]
-  }
-
-  /**
-   * Physiotherapist create
-   */
-  export type PhysiotherapistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Physiotherapist.
-     */
-    data: XOR<PhysiotherapistCreateInput, PhysiotherapistUncheckedCreateInput>
-  }
-
-  /**
-   * Physiotherapist createMany
-   */
-  export type PhysiotherapistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Physiotherapists.
-     */
-    data: PhysiotherapistCreateManyInput | PhysiotherapistCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Physiotherapist update
-   */
-  export type PhysiotherapistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Physiotherapist.
-     */
-    data: XOR<PhysiotherapistUpdateInput, PhysiotherapistUncheckedUpdateInput>
-    /**
-     * Choose, which Physiotherapist to update.
-     */
-    where: PhysiotherapistWhereUniqueInput
-  }
-
-  /**
-   * Physiotherapist updateMany
-   */
-  export type PhysiotherapistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Physiotherapists.
-     */
-    data: XOR<PhysiotherapistUpdateManyMutationInput, PhysiotherapistUncheckedUpdateManyInput>
-    /**
-     * Filter which Physiotherapists to update
-     */
-    where?: PhysiotherapistWhereInput
-    /**
-     * Limit how many Physiotherapists to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Physiotherapist upsert
-   */
-  export type PhysiotherapistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Physiotherapist to update in case it exists.
-     */
-    where: PhysiotherapistWhereUniqueInput
-    /**
-     * In case the Physiotherapist found by the `where` argument doesn't exist, create a new Physiotherapist with this data.
-     */
-    create: XOR<PhysiotherapistCreateInput, PhysiotherapistUncheckedCreateInput>
-    /**
-     * In case the Physiotherapist was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<PhysiotherapistUpdateInput, PhysiotherapistUncheckedUpdateInput>
-  }
-
-  /**
-   * Physiotherapist delete
-   */
-  export type PhysiotherapistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    /**
-     * Filter which Physiotherapist to delete.
-     */
-    where: PhysiotherapistWhereUniqueInput
-  }
-
-  /**
-   * Physiotherapist deleteMany
-   */
-  export type PhysiotherapistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Physiotherapists to delete
-     */
-    where?: PhysiotherapistWhereInput
-    /**
-     * Limit how many Physiotherapists to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Physiotherapist.appointments
-   */
-  export type Physiotherapist$appointmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Appointment
-     */
-    select?: AppointmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Appointment
-     */
-    omit?: AppointmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AppointmentInclude<ExtArgs> | null
-    where?: AppointmentWhereInput
-    orderBy?: AppointmentOrderByWithRelationInput | AppointmentOrderByWithRelationInput[]
-    cursor?: AppointmentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AppointmentScalarFieldEnum | AppointmentScalarFieldEnum[]
-  }
-
-  /**
-   * Physiotherapist.appointmentSlots
-   */
-  export type Physiotherapist$appointmentSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AppointmentSlot
-     */
-    select?: AppointmentSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AppointmentSlot
-     */
-    omit?: AppointmentSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AppointmentSlotInclude<ExtArgs> | null
-    where?: AppointmentSlotWhereInput
-    orderBy?: AppointmentSlotOrderByWithRelationInput | AppointmentSlotOrderByWithRelationInput[]
-    cursor?: AppointmentSlotWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AppointmentSlotScalarFieldEnum | AppointmentSlotScalarFieldEnum[]
-  }
-
-  /**
-   * Physiotherapist without action
-   */
-  export type PhysiotherapistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model AppointmentSlot
    */
 
@@ -13822,14 +12287,12 @@ export namespace Prisma {
     id: number | null
     capacity: number | null
     bookedCount: number | null
-    physiotherapistId: number | null
   }
 
   export type AppointmentSlotSumAggregateOutputType = {
     id: number | null
     capacity: number | null
     bookedCount: number | null
-    physiotherapistId: number | null
   }
 
   export type AppointmentSlotMinAggregateOutputType = {
@@ -13840,7 +12303,6 @@ export namespace Prisma {
     capacity: number | null
     bookedCount: number | null
     isAvailable: boolean | null
-    physiotherapistId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13853,7 +12315,6 @@ export namespace Prisma {
     capacity: number | null
     bookedCount: number | null
     isAvailable: boolean | null
-    physiotherapistId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13866,7 +12327,6 @@ export namespace Prisma {
     capacity: number
     bookedCount: number
     isAvailable: number
-    physiotherapistId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -13877,14 +12337,12 @@ export namespace Prisma {
     id?: true
     capacity?: true
     bookedCount?: true
-    physiotherapistId?: true
   }
 
   export type AppointmentSlotSumAggregateInputType = {
     id?: true
     capacity?: true
     bookedCount?: true
-    physiotherapistId?: true
   }
 
   export type AppointmentSlotMinAggregateInputType = {
@@ -13895,7 +12353,6 @@ export namespace Prisma {
     capacity?: true
     bookedCount?: true
     isAvailable?: true
-    physiotherapistId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13908,7 +12365,6 @@ export namespace Prisma {
     capacity?: true
     bookedCount?: true
     isAvailable?: true
-    physiotherapistId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13921,7 +12377,6 @@ export namespace Prisma {
     capacity?: true
     bookedCount?: true
     isAvailable?: true
-    physiotherapistId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -14021,7 +12476,6 @@ export namespace Prisma {
     capacity: number
     bookedCount: number
     isAvailable: boolean
-    physiotherapistId: number | null
     createdAt: Date
     updatedAt: Date
     _count: AppointmentSlotCountAggregateOutputType | null
@@ -14053,11 +12507,9 @@ export namespace Prisma {
     capacity?: boolean
     bookedCount?: boolean
     isAvailable?: boolean
-    physiotherapistId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     appointments?: boolean | AppointmentSlot$appointmentsArgs<ExtArgs>
-    physiotherapist?: boolean | AppointmentSlot$physiotherapistArgs<ExtArgs>
     _count?: boolean | AppointmentSlotCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["appointmentSlot"]>
 
@@ -14071,15 +12523,13 @@ export namespace Prisma {
     capacity?: boolean
     bookedCount?: boolean
     isAvailable?: boolean
-    physiotherapistId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AppointmentSlotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "startTime" | "endTime" | "capacity" | "bookedCount" | "isAvailable" | "physiotherapistId" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSlot"]>
+  export type AppointmentSlotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "startTime" | "endTime" | "capacity" | "bookedCount" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSlot"]>
   export type AppointmentSlotInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     appointments?: boolean | AppointmentSlot$appointmentsArgs<ExtArgs>
-    physiotherapist?: boolean | AppointmentSlot$physiotherapistArgs<ExtArgs>
     _count?: boolean | AppointmentSlotCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -14087,7 +12537,6 @@ export namespace Prisma {
     name: "AppointmentSlot"
     objects: {
       appointments: Prisma.$AppointmentPayload<ExtArgs>[]
-      physiotherapist: Prisma.$PhysiotherapistPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -14097,7 +12546,6 @@ export namespace Prisma {
       capacity: number
       bookedCount: number
       isAvailable: boolean
-      physiotherapistId: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["appointmentSlot"]>
@@ -14441,7 +12889,6 @@ export namespace Prisma {
   export interface Prisma__AppointmentSlotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     appointments<T extends AppointmentSlot$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, AppointmentSlot$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    physiotherapist<T extends AppointmentSlot$physiotherapistArgs<ExtArgs> = {}>(args?: Subset<T, AppointmentSlot$physiotherapistArgs<ExtArgs>>): Prisma__PhysiotherapistClient<$Result.GetResult<Prisma.$PhysiotherapistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14478,7 +12925,6 @@ export namespace Prisma {
     readonly capacity: FieldRef<"AppointmentSlot", 'Int'>
     readonly bookedCount: FieldRef<"AppointmentSlot", 'Int'>
     readonly isAvailable: FieldRef<"AppointmentSlot", 'Boolean'>
-    readonly physiotherapistId: FieldRef<"AppointmentSlot", 'Int'>
     readonly createdAt: FieldRef<"AppointmentSlot", 'DateTime'>
     readonly updatedAt: FieldRef<"AppointmentSlot", 'DateTime'>
   }
@@ -14848,25 +13294,6 @@ export namespace Prisma {
   }
 
   /**
-   * AppointmentSlot.physiotherapist
-   */
-  export type AppointmentSlot$physiotherapistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Physiotherapist
-     */
-    select?: PhysiotherapistSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Physiotherapist
-     */
-    omit?: PhysiotherapistOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhysiotherapistInclude<ExtArgs> | null
-    where?: PhysiotherapistWhereInput
-  }
-
-  /**
    * AppointmentSlot without action
    */
   export type AppointmentSlotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14882,1976 +13309,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AppointmentSlotInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Cart
-   */
-
-  export type AggregateCart = {
-    _count: CartCountAggregateOutputType | null
-    _min: CartMinAggregateOutputType | null
-    _max: CartMaxAggregateOutputType | null
-  }
-
-  export type CartMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type CartMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type CartCountAggregateOutputType = {
-    id: number
-    userId: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type CartMinAggregateInputType = {
-    id?: true
-    userId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type CartMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type CartCountAggregateInputType = {
-    id?: true
-    userId?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type CartAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Cart to aggregate.
-     */
-    where?: CartWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Carts to fetch.
-     */
-    orderBy?: CartOrderByWithRelationInput | CartOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CartWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Carts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Carts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Carts
-    **/
-    _count?: true | CartCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CartMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CartMaxAggregateInputType
-  }
-
-  export type GetCartAggregateType<T extends CartAggregateArgs> = {
-        [P in keyof T & keyof AggregateCart]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCart[P]>
-      : GetScalarType<T[P], AggregateCart[P]>
-  }
-
-
-
-
-  export type CartGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CartWhereInput
-    orderBy?: CartOrderByWithAggregationInput | CartOrderByWithAggregationInput[]
-    by: CartScalarFieldEnum[] | CartScalarFieldEnum
-    having?: CartScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CartCountAggregateInputType | true
-    _min?: CartMinAggregateInputType
-    _max?: CartMaxAggregateInputType
-  }
-
-  export type CartGroupByOutputType = {
-    id: string
-    userId: string
-    createdAt: Date
-    updatedAt: Date
-    _count: CartCountAggregateOutputType | null
-    _min: CartMinAggregateOutputType | null
-    _max: CartMaxAggregateOutputType | null
-  }
-
-  type GetCartGroupByPayload<T extends CartGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CartGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CartGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CartGroupByOutputType[P]>
-            : GetScalarType<T[P], CartGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CartSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    items?: boolean | Cart$itemsArgs<ExtArgs>
-    _count?: boolean | CartCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["cart"]>
-
-
-
-  export type CartSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type CartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["cart"]>
-  export type CartInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    items?: boolean | Cart$itemsArgs<ExtArgs>
-    _count?: boolean | CartCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $CartPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Cart"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      items: Prisma.$CartItemPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["cart"]>
-    composites: {}
-  }
-
-  type CartGetPayload<S extends boolean | null | undefined | CartDefaultArgs> = $Result.GetResult<Prisma.$CartPayload, S>
-
-  type CartCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CartFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CartCountAggregateInputType | true
-    }
-
-  export interface CartDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Cart'], meta: { name: 'Cart' } }
-    /**
-     * Find zero or one Cart that matches the filter.
-     * @param {CartFindUniqueArgs} args - Arguments to find a Cart
-     * @example
-     * // Get one Cart
-     * const cart = await prisma.cart.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CartFindUniqueArgs>(args: SelectSubset<T, CartFindUniqueArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Cart that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CartFindUniqueOrThrowArgs} args - Arguments to find a Cart
-     * @example
-     * // Get one Cart
-     * const cart = await prisma.cart.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CartFindUniqueOrThrowArgs>(args: SelectSubset<T, CartFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Cart that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartFindFirstArgs} args - Arguments to find a Cart
-     * @example
-     * // Get one Cart
-     * const cart = await prisma.cart.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CartFindFirstArgs>(args?: SelectSubset<T, CartFindFirstArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Cart that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartFindFirstOrThrowArgs} args - Arguments to find a Cart
-     * @example
-     * // Get one Cart
-     * const cart = await prisma.cart.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CartFindFirstOrThrowArgs>(args?: SelectSubset<T, CartFindFirstOrThrowArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Carts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Carts
-     * const carts = await prisma.cart.findMany()
-     * 
-     * // Get first 10 Carts
-     * const carts = await prisma.cart.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const cartWithIdOnly = await prisma.cart.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CartFindManyArgs>(args?: SelectSubset<T, CartFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Cart.
-     * @param {CartCreateArgs} args - Arguments to create a Cart.
-     * @example
-     * // Create one Cart
-     * const Cart = await prisma.cart.create({
-     *   data: {
-     *     // ... data to create a Cart
-     *   }
-     * })
-     * 
-     */
-    create<T extends CartCreateArgs>(args: SelectSubset<T, CartCreateArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Carts.
-     * @param {CartCreateManyArgs} args - Arguments to create many Carts.
-     * @example
-     * // Create many Carts
-     * const cart = await prisma.cart.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CartCreateManyArgs>(args?: SelectSubset<T, CartCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Cart.
-     * @param {CartDeleteArgs} args - Arguments to delete one Cart.
-     * @example
-     * // Delete one Cart
-     * const Cart = await prisma.cart.delete({
-     *   where: {
-     *     // ... filter to delete one Cart
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CartDeleteArgs>(args: SelectSubset<T, CartDeleteArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Cart.
-     * @param {CartUpdateArgs} args - Arguments to update one Cart.
-     * @example
-     * // Update one Cart
-     * const cart = await prisma.cart.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CartUpdateArgs>(args: SelectSubset<T, CartUpdateArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Carts.
-     * @param {CartDeleteManyArgs} args - Arguments to filter Carts to delete.
-     * @example
-     * // Delete a few Carts
-     * const { count } = await prisma.cart.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CartDeleteManyArgs>(args?: SelectSubset<T, CartDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Carts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Carts
-     * const cart = await prisma.cart.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CartUpdateManyArgs>(args: SelectSubset<T, CartUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Cart.
-     * @param {CartUpsertArgs} args - Arguments to update or create a Cart.
-     * @example
-     * // Update or create a Cart
-     * const cart = await prisma.cart.upsert({
-     *   create: {
-     *     // ... data to create a Cart
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Cart we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CartUpsertArgs>(args: SelectSubset<T, CartUpsertArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Carts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartCountArgs} args - Arguments to filter Carts to count.
-     * @example
-     * // Count the number of Carts
-     * const count = await prisma.cart.count({
-     *   where: {
-     *     // ... the filter for the Carts we want to count
-     *   }
-     * })
-    **/
-    count<T extends CartCountArgs>(
-      args?: Subset<T, CartCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CartCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Cart.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CartAggregateArgs>(args: Subset<T, CartAggregateArgs>): Prisma.PrismaPromise<GetCartAggregateType<T>>
-
-    /**
-     * Group by Cart.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CartGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CartGroupByArgs['orderBy'] }
-        : { orderBy?: CartGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CartGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCartGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Cart model
-   */
-  readonly fields: CartFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Cart.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CartClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    items<T extends Cart$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Cart$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Cart model
-   */
-  interface CartFieldRefs {
-    readonly id: FieldRef<"Cart", 'String'>
-    readonly userId: FieldRef<"Cart", 'String'>
-    readonly createdAt: FieldRef<"Cart", 'DateTime'>
-    readonly updatedAt: FieldRef<"Cart", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Cart findUnique
-   */
-  export type CartFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * Filter, which Cart to fetch.
-     */
-    where: CartWhereUniqueInput
-  }
-
-  /**
-   * Cart findUniqueOrThrow
-   */
-  export type CartFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * Filter, which Cart to fetch.
-     */
-    where: CartWhereUniqueInput
-  }
-
-  /**
-   * Cart findFirst
-   */
-  export type CartFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * Filter, which Cart to fetch.
-     */
-    where?: CartWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Carts to fetch.
-     */
-    orderBy?: CartOrderByWithRelationInput | CartOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Carts.
-     */
-    cursor?: CartWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Carts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Carts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Carts.
-     */
-    distinct?: CartScalarFieldEnum | CartScalarFieldEnum[]
-  }
-
-  /**
-   * Cart findFirstOrThrow
-   */
-  export type CartFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * Filter, which Cart to fetch.
-     */
-    where?: CartWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Carts to fetch.
-     */
-    orderBy?: CartOrderByWithRelationInput | CartOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Carts.
-     */
-    cursor?: CartWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Carts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Carts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Carts.
-     */
-    distinct?: CartScalarFieldEnum | CartScalarFieldEnum[]
-  }
-
-  /**
-   * Cart findMany
-   */
-  export type CartFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * Filter, which Carts to fetch.
-     */
-    where?: CartWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Carts to fetch.
-     */
-    orderBy?: CartOrderByWithRelationInput | CartOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Carts.
-     */
-    cursor?: CartWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Carts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Carts.
-     */
-    skip?: number
-    distinct?: CartScalarFieldEnum | CartScalarFieldEnum[]
-  }
-
-  /**
-   * Cart create
-   */
-  export type CartCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Cart.
-     */
-    data: XOR<CartCreateInput, CartUncheckedCreateInput>
-  }
-
-  /**
-   * Cart createMany
-   */
-  export type CartCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Carts.
-     */
-    data: CartCreateManyInput | CartCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Cart update
-   */
-  export type CartUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Cart.
-     */
-    data: XOR<CartUpdateInput, CartUncheckedUpdateInput>
-    /**
-     * Choose, which Cart to update.
-     */
-    where: CartWhereUniqueInput
-  }
-
-  /**
-   * Cart updateMany
-   */
-  export type CartUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Carts.
-     */
-    data: XOR<CartUpdateManyMutationInput, CartUncheckedUpdateManyInput>
-    /**
-     * Filter which Carts to update
-     */
-    where?: CartWhereInput
-    /**
-     * Limit how many Carts to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Cart upsert
-   */
-  export type CartUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Cart to update in case it exists.
-     */
-    where: CartWhereUniqueInput
-    /**
-     * In case the Cart found by the `where` argument doesn't exist, create a new Cart with this data.
-     */
-    create: XOR<CartCreateInput, CartUncheckedCreateInput>
-    /**
-     * In case the Cart was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CartUpdateInput, CartUncheckedUpdateInput>
-  }
-
-  /**
-   * Cart delete
-   */
-  export type CartDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-    /**
-     * Filter which Cart to delete.
-     */
-    where: CartWhereUniqueInput
-  }
-
-  /**
-   * Cart deleteMany
-   */
-  export type CartDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Carts to delete
-     */
-    where?: CartWhereInput
-    /**
-     * Limit how many Carts to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Cart.items
-   */
-  export type Cart$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    where?: CartItemWhereInput
-    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
-    cursor?: CartItemWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
-  }
-
-  /**
-   * Cart without action
-   */
-  export type CartDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cart
-     */
-    select?: CartSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cart
-     */
-    omit?: CartOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model CartItem
-   */
-
-  export type AggregateCartItem = {
-    _count: CartItemCountAggregateOutputType | null
-    _avg: CartItemAvgAggregateOutputType | null
-    _sum: CartItemSumAggregateOutputType | null
-    _min: CartItemMinAggregateOutputType | null
-    _max: CartItemMaxAggregateOutputType | null
-  }
-
-  export type CartItemAvgAggregateOutputType = {
-    price: number | null
-    quantity: number | null
-  }
-
-  export type CartItemSumAggregateOutputType = {
-    price: number | null
-    quantity: number | null
-  }
-
-  export type CartItemMinAggregateOutputType = {
-    id: string | null
-    cartId: string | null
-    productId: string | null
-    name: string | null
-    price: number | null
-    quantity: number | null
-    imageUrl: string | null
-    option: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type CartItemMaxAggregateOutputType = {
-    id: string | null
-    cartId: string | null
-    productId: string | null
-    name: string | null
-    price: number | null
-    quantity: number | null
-    imageUrl: string | null
-    option: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type CartItemCountAggregateOutputType = {
-    id: number
-    cartId: number
-    productId: number
-    name: number
-    price: number
-    quantity: number
-    imageUrl: number
-    option: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type CartItemAvgAggregateInputType = {
-    price?: true
-    quantity?: true
-  }
-
-  export type CartItemSumAggregateInputType = {
-    price?: true
-    quantity?: true
-  }
-
-  export type CartItemMinAggregateInputType = {
-    id?: true
-    cartId?: true
-    productId?: true
-    name?: true
-    price?: true
-    quantity?: true
-    imageUrl?: true
-    option?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type CartItemMaxAggregateInputType = {
-    id?: true
-    cartId?: true
-    productId?: true
-    name?: true
-    price?: true
-    quantity?: true
-    imageUrl?: true
-    option?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type CartItemCountAggregateInputType = {
-    id?: true
-    cartId?: true
-    productId?: true
-    name?: true
-    price?: true
-    quantity?: true
-    imageUrl?: true
-    option?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type CartItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CartItem to aggregate.
-     */
-    where?: CartItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CartItems to fetch.
-     */
-    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CartItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CartItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CartItems.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned CartItems
-    **/
-    _count?: true | CartItemCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: CartItemAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: CartItemSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CartItemMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CartItemMaxAggregateInputType
-  }
-
-  export type GetCartItemAggregateType<T extends CartItemAggregateArgs> = {
-        [P in keyof T & keyof AggregateCartItem]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCartItem[P]>
-      : GetScalarType<T[P], AggregateCartItem[P]>
-  }
-
-
-
-
-  export type CartItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CartItemWhereInput
-    orderBy?: CartItemOrderByWithAggregationInput | CartItemOrderByWithAggregationInput[]
-    by: CartItemScalarFieldEnum[] | CartItemScalarFieldEnum
-    having?: CartItemScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CartItemCountAggregateInputType | true
-    _avg?: CartItemAvgAggregateInputType
-    _sum?: CartItemSumAggregateInputType
-    _min?: CartItemMinAggregateInputType
-    _max?: CartItemMaxAggregateInputType
-  }
-
-  export type CartItemGroupByOutputType = {
-    id: string
-    cartId: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl: string | null
-    option: string
-    createdAt: Date
-    updatedAt: Date
-    _count: CartItemCountAggregateOutputType | null
-    _avg: CartItemAvgAggregateOutputType | null
-    _sum: CartItemSumAggregateOutputType | null
-    _min: CartItemMinAggregateOutputType | null
-    _max: CartItemMaxAggregateOutputType | null
-  }
-
-  type GetCartItemGroupByPayload<T extends CartItemGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CartItemGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CartItemGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CartItemGroupByOutputType[P]>
-            : GetScalarType<T[P], CartItemGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CartItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    cartId?: boolean
-    productId?: boolean
-    name?: boolean
-    price?: boolean
-    quantity?: boolean
-    imageUrl?: boolean
-    option?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    cart?: boolean | CartDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["cartItem"]>
-
-
-
-  export type CartItemSelectScalar = {
-    id?: boolean
-    cartId?: boolean
-    productId?: boolean
-    name?: boolean
-    price?: boolean
-    quantity?: boolean
-    imageUrl?: boolean
-    option?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cartId" | "productId" | "name" | "price" | "quantity" | "imageUrl" | "option" | "createdAt" | "updatedAt", ExtArgs["result"]["cartItem"]>
-  export type CartItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cart?: boolean | CartDefaultArgs<ExtArgs>
-  }
-
-  export type $CartItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CartItem"
-    objects: {
-      cart: Prisma.$CartPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      cartId: string
-      productId: string
-      name: string
-      price: number
-      quantity: number
-      imageUrl: string | null
-      option: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["cartItem"]>
-    composites: {}
-  }
-
-  type CartItemGetPayload<S extends boolean | null | undefined | CartItemDefaultArgs> = $Result.GetResult<Prisma.$CartItemPayload, S>
-
-  type CartItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CartItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CartItemCountAggregateInputType | true
-    }
-
-  export interface CartItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CartItem'], meta: { name: 'CartItem' } }
-    /**
-     * Find zero or one CartItem that matches the filter.
-     * @param {CartItemFindUniqueArgs} args - Arguments to find a CartItem
-     * @example
-     * // Get one CartItem
-     * const cartItem = await prisma.cartItem.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CartItemFindUniqueArgs>(args: SelectSubset<T, CartItemFindUniqueArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one CartItem that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CartItemFindUniqueOrThrowArgs} args - Arguments to find a CartItem
-     * @example
-     * // Get one CartItem
-     * const cartItem = await prisma.cartItem.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CartItemFindUniqueOrThrowArgs>(args: SelectSubset<T, CartItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CartItem that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemFindFirstArgs} args - Arguments to find a CartItem
-     * @example
-     * // Get one CartItem
-     * const cartItem = await prisma.cartItem.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CartItemFindFirstArgs>(args?: SelectSubset<T, CartItemFindFirstArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CartItem that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemFindFirstOrThrowArgs} args - Arguments to find a CartItem
-     * @example
-     * // Get one CartItem
-     * const cartItem = await prisma.cartItem.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CartItemFindFirstOrThrowArgs>(args?: SelectSubset<T, CartItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more CartItems that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all CartItems
-     * const cartItems = await prisma.cartItem.findMany()
-     * 
-     * // Get first 10 CartItems
-     * const cartItems = await prisma.cartItem.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const cartItemWithIdOnly = await prisma.cartItem.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CartItemFindManyArgs>(args?: SelectSubset<T, CartItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a CartItem.
-     * @param {CartItemCreateArgs} args - Arguments to create a CartItem.
-     * @example
-     * // Create one CartItem
-     * const CartItem = await prisma.cartItem.create({
-     *   data: {
-     *     // ... data to create a CartItem
-     *   }
-     * })
-     * 
-     */
-    create<T extends CartItemCreateArgs>(args: SelectSubset<T, CartItemCreateArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many CartItems.
-     * @param {CartItemCreateManyArgs} args - Arguments to create many CartItems.
-     * @example
-     * // Create many CartItems
-     * const cartItem = await prisma.cartItem.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CartItemCreateManyArgs>(args?: SelectSubset<T, CartItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a CartItem.
-     * @param {CartItemDeleteArgs} args - Arguments to delete one CartItem.
-     * @example
-     * // Delete one CartItem
-     * const CartItem = await prisma.cartItem.delete({
-     *   where: {
-     *     // ... filter to delete one CartItem
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CartItemDeleteArgs>(args: SelectSubset<T, CartItemDeleteArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one CartItem.
-     * @param {CartItemUpdateArgs} args - Arguments to update one CartItem.
-     * @example
-     * // Update one CartItem
-     * const cartItem = await prisma.cartItem.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CartItemUpdateArgs>(args: SelectSubset<T, CartItemUpdateArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more CartItems.
-     * @param {CartItemDeleteManyArgs} args - Arguments to filter CartItems to delete.
-     * @example
-     * // Delete a few CartItems
-     * const { count } = await prisma.cartItem.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CartItemDeleteManyArgs>(args?: SelectSubset<T, CartItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CartItems.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many CartItems
-     * const cartItem = await prisma.cartItem.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CartItemUpdateManyArgs>(args: SelectSubset<T, CartItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one CartItem.
-     * @param {CartItemUpsertArgs} args - Arguments to update or create a CartItem.
-     * @example
-     * // Update or create a CartItem
-     * const cartItem = await prisma.cartItem.upsert({
-     *   create: {
-     *     // ... data to create a CartItem
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the CartItem we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CartItemUpsertArgs>(args: SelectSubset<T, CartItemUpsertArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of CartItems.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemCountArgs} args - Arguments to filter CartItems to count.
-     * @example
-     * // Count the number of CartItems
-     * const count = await prisma.cartItem.count({
-     *   where: {
-     *     // ... the filter for the CartItems we want to count
-     *   }
-     * })
-    **/
-    count<T extends CartItemCountArgs>(
-      args?: Subset<T, CartItemCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CartItemCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a CartItem.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CartItemAggregateArgs>(args: Subset<T, CartItemAggregateArgs>): Prisma.PrismaPromise<GetCartItemAggregateType<T>>
-
-    /**
-     * Group by CartItem.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CartItemGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CartItemGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CartItemGroupByArgs['orderBy'] }
-        : { orderBy?: CartItemGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CartItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCartItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CartItem model
-   */
-  readonly fields: CartItemFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for CartItem.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CartItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    cart<T extends CartDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CartDefaultArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the CartItem model
-   */
-  interface CartItemFieldRefs {
-    readonly id: FieldRef<"CartItem", 'String'>
-    readonly cartId: FieldRef<"CartItem", 'String'>
-    readonly productId: FieldRef<"CartItem", 'String'>
-    readonly name: FieldRef<"CartItem", 'String'>
-    readonly price: FieldRef<"CartItem", 'Float'>
-    readonly quantity: FieldRef<"CartItem", 'Int'>
-    readonly imageUrl: FieldRef<"CartItem", 'String'>
-    readonly option: FieldRef<"CartItem", 'String'>
-    readonly createdAt: FieldRef<"CartItem", 'DateTime'>
-    readonly updatedAt: FieldRef<"CartItem", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * CartItem findUnique
-   */
-  export type CartItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * Filter, which CartItem to fetch.
-     */
-    where: CartItemWhereUniqueInput
-  }
-
-  /**
-   * CartItem findUniqueOrThrow
-   */
-  export type CartItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * Filter, which CartItem to fetch.
-     */
-    where: CartItemWhereUniqueInput
-  }
-
-  /**
-   * CartItem findFirst
-   */
-  export type CartItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * Filter, which CartItem to fetch.
-     */
-    where?: CartItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CartItems to fetch.
-     */
-    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CartItems.
-     */
-    cursor?: CartItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CartItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CartItems.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CartItems.
-     */
-    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
-  }
-
-  /**
-   * CartItem findFirstOrThrow
-   */
-  export type CartItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * Filter, which CartItem to fetch.
-     */
-    where?: CartItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CartItems to fetch.
-     */
-    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CartItems.
-     */
-    cursor?: CartItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CartItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CartItems.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CartItems.
-     */
-    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
-  }
-
-  /**
-   * CartItem findMany
-   */
-  export type CartItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * Filter, which CartItems to fetch.
-     */
-    where?: CartItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CartItems to fetch.
-     */
-    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing CartItems.
-     */
-    cursor?: CartItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CartItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CartItems.
-     */
-    skip?: number
-    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
-  }
-
-  /**
-   * CartItem create
-   */
-  export type CartItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * The data needed to create a CartItem.
-     */
-    data: XOR<CartItemCreateInput, CartItemUncheckedCreateInput>
-  }
-
-  /**
-   * CartItem createMany
-   */
-  export type CartItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many CartItems.
-     */
-    data: CartItemCreateManyInput | CartItemCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CartItem update
-   */
-  export type CartItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * The data needed to update a CartItem.
-     */
-    data: XOR<CartItemUpdateInput, CartItemUncheckedUpdateInput>
-    /**
-     * Choose, which CartItem to update.
-     */
-    where: CartItemWhereUniqueInput
-  }
-
-  /**
-   * CartItem updateMany
-   */
-  export type CartItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update CartItems.
-     */
-    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyInput>
-    /**
-     * Filter which CartItems to update
-     */
-    where?: CartItemWhereInput
-    /**
-     * Limit how many CartItems to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CartItem upsert
-   */
-  export type CartItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * The filter to search for the CartItem to update in case it exists.
-     */
-    where: CartItemWhereUniqueInput
-    /**
-     * In case the CartItem found by the `where` argument doesn't exist, create a new CartItem with this data.
-     */
-    create: XOR<CartItemCreateInput, CartItemUncheckedCreateInput>
-    /**
-     * In case the CartItem was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CartItemUpdateInput, CartItemUncheckedUpdateInput>
-  }
-
-  /**
-   * CartItem delete
-   */
-  export type CartItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
-    /**
-     * Filter which CartItem to delete.
-     */
-    where: CartItemWhereUniqueInput
-  }
-
-  /**
-   * CartItem deleteMany
-   */
-  export type CartItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CartItems to delete
-     */
-    where?: CartItemWhereInput
-    /**
-     * Limit how many CartItems to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * CartItem without action
-   */
-  export type CartItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CartItem
-     */
-    select?: CartItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CartItem
-     */
-    omit?: CartItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CartItemInclude<ExtArgs> | null
   }
 
 
@@ -16946,7 +13403,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     username: 'username',
-    age: 'age',
+    dateOfBirth: 'dateOfBirth',
     contactNumber: 'contactNumber',
     email: 'email',
     area: 'area',
@@ -16995,7 +13452,6 @@ export namespace Prisma {
     id: 'id',
     patientId: 'patientId',
     slotId: 'slotId',
-    physiotherapistId: 'physiotherapistId',
     appointmentDate: 'appointmentDate',
     startTime: 'startTime',
     duration: 'duration',
@@ -17030,27 +13486,6 @@ export namespace Prisma {
   export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
-  export const PhysiotherapistScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    email: 'email',
-    contactNumber: 'contactNumber',
-    specialization: 'specialization',
-    experience: 'experience',
-    education: 'education',
-    certifications: 'certifications',
-    bio: 'bio',
-    availability: 'availability',
-    rating: 'rating',
-    imageUrl: 'imageUrl',
-    isActive: 'isActive',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type PhysiotherapistScalarFieldEnum = (typeof PhysiotherapistScalarFieldEnum)[keyof typeof PhysiotherapistScalarFieldEnum]
-
-
   export const AppointmentSlotScalarFieldEnum: {
     id: 'id',
     date: 'date',
@@ -17059,38 +13494,11 @@ export namespace Prisma {
     capacity: 'capacity',
     bookedCount: 'bookedCount',
     isAvailable: 'isAvailable',
-    physiotherapistId: 'physiotherapistId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type AppointmentSlotScalarFieldEnum = (typeof AppointmentSlotScalarFieldEnum)[keyof typeof AppointmentSlotScalarFieldEnum]
-
-
-  export const CartScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
-
-
-  export const CartItemScalarFieldEnum: {
-    id: 'id',
-    cartId: 'cartId',
-    productId: 'productId',
-    name: 'name',
-    price: 'price',
-    quantity: 'quantity',
-    imageUrl: 'imageUrl',
-    option: 'option',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -17253,46 +13661,12 @@ export namespace Prisma {
   export type PaymentOrderByRelevanceFieldEnum = (typeof PaymentOrderByRelevanceFieldEnum)[keyof typeof PaymentOrderByRelevanceFieldEnum]
 
 
-  export const PhysiotherapistOrderByRelevanceFieldEnum: {
-    name: 'name',
-    email: 'email',
-    contactNumber: 'contactNumber',
-    specialization: 'specialization',
-    education: 'education',
-    certifications: 'certifications',
-    bio: 'bio',
-    imageUrl: 'imageUrl'
-  };
-
-  export type PhysiotherapistOrderByRelevanceFieldEnum = (typeof PhysiotherapistOrderByRelevanceFieldEnum)[keyof typeof PhysiotherapistOrderByRelevanceFieldEnum]
-
-
   export const AppointmentSlotOrderByRelevanceFieldEnum: {
     startTime: 'startTime',
     endTime: 'endTime'
   };
 
   export type AppointmentSlotOrderByRelevanceFieldEnum = (typeof AppointmentSlotOrderByRelevanceFieldEnum)[keyof typeof AppointmentSlotOrderByRelevanceFieldEnum]
-
-
-  export const CartOrderByRelevanceFieldEnum: {
-    id: 'id',
-    userId: 'userId'
-  };
-
-  export type CartOrderByRelevanceFieldEnum = (typeof CartOrderByRelevanceFieldEnum)[keyof typeof CartOrderByRelevanceFieldEnum]
-
-
-  export const CartItemOrderByRelevanceFieldEnum: {
-    id: 'id',
-    cartId: 'cartId',
-    productId: 'productId',
-    name: 'name',
-    imageUrl: 'imageUrl',
-    option: 'option'
-  };
-
-  export type CartItemOrderByRelevanceFieldEnum = (typeof CartItemOrderByRelevanceFieldEnum)[keyof typeof CartItemOrderByRelevanceFieldEnum]
 
 
   /**
@@ -17370,8 +13744,7 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     Authenticator?: AuthenticatorListRelationFilter
-    patientProfile?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
-    cart?: XOR<CartNullableScalarRelationFilter, CartWhereInput> | null
+    patient?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
     productOrders?: ProductOrderListRelationFilter
   }
 
@@ -17390,8 +13763,7 @@ export namespace Prisma {
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     Authenticator?: AuthenticatorOrderByRelationAggregateInput
-    patientProfile?: PatientOrderByWithRelationInput
-    cart?: CartOrderByWithRelationInput
+    patient?: PatientOrderByWithRelationInput
     productOrders?: ProductOrderOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
@@ -17414,8 +13786,7 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     Authenticator?: AuthenticatorListRelationFilter
-    patientProfile?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
-    cart?: XOR<CartNullableScalarRelationFilter, CartWhereInput> | null
+    patient?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
     productOrders?: ProductOrderListRelationFilter
   }, "id" | "username" | "email">
 
@@ -17748,7 +14119,7 @@ export namespace Prisma {
     id?: IntFilter<"Patient"> | number
     name?: StringFilter<"Patient"> | string
     username?: StringFilter<"Patient"> | string
-    age?: IntFilter<"Patient"> | number
+    dateOfBirth?: DateTimeFilter<"Patient"> | Date | string
     contactNumber?: StringFilter<"Patient"> | string
     email?: StringFilter<"Patient"> | string
     area?: StringFilter<"Patient"> | string
@@ -17756,8 +14127,8 @@ export namespace Prisma {
     address?: StringFilter<"Patient"> | string
     createdAt?: DateTimeFilter<"Patient"> | Date | string
     updatedAt?: DateTimeFilter<"Patient"> | Date | string
-    userId?: StringNullableFilter<"Patient"> | string | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    userId?: StringFilter<"Patient"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     appointments?: AppointmentListRelationFilter
     payments?: PaymentListRelationFilter
   }
@@ -17766,7 +14137,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    age?: SortOrder
+    dateOfBirth?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
     area?: SortOrder
@@ -17774,7 +14145,7 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     user?: UserOrderByWithRelationInput
     appointments?: AppointmentOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
@@ -17785,28 +14156,28 @@ export namespace Prisma {
     id?: number
     username?: string
     email?: string
-    nic?: string
     userId?: string
     AND?: PatientWhereInput | PatientWhereInput[]
     OR?: PatientWhereInput[]
     NOT?: PatientWhereInput | PatientWhereInput[]
     name?: StringFilter<"Patient"> | string
-    age?: IntFilter<"Patient"> | number
+    dateOfBirth?: DateTimeFilter<"Patient"> | Date | string
     contactNumber?: StringFilter<"Patient"> | string
     area?: StringFilter<"Patient"> | string
+    nic?: StringFilter<"Patient"> | string
     address?: StringFilter<"Patient"> | string
     createdAt?: DateTimeFilter<"Patient"> | Date | string
     updatedAt?: DateTimeFilter<"Patient"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     appointments?: AppointmentListRelationFilter
     payments?: PaymentListRelationFilter
-  }, "id" | "username" | "email" | "nic" | "userId">
+  }, "id" | "username" | "email" | "userId">
 
   export type PatientOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    age?: SortOrder
+    dateOfBirth?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
     area?: SortOrder
@@ -17814,7 +14185,7 @@ export namespace Prisma {
     address?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     _count?: PatientCountOrderByAggregateInput
     _avg?: PatientAvgOrderByAggregateInput
     _max?: PatientMaxOrderByAggregateInput
@@ -17829,7 +14200,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Patient"> | number
     name?: StringWithAggregatesFilter<"Patient"> | string
     username?: StringWithAggregatesFilter<"Patient"> | string
-    age?: IntWithAggregatesFilter<"Patient"> | number
+    dateOfBirth?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
     contactNumber?: StringWithAggregatesFilter<"Patient"> | string
     email?: StringWithAggregatesFilter<"Patient"> | string
     area?: StringWithAggregatesFilter<"Patient"> | string
@@ -17837,7 +14208,7 @@ export namespace Prisma {
     address?: StringWithAggregatesFilter<"Patient"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
-    userId?: StringNullableWithAggregatesFilter<"Patient"> | string | null
+    userId?: StringWithAggregatesFilter<"Patient"> | string
   }
 
   export type ProductWhereInput = {
@@ -18014,7 +14385,6 @@ export namespace Prisma {
     id?: StringFilter<"Appointment"> | string
     patientId?: IntFilter<"Appointment"> | number
     slotId?: IntNullableFilter<"Appointment"> | number | null
-    physiotherapistId?: IntNullableFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeFilter<"Appointment"> | Date | string
     startTime?: StringFilter<"Appointment"> | string
     duration?: IntFilter<"Appointment"> | number
@@ -18028,7 +14398,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
     appointmentSlot?: XOR<AppointmentSlotNullableScalarRelationFilter, AppointmentSlotWhereInput> | null
-    physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
   }
 
@@ -18036,7 +14405,6 @@ export namespace Prisma {
     id?: SortOrder
     patientId?: SortOrder
     slotId?: SortOrderInput | SortOrder
-    physiotherapistId?: SortOrderInput | SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
     duration?: SortOrder
@@ -18050,7 +14418,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     patient?: PatientOrderByWithRelationInput
     appointmentSlot?: AppointmentSlotOrderByWithRelationInput
-    physiotherapist?: PhysiotherapistOrderByWithRelationInput
     payment?: PaymentOrderByWithRelationInput
     _relevance?: AppointmentOrderByRelevanceInput
   }
@@ -18062,7 +14429,6 @@ export namespace Prisma {
     NOT?: AppointmentWhereInput | AppointmentWhereInput[]
     patientId?: IntFilter<"Appointment"> | number
     slotId?: IntNullableFilter<"Appointment"> | number | null
-    physiotherapistId?: IntNullableFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeFilter<"Appointment"> | Date | string
     startTime?: StringFilter<"Appointment"> | string
     duration?: IntFilter<"Appointment"> | number
@@ -18076,7 +14442,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
     appointmentSlot?: XOR<AppointmentSlotNullableScalarRelationFilter, AppointmentSlotWhereInput> | null
-    physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
   }, "id">
 
@@ -18084,7 +14449,6 @@ export namespace Prisma {
     id?: SortOrder
     patientId?: SortOrder
     slotId?: SortOrderInput | SortOrder
-    physiotherapistId?: SortOrderInput | SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
     duration?: SortOrder
@@ -18110,7 +14474,6 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Appointment"> | string
     patientId?: IntWithAggregatesFilter<"Appointment"> | number
     slotId?: IntNullableWithAggregatesFilter<"Appointment"> | number | null
-    physiotherapistId?: IntNullableWithAggregatesFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
     startTime?: StringWithAggregatesFilter<"Appointment"> | string
     duration?: IntWithAggregatesFilter<"Appointment"> | number
@@ -18223,117 +14586,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
   }
 
-  export type PhysiotherapistWhereInput = {
-    AND?: PhysiotherapistWhereInput | PhysiotherapistWhereInput[]
-    OR?: PhysiotherapistWhereInput[]
-    NOT?: PhysiotherapistWhereInput | PhysiotherapistWhereInput[]
-    id?: IntFilter<"Physiotherapist"> | number
-    name?: StringFilter<"Physiotherapist"> | string
-    email?: StringFilter<"Physiotherapist"> | string
-    contactNumber?: StringFilter<"Physiotherapist"> | string
-    specialization?: StringFilter<"Physiotherapist"> | string
-    experience?: IntFilter<"Physiotherapist"> | number
-    education?: StringNullableFilter<"Physiotherapist"> | string | null
-    certifications?: StringNullableFilter<"Physiotherapist"> | string | null
-    bio?: StringNullableFilter<"Physiotherapist"> | string | null
-    availability?: JsonNullableFilter<"Physiotherapist">
-    rating?: FloatNullableFilter<"Physiotherapist"> | number | null
-    imageUrl?: StringNullableFilter<"Physiotherapist"> | string | null
-    isActive?: BoolFilter<"Physiotherapist"> | boolean
-    createdAt?: DateTimeFilter<"Physiotherapist"> | Date | string
-    updatedAt?: DateTimeFilter<"Physiotherapist"> | Date | string
-    appointments?: AppointmentListRelationFilter
-    appointmentSlots?: AppointmentSlotListRelationFilter
-  }
-
-  export type PhysiotherapistOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    contactNumber?: SortOrder
-    specialization?: SortOrder
-    experience?: SortOrder
-    education?: SortOrderInput | SortOrder
-    certifications?: SortOrderInput | SortOrder
-    bio?: SortOrderInput | SortOrder
-    availability?: SortOrderInput | SortOrder
-    rating?: SortOrderInput | SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    appointments?: AppointmentOrderByRelationAggregateInput
-    appointmentSlots?: AppointmentSlotOrderByRelationAggregateInput
-    _relevance?: PhysiotherapistOrderByRelevanceInput
-  }
-
-  export type PhysiotherapistWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    email?: string
-    AND?: PhysiotherapistWhereInput | PhysiotherapistWhereInput[]
-    OR?: PhysiotherapistWhereInput[]
-    NOT?: PhysiotherapistWhereInput | PhysiotherapistWhereInput[]
-    name?: StringFilter<"Physiotherapist"> | string
-    contactNumber?: StringFilter<"Physiotherapist"> | string
-    specialization?: StringFilter<"Physiotherapist"> | string
-    experience?: IntFilter<"Physiotherapist"> | number
-    education?: StringNullableFilter<"Physiotherapist"> | string | null
-    certifications?: StringNullableFilter<"Physiotherapist"> | string | null
-    bio?: StringNullableFilter<"Physiotherapist"> | string | null
-    availability?: JsonNullableFilter<"Physiotherapist">
-    rating?: FloatNullableFilter<"Physiotherapist"> | number | null
-    imageUrl?: StringNullableFilter<"Physiotherapist"> | string | null
-    isActive?: BoolFilter<"Physiotherapist"> | boolean
-    createdAt?: DateTimeFilter<"Physiotherapist"> | Date | string
-    updatedAt?: DateTimeFilter<"Physiotherapist"> | Date | string
-    appointments?: AppointmentListRelationFilter
-    appointmentSlots?: AppointmentSlotListRelationFilter
-  }, "id" | "email">
-
-  export type PhysiotherapistOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    contactNumber?: SortOrder
-    specialization?: SortOrder
-    experience?: SortOrder
-    education?: SortOrderInput | SortOrder
-    certifications?: SortOrderInput | SortOrder
-    bio?: SortOrderInput | SortOrder
-    availability?: SortOrderInput | SortOrder
-    rating?: SortOrderInput | SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: PhysiotherapistCountOrderByAggregateInput
-    _avg?: PhysiotherapistAvgOrderByAggregateInput
-    _max?: PhysiotherapistMaxOrderByAggregateInput
-    _min?: PhysiotherapistMinOrderByAggregateInput
-    _sum?: PhysiotherapistSumOrderByAggregateInput
-  }
-
-  export type PhysiotherapistScalarWhereWithAggregatesInput = {
-    AND?: PhysiotherapistScalarWhereWithAggregatesInput | PhysiotherapistScalarWhereWithAggregatesInput[]
-    OR?: PhysiotherapistScalarWhereWithAggregatesInput[]
-    NOT?: PhysiotherapistScalarWhereWithAggregatesInput | PhysiotherapistScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Physiotherapist"> | number
-    name?: StringWithAggregatesFilter<"Physiotherapist"> | string
-    email?: StringWithAggregatesFilter<"Physiotherapist"> | string
-    contactNumber?: StringWithAggregatesFilter<"Physiotherapist"> | string
-    specialization?: StringWithAggregatesFilter<"Physiotherapist"> | string
-    experience?: IntWithAggregatesFilter<"Physiotherapist"> | number
-    education?: StringNullableWithAggregatesFilter<"Physiotherapist"> | string | null
-    certifications?: StringNullableWithAggregatesFilter<"Physiotherapist"> | string | null
-    bio?: StringNullableWithAggregatesFilter<"Physiotherapist"> | string | null
-    availability?: JsonNullableWithAggregatesFilter<"Physiotherapist">
-    rating?: FloatNullableWithAggregatesFilter<"Physiotherapist"> | number | null
-    imageUrl?: StringNullableWithAggregatesFilter<"Physiotherapist"> | string | null
-    isActive?: BoolWithAggregatesFilter<"Physiotherapist"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Physiotherapist"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Physiotherapist"> | Date | string
-  }
-
   export type AppointmentSlotWhereInput = {
     AND?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
     OR?: AppointmentSlotWhereInput[]
@@ -18345,11 +14597,9 @@ export namespace Prisma {
     capacity?: IntFilter<"AppointmentSlot"> | number
     bookedCount?: IntFilter<"AppointmentSlot"> | number
     isAvailable?: BoolFilter<"AppointmentSlot"> | boolean
-    physiotherapistId?: IntNullableFilter<"AppointmentSlot"> | number | null
     createdAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
     updatedAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
     appointments?: AppointmentListRelationFilter
-    physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
   }
 
   export type AppointmentSlotOrderByWithRelationInput = {
@@ -18360,17 +14610,15 @@ export namespace Prisma {
     capacity?: SortOrder
     bookedCount?: SortOrder
     isAvailable?: SortOrder
-    physiotherapistId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     appointments?: AppointmentOrderByRelationAggregateInput
-    physiotherapist?: PhysiotherapistOrderByWithRelationInput
     _relevance?: AppointmentSlotOrderByRelevanceInput
   }
 
   export type AppointmentSlotWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    date_startTime_physiotherapistId?: AppointmentSlotDateStartTimePhysiotherapistIdCompoundUniqueInput
+    date_startTime?: AppointmentSlotDateStartTimeCompoundUniqueInput
     AND?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
     OR?: AppointmentSlotWhereInput[]
     NOT?: AppointmentSlotWhereInput | AppointmentSlotWhereInput[]
@@ -18380,12 +14628,10 @@ export namespace Prisma {
     capacity?: IntFilter<"AppointmentSlot"> | number
     bookedCount?: IntFilter<"AppointmentSlot"> | number
     isAvailable?: BoolFilter<"AppointmentSlot"> | boolean
-    physiotherapistId?: IntNullableFilter<"AppointmentSlot"> | number | null
     createdAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
     updatedAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
     appointments?: AppointmentListRelationFilter
-    physiotherapist?: XOR<PhysiotherapistNullableScalarRelationFilter, PhysiotherapistWhereInput> | null
-  }, "id" | "date_startTime_physiotherapistId">
+  }, "id" | "date_startTime">
 
   export type AppointmentSlotOrderByWithAggregationInput = {
     id?: SortOrder
@@ -18395,7 +14641,6 @@ export namespace Prisma {
     capacity?: SortOrder
     bookedCount?: SortOrder
     isAvailable?: SortOrder
-    physiotherapistId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AppointmentSlotCountOrderByAggregateInput
@@ -18416,146 +14661,8 @@ export namespace Prisma {
     capacity?: IntWithAggregatesFilter<"AppointmentSlot"> | number
     bookedCount?: IntWithAggregatesFilter<"AppointmentSlot"> | number
     isAvailable?: BoolWithAggregatesFilter<"AppointmentSlot"> | boolean
-    physiotherapistId?: IntNullableWithAggregatesFilter<"AppointmentSlot"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"AppointmentSlot"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AppointmentSlot"> | Date | string
-  }
-
-  export type CartWhereInput = {
-    AND?: CartWhereInput | CartWhereInput[]
-    OR?: CartWhereInput[]
-    NOT?: CartWhereInput | CartWhereInput[]
-    id?: StringFilter<"Cart"> | string
-    userId?: StringFilter<"Cart"> | string
-    createdAt?: DateTimeFilter<"Cart"> | Date | string
-    updatedAt?: DateTimeFilter<"Cart"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    items?: CartItemListRelationFilter
-  }
-
-  export type CartOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    items?: CartItemOrderByRelationAggregateInput
-    _relevance?: CartOrderByRelevanceInput
-  }
-
-  export type CartWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    userId?: string
-    AND?: CartWhereInput | CartWhereInput[]
-    OR?: CartWhereInput[]
-    NOT?: CartWhereInput | CartWhereInput[]
-    createdAt?: DateTimeFilter<"Cart"> | Date | string
-    updatedAt?: DateTimeFilter<"Cart"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    items?: CartItemListRelationFilter
-  }, "id" | "userId">
-
-  export type CartOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: CartCountOrderByAggregateInput
-    _max?: CartMaxOrderByAggregateInput
-    _min?: CartMinOrderByAggregateInput
-  }
-
-  export type CartScalarWhereWithAggregatesInput = {
-    AND?: CartScalarWhereWithAggregatesInput | CartScalarWhereWithAggregatesInput[]
-    OR?: CartScalarWhereWithAggregatesInput[]
-    NOT?: CartScalarWhereWithAggregatesInput | CartScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Cart"> | string
-    userId?: StringWithAggregatesFilter<"Cart"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Cart"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Cart"> | Date | string
-  }
-
-  export type CartItemWhereInput = {
-    AND?: CartItemWhereInput | CartItemWhereInput[]
-    OR?: CartItemWhereInput[]
-    NOT?: CartItemWhereInput | CartItemWhereInput[]
-    id?: StringFilter<"CartItem"> | string
-    cartId?: StringFilter<"CartItem"> | string
-    productId?: StringFilter<"CartItem"> | string
-    name?: StringFilter<"CartItem"> | string
-    price?: FloatFilter<"CartItem"> | number
-    quantity?: IntFilter<"CartItem"> | number
-    imageUrl?: StringNullableFilter<"CartItem"> | string | null
-    option?: StringFilter<"CartItem"> | string
-    createdAt?: DateTimeFilter<"CartItem"> | Date | string
-    updatedAt?: DateTimeFilter<"CartItem"> | Date | string
-    cart?: XOR<CartScalarRelationFilter, CartWhereInput>
-  }
-
-  export type CartItemOrderByWithRelationInput = {
-    id?: SortOrder
-    cartId?: SortOrder
-    productId?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    quantity?: SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    option?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    cart?: CartOrderByWithRelationInput
-    _relevance?: CartItemOrderByRelevanceInput
-  }
-
-  export type CartItemWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: CartItemWhereInput | CartItemWhereInput[]
-    OR?: CartItemWhereInput[]
-    NOT?: CartItemWhereInput | CartItemWhereInput[]
-    cartId?: StringFilter<"CartItem"> | string
-    productId?: StringFilter<"CartItem"> | string
-    name?: StringFilter<"CartItem"> | string
-    price?: FloatFilter<"CartItem"> | number
-    quantity?: IntFilter<"CartItem"> | number
-    imageUrl?: StringNullableFilter<"CartItem"> | string | null
-    option?: StringFilter<"CartItem"> | string
-    createdAt?: DateTimeFilter<"CartItem"> | Date | string
-    updatedAt?: DateTimeFilter<"CartItem"> | Date | string
-    cart?: XOR<CartScalarRelationFilter, CartWhereInput>
-  }, "id">
-
-  export type CartItemOrderByWithAggregationInput = {
-    id?: SortOrder
-    cartId?: SortOrder
-    productId?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    quantity?: SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    option?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: CartItemCountOrderByAggregateInput
-    _avg?: CartItemAvgOrderByAggregateInput
-    _max?: CartItemMaxOrderByAggregateInput
-    _min?: CartItemMinOrderByAggregateInput
-    _sum?: CartItemSumOrderByAggregateInput
-  }
-
-  export type CartItemScalarWhereWithAggregatesInput = {
-    AND?: CartItemScalarWhereWithAggregatesInput | CartItemScalarWhereWithAggregatesInput[]
-    OR?: CartItemScalarWhereWithAggregatesInput[]
-    NOT?: CartItemScalarWhereWithAggregatesInput | CartItemScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CartItem"> | string
-    cartId?: StringWithAggregatesFilter<"CartItem"> | string
-    productId?: StringWithAggregatesFilter<"CartItem"> | string
-    name?: StringWithAggregatesFilter<"CartItem"> | string
-    price?: FloatWithAggregatesFilter<"CartItem"> | number
-    quantity?: IntWithAggregatesFilter<"CartItem"> | number
-    imageUrl?: StringNullableWithAggregatesFilter<"CartItem"> | string | null
-    option?: StringWithAggregatesFilter<"CartItem"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"CartItem"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"CartItem"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -18573,8 +14680,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
-    patientProfile?: PatientCreateNestedOneWithoutUserInput
-    cart?: CartCreateNestedOneWithoutUserInput
+    patient?: PatientCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderCreateNestedManyWithoutUserInput
   }
 
@@ -18593,8 +14699,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
-    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
-    cart?: CartUncheckedCreateNestedOneWithoutUserInput
+    patient?: PatientUncheckedCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -18613,8 +14718,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUpdateOneWithoutUserNestedInput
-    cart?: CartUpdateOneWithoutUserNestedInput
+    patient?: PatientUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUpdateManyWithoutUserNestedInput
   }
 
@@ -18633,8 +14737,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
-    cart?: CartUncheckedUpdateOneWithoutUserNestedInput
+    patient?: PatientUncheckedUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -18988,7 +15091,7 @@ export namespace Prisma {
   export type PatientCreateInput = {
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -18996,7 +15099,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutPatientProfileInput
+    user: UserCreateNestedOneWithoutPatientInput
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
     payments?: PaymentCreateNestedManyWithoutPatientInput
   }
@@ -19005,7 +15108,7 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -19013,7 +15116,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: string | null
+    userId: string
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
     payments?: PaymentUncheckedCreateNestedManyWithoutPatientInput
   }
@@ -19021,7 +15124,7 @@ export namespace Prisma {
   export type PatientUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -19029,7 +15132,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutPatientProfileNestedInput
+    user?: UserUpdateOneRequiredWithoutPatientNestedInput
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
     payments?: PaymentUpdateManyWithoutPatientNestedInput
   }
@@ -19038,7 +15141,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -19046,7 +15149,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
   }
@@ -19055,7 +15158,7 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -19063,13 +15166,13 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: string | null
+    userId: string
   }
 
   export type PatientUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -19083,7 +15186,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -19091,7 +15194,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type ProductCreateInput = {
@@ -19287,7 +15390,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     patient: PatientCreateNestedOneWithoutAppointmentsInput
     appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
-    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
     payment?: PaymentCreateNestedOneWithoutAppointmentInput
   }
 
@@ -19295,7 +15397,6 @@ export namespace Prisma {
     id?: string
     patientId: number
     slotId?: number | null
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -19325,7 +15426,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
     appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
-    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
     payment?: PaymentUpdateOneWithoutAppointmentNestedInput
   }
 
@@ -19333,7 +15433,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
     slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -19352,7 +15451,6 @@ export namespace Prisma {
     id?: string
     patientId: number
     slotId?: number | null
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -19385,7 +15483,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
     slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -19501,137 +15598,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PhysiotherapistCreateInput = {
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointments?: AppointmentCreateNestedManyWithoutPhysiotherapistInput
-    appointmentSlots?: AppointmentSlotCreateNestedManyWithoutPhysiotherapistInput
-  }
-
-  export type PhysiotherapistUncheckedCreateInput = {
-    id?: number
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointments?: AppointmentUncheckedCreateNestedManyWithoutPhysiotherapistInput
-    appointmentSlots?: AppointmentSlotUncheckedCreateNestedManyWithoutPhysiotherapistInput
-  }
-
-  export type PhysiotherapistUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointments?: AppointmentUpdateManyWithoutPhysiotherapistNestedInput
-    appointmentSlots?: AppointmentSlotUpdateManyWithoutPhysiotherapistNestedInput
-  }
-
-  export type PhysiotherapistUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointments?: AppointmentUncheckedUpdateManyWithoutPhysiotherapistNestedInput
-    appointmentSlots?: AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistNestedInput
-  }
-
-  export type PhysiotherapistCreateManyInput = {
-    id?: number
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PhysiotherapistUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PhysiotherapistUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type AppointmentSlotCreateInput = {
     date: Date | string
     startTime: string
@@ -19642,7 +15608,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     appointments?: AppointmentCreateNestedManyWithoutAppointmentSlotInput
-    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentSlotsInput
   }
 
   export type AppointmentSlotUncheckedCreateInput = {
@@ -19653,7 +15618,6 @@ export namespace Prisma {
     capacity?: number
     bookedCount?: number
     isAvailable?: boolean
-    physiotherapistId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     appointments?: AppointmentUncheckedCreateNestedManyWithoutAppointmentSlotInput
@@ -19669,7 +15633,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     appointments?: AppointmentUpdateManyWithoutAppointmentSlotNestedInput
-    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentSlotsNestedInput
   }
 
   export type AppointmentSlotUncheckedUpdateInput = {
@@ -19680,7 +15643,6 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     bookedCount?: IntFieldUpdateOperationsInput | number
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     appointments?: AppointmentUncheckedUpdateManyWithoutAppointmentSlotNestedInput
@@ -19694,7 +15656,6 @@ export namespace Prisma {
     capacity?: number
     bookedCount?: number
     isAvailable?: boolean
-    physiotherapistId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19718,149 +15679,6 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     bookedCount?: IntFieldUpdateOperationsInput | number
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartCreateInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCartInput
-    items?: CartItemCreateNestedManyWithoutCartInput
-  }
-
-  export type CartUncheckedCreateInput = {
-    id?: string
-    userId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    items?: CartItemUncheckedCreateNestedManyWithoutCartInput
-  }
-
-  export type CartUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCartNestedInput
-    items?: CartItemUpdateManyWithoutCartNestedInput
-  }
-
-  export type CartUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    items?: CartItemUncheckedUpdateManyWithoutCartNestedInput
-  }
-
-  export type CartCreateManyInput = {
-    id?: string
-    userId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartItemCreateInput = {
-    id?: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl?: string | null
-    option: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    cart: CartCreateNestedOneWithoutItemsInput
-  }
-
-  export type CartItemUncheckedCreateInput = {
-    id?: string
-    cartId: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl?: string | null
-    option: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartItemUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cart?: CartUpdateOneRequiredWithoutItemsNestedInput
-  }
-
-  export type CartItemUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cartId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartItemCreateManyInput = {
-    id?: string
-    cartId: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl?: string | null
-    option: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartItemUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartItemUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cartId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19943,11 +15761,6 @@ export namespace Prisma {
   export type PatientNullableScalarRelationFilter = {
     is?: PatientWhereInput | null
     isNot?: PatientWhereInput | null
-  }
-
-  export type CartNullableScalarRelationFilter = {
-    is?: CartWhereInput | null
-    isNot?: CartWhereInput | null
   }
 
   export type ProductOrderListRelationFilter = {
@@ -20380,7 +16193,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    age?: SortOrder
+    dateOfBirth?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
     area?: SortOrder
@@ -20393,14 +16206,13 @@ export namespace Prisma {
 
   export type PatientAvgOrderByAggregateInput = {
     id?: SortOrder
-    age?: SortOrder
   }
 
   export type PatientMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    age?: SortOrder
+    dateOfBirth?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
     area?: SortOrder
@@ -20415,7 +16227,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     username?: SortOrder
-    age?: SortOrder
+    dateOfBirth?: SortOrder
     contactNumber?: SortOrder
     email?: SortOrder
     area?: SortOrder
@@ -20428,7 +16240,6 @@ export namespace Prisma {
 
   export type PatientSumOrderByAggregateInput = {
     id?: SortOrder
-    age?: SortOrder
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -20628,11 +16439,6 @@ export namespace Prisma {
     isNot?: AppointmentSlotWhereInput | null
   }
 
-  export type PhysiotherapistNullableScalarRelationFilter = {
-    is?: PhysiotherapistWhereInput | null
-    isNot?: PhysiotherapistWhereInput | null
-  }
-
   export type AppointmentOrderByRelevanceInput = {
     fields: AppointmentOrderByRelevanceFieldEnum | AppointmentOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -20643,7 +16449,6 @@ export namespace Prisma {
     id?: SortOrder
     patientId?: SortOrder
     slotId?: SortOrder
-    physiotherapistId?: SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
     duration?: SortOrder
@@ -20660,7 +16465,6 @@ export namespace Prisma {
   export type AppointmentAvgOrderByAggregateInput = {
     patientId?: SortOrder
     slotId?: SortOrder
-    physiotherapistId?: SortOrder
     duration?: SortOrder
     fee?: SortOrder
   }
@@ -20669,7 +16473,6 @@ export namespace Prisma {
     id?: SortOrder
     patientId?: SortOrder
     slotId?: SortOrder
-    physiotherapistId?: SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
     duration?: SortOrder
@@ -20687,7 +16490,6 @@ export namespace Prisma {
     id?: SortOrder
     patientId?: SortOrder
     slotId?: SortOrder
-    physiotherapistId?: SortOrder
     appointmentDate?: SortOrder
     startTime?: SortOrder
     duration?: SortOrder
@@ -20704,7 +16506,6 @@ export namespace Prisma {
   export type AppointmentSumOrderByAggregateInput = {
     patientId?: SortOrder
     slotId?: SortOrder
-    physiotherapistId?: SortOrder
     duration?: SortOrder
     fee?: SortOrder
   }
@@ -20780,123 +16581,15 @@ export namespace Prisma {
     patientId?: SortOrder
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type AppointmentSlotListRelationFilter = {
-    every?: AppointmentSlotWhereInput
-    some?: AppointmentSlotWhereInput
-    none?: AppointmentSlotWhereInput
-  }
-
-  export type AppointmentSlotOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PhysiotherapistOrderByRelevanceInput = {
-    fields: PhysiotherapistOrderByRelevanceFieldEnum | PhysiotherapistOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type PhysiotherapistCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    contactNumber?: SortOrder
-    specialization?: SortOrder
-    experience?: SortOrder
-    education?: SortOrder
-    certifications?: SortOrder
-    bio?: SortOrder
-    availability?: SortOrder
-    rating?: SortOrder
-    imageUrl?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type PhysiotherapistAvgOrderByAggregateInput = {
-    id?: SortOrder
-    experience?: SortOrder
-    rating?: SortOrder
-  }
-
-  export type PhysiotherapistMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    contactNumber?: SortOrder
-    specialization?: SortOrder
-    experience?: SortOrder
-    education?: SortOrder
-    certifications?: SortOrder
-    bio?: SortOrder
-    rating?: SortOrder
-    imageUrl?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type PhysiotherapistMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    contactNumber?: SortOrder
-    specialization?: SortOrder
-    experience?: SortOrder
-    education?: SortOrder
-    certifications?: SortOrder
-    bio?: SortOrder
-    rating?: SortOrder
-    imageUrl?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type PhysiotherapistSumOrderByAggregateInput = {
-    id?: SortOrder
-    experience?: SortOrder
-    rating?: SortOrder
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
   export type AppointmentSlotOrderByRelevanceInput = {
     fields: AppointmentSlotOrderByRelevanceFieldEnum | AppointmentSlotOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type AppointmentSlotDateStartTimePhysiotherapistIdCompoundUniqueInput = {
+  export type AppointmentSlotDateStartTimeCompoundUniqueInput = {
     date: Date | string
     startTime: string
-    physiotherapistId: number
   }
 
   export type AppointmentSlotCountOrderByAggregateInput = {
@@ -20907,7 +16600,6 @@ export namespace Prisma {
     capacity?: SortOrder
     bookedCount?: SortOrder
     isAvailable?: SortOrder
-    physiotherapistId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20916,7 +16608,6 @@ export namespace Prisma {
     id?: SortOrder
     capacity?: SortOrder
     bookedCount?: SortOrder
-    physiotherapistId?: SortOrder
   }
 
   export type AppointmentSlotMaxOrderByAggregateInput = {
@@ -20927,7 +16618,6 @@ export namespace Prisma {
     capacity?: SortOrder
     bookedCount?: SortOrder
     isAvailable?: SortOrder
-    physiotherapistId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20940,7 +16630,6 @@ export namespace Prisma {
     capacity?: SortOrder
     bookedCount?: SortOrder
     isAvailable?: SortOrder
-    physiotherapistId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20949,104 +16638,6 @@ export namespace Prisma {
     id?: SortOrder
     capacity?: SortOrder
     bookedCount?: SortOrder
-    physiotherapistId?: SortOrder
-  }
-
-  export type CartItemListRelationFilter = {
-    every?: CartItemWhereInput
-    some?: CartItemWhereInput
-    none?: CartItemWhereInput
-  }
-
-  export type CartItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CartOrderByRelevanceInput = {
-    fields: CartOrderByRelevanceFieldEnum | CartOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type CartCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CartMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CartMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CartScalarRelationFilter = {
-    is?: CartWhereInput
-    isNot?: CartWhereInput
-  }
-
-  export type CartItemOrderByRelevanceInput = {
-    fields: CartItemOrderByRelevanceFieldEnum | CartItemOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type CartItemCountOrderByAggregateInput = {
-    id?: SortOrder
-    cartId?: SortOrder
-    productId?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    quantity?: SortOrder
-    imageUrl?: SortOrder
-    option?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CartItemAvgOrderByAggregateInput = {
-    price?: SortOrder
-    quantity?: SortOrder
-  }
-
-  export type CartItemMaxOrderByAggregateInput = {
-    id?: SortOrder
-    cartId?: SortOrder
-    productId?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    quantity?: SortOrder
-    imageUrl?: SortOrder
-    option?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CartItemMinOrderByAggregateInput = {
-    id?: SortOrder
-    cartId?: SortOrder
-    productId?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    quantity?: SortOrder
-    imageUrl?: SortOrder
-    option?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CartItemSumOrderByAggregateInput = {
-    price?: SortOrder
-    quantity?: SortOrder
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -21074,12 +16665,6 @@ export namespace Prisma {
     create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
     connectOrCreate?: PatientCreateOrConnectWithoutUserInput
     connect?: PatientWhereUniqueInput
-  }
-
-  export type CartCreateNestedOneWithoutUserInput = {
-    create?: XOR<CartCreateWithoutUserInput, CartUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CartCreateOrConnectWithoutUserInput
-    connect?: CartWhereUniqueInput
   }
 
   export type ProductOrderCreateNestedManyWithoutUserInput = {
@@ -21114,12 +16699,6 @@ export namespace Prisma {
     create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
     connectOrCreate?: PatientCreateOrConnectWithoutUserInput
     connect?: PatientWhereUniqueInput
-  }
-
-  export type CartUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<CartCreateWithoutUserInput, CartUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CartCreateOrConnectWithoutUserInput
-    connect?: CartWhereUniqueInput
   }
 
   export type ProductOrderUncheckedCreateNestedManyWithoutUserInput = {
@@ -21201,16 +16780,6 @@ export namespace Prisma {
     update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutUserInput, PatientUpdateWithoutUserInput>, PatientUncheckedUpdateWithoutUserInput>
   }
 
-  export type CartUpdateOneWithoutUserNestedInput = {
-    create?: XOR<CartCreateWithoutUserInput, CartUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CartCreateOrConnectWithoutUserInput
-    upsert?: CartUpsertWithoutUserInput
-    disconnect?: CartWhereInput | boolean
-    delete?: CartWhereInput | boolean
-    connect?: CartWhereUniqueInput
-    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutUserInput, CartUpdateWithoutUserInput>, CartUncheckedUpdateWithoutUserInput>
-  }
-
   export type ProductOrderUpdateManyWithoutUserNestedInput = {
     create?: XOR<ProductOrderCreateWithoutUserInput, ProductOrderUncheckedCreateWithoutUserInput> | ProductOrderCreateWithoutUserInput[] | ProductOrderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProductOrderCreateOrConnectWithoutUserInput | ProductOrderCreateOrConnectWithoutUserInput[]
@@ -21275,16 +16844,6 @@ export namespace Prisma {
     delete?: PatientWhereInput | boolean
     connect?: PatientWhereUniqueInput
     update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutUserInput, PatientUpdateWithoutUserInput>, PatientUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CartUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<CartCreateWithoutUserInput, CartUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CartCreateOrConnectWithoutUserInput
-    upsert?: CartUpsertWithoutUserInput
-    disconnect?: CartWhereInput | boolean
-    delete?: CartWhereInput | boolean
-    connect?: CartWhereUniqueInput
-    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutUserInput, CartUpdateWithoutUserInput>, CartUncheckedUpdateWithoutUserInput>
   }
 
   export type ProductOrderUncheckedUpdateManyWithoutUserNestedInput = {
@@ -21361,9 +16920,9 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuthenticatorInput, UserUpdateWithoutAuthenticatorInput>, UserUncheckedUpdateWithoutAuthenticatorInput>
   }
 
-  export type UserCreateNestedOneWithoutPatientProfileInput = {
-    create?: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPatientProfileInput
+  export type UserCreateNestedOneWithoutPatientInput = {
+    create?: XOR<UserCreateWithoutPatientInput, UserUncheckedCreateWithoutPatientInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPatientInput
     connect?: UserWhereUniqueInput
   }
 
@@ -21395,14 +16954,12 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
-  export type UserUpdateOneWithoutPatientProfileNestedInput = {
-    create?: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPatientProfileInput
-    upsert?: UserUpsertWithoutPatientProfileInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
+  export type UserUpdateOneRequiredWithoutPatientNestedInput = {
+    create?: XOR<UserCreateWithoutPatientInput, UserUncheckedCreateWithoutPatientInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPatientInput
+    upsert?: UserUpsertWithoutPatientInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPatientProfileInput, UserUpdateWithoutPatientProfileInput>, UserUncheckedUpdateWithoutPatientProfileInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPatientInput, UserUpdateWithoutPatientInput>, UserUncheckedUpdateWithoutPatientInput>
   }
 
   export type AppointmentUpdateManyWithoutPatientNestedInput = {
@@ -21583,12 +17140,6 @@ export namespace Prisma {
     connect?: AppointmentSlotWhereUniqueInput
   }
 
-  export type PhysiotherapistCreateNestedOneWithoutAppointmentsInput = {
-    create?: XOR<PhysiotherapistCreateWithoutAppointmentsInput, PhysiotherapistUncheckedCreateWithoutAppointmentsInput>
-    connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentsInput
-    connect?: PhysiotherapistWhereUniqueInput
-  }
-
   export type PaymentCreateNestedOneWithoutAppointmentInput = {
     create?: XOR<PaymentCreateWithoutAppointmentInput, PaymentUncheckedCreateWithoutAppointmentInput>
     connectOrCreate?: PaymentCreateOrConnectWithoutAppointmentInput
@@ -21617,16 +17168,6 @@ export namespace Prisma {
     delete?: AppointmentSlotWhereInput | boolean
     connect?: AppointmentSlotWhereUniqueInput
     update?: XOR<XOR<AppointmentSlotUpdateToOneWithWhereWithoutAppointmentsInput, AppointmentSlotUpdateWithoutAppointmentsInput>, AppointmentSlotUncheckedUpdateWithoutAppointmentsInput>
-  }
-
-  export type PhysiotherapistUpdateOneWithoutAppointmentsNestedInput = {
-    create?: XOR<PhysiotherapistCreateWithoutAppointmentsInput, PhysiotherapistUncheckedCreateWithoutAppointmentsInput>
-    connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentsInput
-    upsert?: PhysiotherapistUpsertWithoutAppointmentsInput
-    disconnect?: PhysiotherapistWhereInput | boolean
-    delete?: PhysiotherapistWhereInput | boolean
-    connect?: PhysiotherapistWhereUniqueInput
-    update?: XOR<XOR<PhysiotherapistUpdateToOneWithWhereWithoutAppointmentsInput, PhysiotherapistUpdateWithoutAppointmentsInput>, PhysiotherapistUncheckedUpdateWithoutAppointmentsInput>
   }
 
   export type PaymentUpdateOneWithoutAppointmentNestedInput = {
@@ -21697,109 +17238,11 @@ export namespace Prisma {
     update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutPaymentsInput, PatientUpdateWithoutPaymentsInput>, PatientUncheckedUpdateWithoutPaymentsInput>
   }
 
-  export type AppointmentCreateNestedManyWithoutPhysiotherapistInput = {
-    create?: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput> | AppointmentCreateWithoutPhysiotherapistInput[] | AppointmentUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentCreateOrConnectWithoutPhysiotherapistInput | AppointmentCreateOrConnectWithoutPhysiotherapistInput[]
-    createMany?: AppointmentCreateManyPhysiotherapistInputEnvelope
-    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-  }
-
-  export type AppointmentSlotCreateNestedManyWithoutPhysiotherapistInput = {
-    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
-    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
-    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-  }
-
-  export type AppointmentUncheckedCreateNestedManyWithoutPhysiotherapistInput = {
-    create?: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput> | AppointmentCreateWithoutPhysiotherapistInput[] | AppointmentUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentCreateOrConnectWithoutPhysiotherapistInput | AppointmentCreateOrConnectWithoutPhysiotherapistInput[]
-    createMany?: AppointmentCreateManyPhysiotherapistInputEnvelope
-    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-  }
-
-  export type AppointmentSlotUncheckedCreateNestedManyWithoutPhysiotherapistInput = {
-    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
-    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
-    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type AppointmentUpdateManyWithoutPhysiotherapistNestedInput = {
-    create?: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput> | AppointmentCreateWithoutPhysiotherapistInput[] | AppointmentUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentCreateOrConnectWithoutPhysiotherapistInput | AppointmentCreateOrConnectWithoutPhysiotherapistInput[]
-    upsert?: AppointmentUpsertWithWhereUniqueWithoutPhysiotherapistInput | AppointmentUpsertWithWhereUniqueWithoutPhysiotherapistInput[]
-    createMany?: AppointmentCreateManyPhysiotherapistInputEnvelope
-    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    update?: AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
-    updateMany?: AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput[]
-    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
-  }
-
-  export type AppointmentSlotUpdateManyWithoutPhysiotherapistNestedInput = {
-    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
-    upsert?: AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput[]
-    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
-    set?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    disconnect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    delete?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    update?: AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
-    updateMany?: AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput[]
-    deleteMany?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
-  }
-
-  export type AppointmentUncheckedUpdateManyWithoutPhysiotherapistNestedInput = {
-    create?: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput> | AppointmentCreateWithoutPhysiotherapistInput[] | AppointmentUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentCreateOrConnectWithoutPhysiotherapistInput | AppointmentCreateOrConnectWithoutPhysiotherapistInput[]
-    upsert?: AppointmentUpsertWithWhereUniqueWithoutPhysiotherapistInput | AppointmentUpsertWithWhereUniqueWithoutPhysiotherapistInput[]
-    createMany?: AppointmentCreateManyPhysiotherapistInputEnvelope
-    set?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    disconnect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    delete?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-    update?: AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
-    updateMany?: AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput[]
-    deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
-  }
-
-  export type AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistNestedInput = {
-    create?: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput> | AppointmentSlotCreateWithoutPhysiotherapistInput[] | AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput[]
-    connectOrCreate?: AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput | AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput[]
-    upsert?: AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput[]
-    createMany?: AppointmentSlotCreateManyPhysiotherapistInputEnvelope
-    set?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    disconnect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    delete?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    connect?: AppointmentSlotWhereUniqueInput | AppointmentSlotWhereUniqueInput[]
-    update?: AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput | AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput[]
-    updateMany?: AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput | AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput[]
-    deleteMany?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
-  }
-
   export type AppointmentCreateNestedManyWithoutAppointmentSlotInput = {
     create?: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput> | AppointmentCreateWithoutAppointmentSlotInput[] | AppointmentUncheckedCreateWithoutAppointmentSlotInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutAppointmentSlotInput | AppointmentCreateOrConnectWithoutAppointmentSlotInput[]
     createMany?: AppointmentCreateManyAppointmentSlotInputEnvelope
     connect?: AppointmentWhereUniqueInput | AppointmentWhereUniqueInput[]
-  }
-
-  export type PhysiotherapistCreateNestedOneWithoutAppointmentSlotsInput = {
-    create?: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
-    connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentSlotsInput
-    connect?: PhysiotherapistWhereUniqueInput
   }
 
   export type AppointmentUncheckedCreateNestedManyWithoutAppointmentSlotInput = {
@@ -21823,16 +17266,6 @@ export namespace Prisma {
     deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
   }
 
-  export type PhysiotherapistUpdateOneWithoutAppointmentSlotsNestedInput = {
-    create?: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
-    connectOrCreate?: PhysiotherapistCreateOrConnectWithoutAppointmentSlotsInput
-    upsert?: PhysiotherapistUpsertWithoutAppointmentSlotsInput
-    disconnect?: PhysiotherapistWhereInput | boolean
-    delete?: PhysiotherapistWhereInput | boolean
-    connect?: PhysiotherapistWhereUniqueInput
-    update?: XOR<XOR<PhysiotherapistUpdateToOneWithWhereWithoutAppointmentSlotsInput, PhysiotherapistUpdateWithoutAppointmentSlotsInput>, PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput>
-  }
-
   export type AppointmentUncheckedUpdateManyWithoutAppointmentSlotNestedInput = {
     create?: XOR<AppointmentCreateWithoutAppointmentSlotInput, AppointmentUncheckedCreateWithoutAppointmentSlotInput> | AppointmentCreateWithoutAppointmentSlotInput[] | AppointmentUncheckedCreateWithoutAppointmentSlotInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutAppointmentSlotInput | AppointmentCreateOrConnectWithoutAppointmentSlotInput[]
@@ -21845,76 +17278,6 @@ export namespace Prisma {
     update?: AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput | AppointmentUpdateWithWhereUniqueWithoutAppointmentSlotInput[]
     updateMany?: AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput | AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput[]
     deleteMany?: AppointmentScalarWhereInput | AppointmentScalarWhereInput[]
-  }
-
-  export type UserCreateNestedOneWithoutCartInput = {
-    create?: XOR<UserCreateWithoutCartInput, UserUncheckedCreateWithoutCartInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCartInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type CartItemCreateNestedManyWithoutCartInput = {
-    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
-    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
-    createMany?: CartItemCreateManyCartInputEnvelope
-    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-  }
-
-  export type CartItemUncheckedCreateNestedManyWithoutCartInput = {
-    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
-    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
-    createMany?: CartItemCreateManyCartInputEnvelope
-    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutCartNestedInput = {
-    create?: XOR<UserCreateWithoutCartInput, UserUncheckedCreateWithoutCartInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCartInput
-    upsert?: UserUpsertWithoutCartInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCartInput, UserUpdateWithoutCartInput>, UserUncheckedUpdateWithoutCartInput>
-  }
-
-  export type CartItemUpdateManyWithoutCartNestedInput = {
-    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
-    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
-    upsert?: CartItemUpsertWithWhereUniqueWithoutCartInput | CartItemUpsertWithWhereUniqueWithoutCartInput[]
-    createMany?: CartItemCreateManyCartInputEnvelope
-    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    update?: CartItemUpdateWithWhereUniqueWithoutCartInput | CartItemUpdateWithWhereUniqueWithoutCartInput[]
-    updateMany?: CartItemUpdateManyWithWhereWithoutCartInput | CartItemUpdateManyWithWhereWithoutCartInput[]
-    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
-  }
-
-  export type CartItemUncheckedUpdateManyWithoutCartNestedInput = {
-    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
-    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
-    upsert?: CartItemUpsertWithWhereUniqueWithoutCartInput | CartItemUpsertWithWhereUniqueWithoutCartInput[]
-    createMany?: CartItemCreateManyCartInputEnvelope
-    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
-    update?: CartItemUpdateWithWhereUniqueWithoutCartInput | CartItemUpdateWithWhereUniqueWithoutCartInput[]
-    updateMany?: CartItemUpdateManyWithWhereWithoutCartInput | CartItemUpdateManyWithWhereWithoutCartInput[]
-    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
-  }
-
-  export type CartCreateNestedOneWithoutItemsInput = {
-    create?: XOR<CartCreateWithoutItemsInput, CartUncheckedCreateWithoutItemsInput>
-    connectOrCreate?: CartCreateOrConnectWithoutItemsInput
-    connect?: CartWhereUniqueInput
-  }
-
-  export type CartUpdateOneRequiredWithoutItemsNestedInput = {
-    create?: XOR<CartCreateWithoutItemsInput, CartUncheckedCreateWithoutItemsInput>
-    connectOrCreate?: CartCreateOrConnectWithoutItemsInput
-    upsert?: CartUpsertWithoutItemsInput
-    connect?: CartWhereUniqueInput
-    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutItemsInput, CartUpdateWithoutItemsInput>, CartUncheckedUpdateWithoutItemsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -22161,22 +17524,6 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -22280,7 +17627,7 @@ export namespace Prisma {
   export type PatientCreateWithoutUserInput = {
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -22296,7 +17643,7 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -22311,25 +17658,6 @@ export namespace Prisma {
   export type PatientCreateOrConnectWithoutUserInput = {
     where: PatientWhereUniqueInput
     create: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
-  }
-
-  export type CartCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    items?: CartItemCreateNestedManyWithoutCartInput
-  }
-
-  export type CartUncheckedCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    items?: CartItemUncheckedCreateNestedManyWithoutCartInput
-  }
-
-  export type CartCreateOrConnectWithoutUserInput = {
-    where: CartWhereUniqueInput
-    create: XOR<CartCreateWithoutUserInput, CartUncheckedCreateWithoutUserInput>
   }
 
   export type ProductOrderCreateWithoutUserInput = {
@@ -22477,7 +17805,7 @@ export namespace Prisma {
   export type PatientUpdateWithoutUserInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -22493,7 +17821,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -22503,31 +17831,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
-  }
-
-  export type CartUpsertWithoutUserInput = {
-    update: XOR<CartUpdateWithoutUserInput, CartUncheckedUpdateWithoutUserInput>
-    create: XOR<CartCreateWithoutUserInput, CartUncheckedCreateWithoutUserInput>
-    where?: CartWhereInput
-  }
-
-  export type CartUpdateToOneWithWhereWithoutUserInput = {
-    where?: CartWhereInput
-    data: XOR<CartUpdateWithoutUserInput, CartUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CartUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    items?: CartItemUpdateManyWithoutCartNestedInput
-  }
-
-  export type CartUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    items?: CartItemUncheckedUpdateManyWithoutCartNestedInput
   }
 
   export type ProductOrderUpsertWithWhereUniqueWithoutUserInput = {
@@ -22576,8 +17879,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
-    patientProfile?: PatientCreateNestedOneWithoutUserInput
-    cart?: CartCreateNestedOneWithoutUserInput
+    patient?: PatientCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderCreateNestedManyWithoutUserInput
   }
 
@@ -22595,8 +17897,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
-    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
-    cart?: CartUncheckedCreateNestedOneWithoutUserInput
+    patient?: PatientUncheckedCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -22630,8 +17931,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUpdateOneWithoutUserNestedInput
-    cart?: CartUpdateOneWithoutUserNestedInput
+    patient?: PatientUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUpdateManyWithoutUserNestedInput
   }
 
@@ -22649,8 +17949,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
-    cart?: CartUncheckedUpdateOneWithoutUserNestedInput
+    patient?: PatientUncheckedUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -22668,8 +17967,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
-    patientProfile?: PatientCreateNestedOneWithoutUserInput
-    cart?: CartCreateNestedOneWithoutUserInput
+    patient?: PatientCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderCreateNestedManyWithoutUserInput
   }
 
@@ -22687,8 +17985,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
-    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
-    cart?: CartUncheckedCreateNestedOneWithoutUserInput
+    patient?: PatientUncheckedCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -22722,8 +18019,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUpdateOneWithoutUserNestedInput
-    cart?: CartUpdateOneWithoutUserNestedInput
+    patient?: PatientUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUpdateManyWithoutUserNestedInput
   }
 
@@ -22741,8 +18037,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
-    cart?: CartUncheckedUpdateOneWithoutUserNestedInput
+    patient?: PatientUncheckedUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -22760,8 +18055,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    patientProfile?: PatientCreateNestedOneWithoutUserInput
-    cart?: CartCreateNestedOneWithoutUserInput
+    patient?: PatientCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderCreateNestedManyWithoutUserInput
   }
 
@@ -22779,8 +18073,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
-    cart?: CartUncheckedCreateNestedOneWithoutUserInput
+    patient?: PatientUncheckedCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -22814,8 +18107,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUpdateOneWithoutUserNestedInput
-    cart?: CartUpdateOneWithoutUserNestedInput
+    patient?: PatientUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUpdateManyWithoutUserNestedInput
   }
 
@@ -22833,12 +18125,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
-    cart?: CartUncheckedUpdateOneWithoutUserNestedInput
+    patient?: PatientUncheckedUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutPatientProfileInput = {
+  export type UserCreateWithoutPatientInput = {
     id?: string
     name?: string | null
     username?: string | null
@@ -22853,11 +18144,10 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
-    cart?: CartCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutPatientProfileInput = {
+  export type UserUncheckedCreateWithoutPatientInput = {
     id?: string
     name?: string | null
     username?: string | null
@@ -22872,13 +18162,12 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
-    cart?: CartUncheckedCreateNestedOneWithoutUserInput
     productOrders?: ProductOrderUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutPatientProfileInput = {
+  export type UserCreateOrConnectWithoutPatientInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
+    create: XOR<UserCreateWithoutPatientInput, UserUncheckedCreateWithoutPatientInput>
   }
 
   export type AppointmentCreateWithoutPatientInput = {
@@ -22895,14 +18184,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
-    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
     payment?: PaymentCreateNestedOneWithoutAppointmentInput
   }
 
   export type AppointmentUncheckedCreateWithoutPatientInput = {
     id?: string
     slotId?: number | null
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -22965,18 +18252,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutPatientProfileInput = {
-    update: XOR<UserUpdateWithoutPatientProfileInput, UserUncheckedUpdateWithoutPatientProfileInput>
-    create: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
+  export type UserUpsertWithoutPatientInput = {
+    update: XOR<UserUpdateWithoutPatientInput, UserUncheckedUpdateWithoutPatientInput>
+    create: XOR<UserCreateWithoutPatientInput, UserUncheckedCreateWithoutPatientInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutPatientProfileInput = {
+  export type UserUpdateToOneWithWhereWithoutPatientInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutPatientProfileInput, UserUncheckedUpdateWithoutPatientProfileInput>
+    data: XOR<UserUpdateWithoutPatientInput, UserUncheckedUpdateWithoutPatientInput>
   }
 
-  export type UserUpdateWithoutPatientProfileInput = {
+  export type UserUpdateWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     username?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22991,11 +18278,10 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
-    cart?: CartUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutPatientProfileInput = {
+  export type UserUncheckedUpdateWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     username?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23010,7 +18296,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
-    cart?: CartUncheckedUpdateOneWithoutUserNestedInput
     productOrders?: ProductOrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -23037,7 +18322,6 @@ export namespace Prisma {
     id?: StringFilter<"Appointment"> | string
     patientId?: IntFilter<"Appointment"> | number
     slotId?: IntNullableFilter<"Appointment"> | number | null
-    physiotherapistId?: IntNullableFilter<"Appointment"> | number | null
     appointmentDate?: DateTimeFilter<"Appointment"> | Date | string
     startTime?: StringFilter<"Appointment"> | string
     duration?: IntFilter<"Appointment"> | number
@@ -23152,8 +18436,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
-    patientProfile?: PatientCreateNestedOneWithoutUserInput
-    cart?: CartCreateNestedOneWithoutUserInput
+    patient?: PatientCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProductOrdersInput = {
@@ -23171,8 +18454,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
-    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
-    cart?: CartUncheckedCreateNestedOneWithoutUserInput
+    patient?: PatientUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProductOrdersInput = {
@@ -23267,8 +18549,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUpdateOneWithoutUserNestedInput
-    cart?: CartUpdateOneWithoutUserNestedInput
+    patient?: PatientUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProductOrdersInput = {
@@ -23286,8 +18567,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
-    cart?: CartUncheckedUpdateOneWithoutUserNestedInput
+    patient?: PatientUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutProductOrdersInput = {
@@ -23366,7 +18646,7 @@ export namespace Prisma {
   export type PatientCreateWithoutAppointmentsInput = {
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -23374,7 +18654,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutPatientProfileInput
+    user: UserCreateNestedOneWithoutPatientInput
     payments?: PaymentCreateNestedManyWithoutPatientInput
   }
 
@@ -23382,7 +18662,7 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -23390,7 +18670,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: string | null
+    userId: string
     payments?: PaymentUncheckedCreateNestedManyWithoutPatientInput
   }
 
@@ -23408,7 +18688,6 @@ export namespace Prisma {
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentSlotsInput
   }
 
   export type AppointmentSlotUncheckedCreateWithoutAppointmentsInput = {
@@ -23419,7 +18698,6 @@ export namespace Prisma {
     capacity?: number
     bookedCount?: number
     isAvailable?: boolean
-    physiotherapistId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23427,48 +18705,6 @@ export namespace Prisma {
   export type AppointmentSlotCreateOrConnectWithoutAppointmentsInput = {
     where: AppointmentSlotWhereUniqueInput
     create: XOR<AppointmentSlotCreateWithoutAppointmentsInput, AppointmentSlotUncheckedCreateWithoutAppointmentsInput>
-  }
-
-  export type PhysiotherapistCreateWithoutAppointmentsInput = {
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointmentSlots?: AppointmentSlotCreateNestedManyWithoutPhysiotherapistInput
-  }
-
-  export type PhysiotherapistUncheckedCreateWithoutAppointmentsInput = {
-    id?: number
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointmentSlots?: AppointmentSlotUncheckedCreateNestedManyWithoutPhysiotherapistInput
-  }
-
-  export type PhysiotherapistCreateOrConnectWithoutAppointmentsInput = {
-    where: PhysiotherapistWhereUniqueInput
-    create: XOR<PhysiotherapistCreateWithoutAppointmentsInput, PhysiotherapistUncheckedCreateWithoutAppointmentsInput>
   }
 
   export type PaymentCreateWithoutAppointmentInput = {
@@ -23518,7 +18754,7 @@ export namespace Prisma {
   export type PatientUpdateWithoutAppointmentsInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -23526,7 +18762,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutPatientProfileNestedInput
+    user?: UserUpdateOneRequiredWithoutPatientNestedInput
     payments?: PaymentUpdateManyWithoutPatientNestedInput
   }
 
@@ -23534,7 +18770,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -23542,7 +18778,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     payments?: PaymentUncheckedUpdateManyWithoutPatientNestedInput
   }
 
@@ -23566,7 +18802,6 @@ export namespace Prisma {
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentSlotsNestedInput
   }
 
   export type AppointmentSlotUncheckedUpdateWithoutAppointmentsInput = {
@@ -23577,57 +18812,8 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     bookedCount?: IntFieldUpdateOperationsInput | number
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PhysiotherapistUpsertWithoutAppointmentsInput = {
-    update: XOR<PhysiotherapistUpdateWithoutAppointmentsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentsInput>
-    create: XOR<PhysiotherapistCreateWithoutAppointmentsInput, PhysiotherapistUncheckedCreateWithoutAppointmentsInput>
-    where?: PhysiotherapistWhereInput
-  }
-
-  export type PhysiotherapistUpdateToOneWithWhereWithoutAppointmentsInput = {
-    where?: PhysiotherapistWhereInput
-    data: XOR<PhysiotherapistUpdateWithoutAppointmentsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentsInput>
-  }
-
-  export type PhysiotherapistUpdateWithoutAppointmentsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointmentSlots?: AppointmentSlotUpdateManyWithoutPhysiotherapistNestedInput
-  }
-
-  export type PhysiotherapistUncheckedUpdateWithoutAppointmentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointmentSlots?: AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistNestedInput
   }
 
   export type PaymentUpsertWithoutAppointmentInput = {
@@ -23684,14 +18870,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     patient: PatientCreateNestedOneWithoutAppointmentsInput
     appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
-    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
   }
 
   export type AppointmentUncheckedCreateWithoutPaymentInput = {
     id?: string
     patientId: number
     slotId?: number | null
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -23744,7 +18928,7 @@ export namespace Prisma {
   export type PatientCreateWithoutPaymentsInput = {
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -23752,7 +18936,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutPatientProfileInput
+    user: UserCreateNestedOneWithoutPatientInput
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
   }
 
@@ -23760,7 +18944,7 @@ export namespace Prisma {
     id?: number
     name: string
     username: string
-    age: number
+    dateOfBirth: Date | string
     contactNumber: string
     email: string
     area: string
@@ -23768,7 +18952,7 @@ export namespace Prisma {
     address: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: string | null
+    userId: string
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
   }
 
@@ -23803,14 +18987,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
     appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
-    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
   }
 
   export type AppointmentUncheckedUpdateWithoutPaymentInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
     slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -23875,7 +19057,7 @@ export namespace Prisma {
   export type PatientUpdateWithoutPaymentsInput = {
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -23883,7 +19065,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutPatientProfileNestedInput
+    user?: UserUpdateOneRequiredWithoutPatientNestedInput
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
   }
 
@@ -23891,7 +19073,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
     contactNumber?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     area?: StringFieldUpdateOperationsInput | string
@@ -23899,137 +19081,8 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
-  }
-
-  export type AppointmentCreateWithoutPhysiotherapistInput = {
-    id?: string
-    appointmentDate: Date | string
-    startTime: string
-    duration: number
-    status?: string
-    reason?: string | null
-    notes?: string | null
-    paymentId?: string | null
-    paymentStatus?: string | null
-    fee?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    patient: PatientCreateNestedOneWithoutAppointmentsInput
-    appointmentSlot?: AppointmentSlotCreateNestedOneWithoutAppointmentsInput
-    payment?: PaymentCreateNestedOneWithoutAppointmentInput
-  }
-
-  export type AppointmentUncheckedCreateWithoutPhysiotherapistInput = {
-    id?: string
-    patientId: number
-    slotId?: number | null
-    appointmentDate: Date | string
-    startTime: string
-    duration: number
-    status?: string
-    reason?: string | null
-    notes?: string | null
-    paymentId?: string | null
-    paymentStatus?: string | null
-    fee?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    payment?: PaymentUncheckedCreateNestedOneWithoutAppointmentInput
-  }
-
-  export type AppointmentCreateOrConnectWithoutPhysiotherapistInput = {
-    where: AppointmentWhereUniqueInput
-    create: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentCreateManyPhysiotherapistInputEnvelope = {
-    data: AppointmentCreateManyPhysiotherapistInput | AppointmentCreateManyPhysiotherapistInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AppointmentSlotCreateWithoutPhysiotherapistInput = {
-    date: Date | string
-    startTime: string
-    endTime: string
-    capacity?: number
-    bookedCount?: number
-    isAvailable?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointments?: AppointmentCreateNestedManyWithoutAppointmentSlotInput
-  }
-
-  export type AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput = {
-    id?: number
-    date: Date | string
-    startTime: string
-    endTime: string
-    capacity?: number
-    bookedCount?: number
-    isAvailable?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointments?: AppointmentUncheckedCreateNestedManyWithoutAppointmentSlotInput
-  }
-
-  export type AppointmentSlotCreateOrConnectWithoutPhysiotherapistInput = {
-    where: AppointmentSlotWhereUniqueInput
-    create: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentSlotCreateManyPhysiotherapistInputEnvelope = {
-    data: AppointmentSlotCreateManyPhysiotherapistInput | AppointmentSlotCreateManyPhysiotherapistInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AppointmentUpsertWithWhereUniqueWithoutPhysiotherapistInput = {
-    where: AppointmentWhereUniqueInput
-    update: XOR<AppointmentUpdateWithoutPhysiotherapistInput, AppointmentUncheckedUpdateWithoutPhysiotherapistInput>
-    create: XOR<AppointmentCreateWithoutPhysiotherapistInput, AppointmentUncheckedCreateWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentUpdateWithWhereUniqueWithoutPhysiotherapistInput = {
-    where: AppointmentWhereUniqueInput
-    data: XOR<AppointmentUpdateWithoutPhysiotherapistInput, AppointmentUncheckedUpdateWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentUpdateManyWithWhereWithoutPhysiotherapistInput = {
-    where: AppointmentScalarWhereInput
-    data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentSlotUpsertWithWhereUniqueWithoutPhysiotherapistInput = {
-    where: AppointmentSlotWhereUniqueInput
-    update: XOR<AppointmentSlotUpdateWithoutPhysiotherapistInput, AppointmentSlotUncheckedUpdateWithoutPhysiotherapistInput>
-    create: XOR<AppointmentSlotCreateWithoutPhysiotherapistInput, AppointmentSlotUncheckedCreateWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentSlotUpdateWithWhereUniqueWithoutPhysiotherapistInput = {
-    where: AppointmentSlotWhereUniqueInput
-    data: XOR<AppointmentSlotUpdateWithoutPhysiotherapistInput, AppointmentSlotUncheckedUpdateWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentSlotUpdateManyWithWhereWithoutPhysiotherapistInput = {
-    where: AppointmentSlotScalarWhereInput
-    data: XOR<AppointmentSlotUpdateManyMutationInput, AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistInput>
-  }
-
-  export type AppointmentSlotScalarWhereInput = {
-    AND?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
-    OR?: AppointmentSlotScalarWhereInput[]
-    NOT?: AppointmentSlotScalarWhereInput | AppointmentSlotScalarWhereInput[]
-    id?: IntFilter<"AppointmentSlot"> | number
-    date?: DateTimeFilter<"AppointmentSlot"> | Date | string
-    startTime?: StringFilter<"AppointmentSlot"> | string
-    endTime?: StringFilter<"AppointmentSlot"> | string
-    capacity?: IntFilter<"AppointmentSlot"> | number
-    bookedCount?: IntFilter<"AppointmentSlot"> | number
-    isAvailable?: BoolFilter<"AppointmentSlot"> | boolean
-    physiotherapistId?: IntNullableFilter<"AppointmentSlot"> | number | null
-    createdAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
-    updatedAt?: DateTimeFilter<"AppointmentSlot"> | Date | string
   }
 
   export type AppointmentCreateWithoutAppointmentSlotInput = {
@@ -24046,14 +19099,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     patient: PatientCreateNestedOneWithoutAppointmentsInput
-    physiotherapist?: PhysiotherapistCreateNestedOneWithoutAppointmentsInput
     payment?: PaymentCreateNestedOneWithoutAppointmentInput
   }
 
   export type AppointmentUncheckedCreateWithoutAppointmentSlotInput = {
     id?: string
     patientId: number
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -24078,48 +19129,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PhysiotherapistCreateWithoutAppointmentSlotsInput = {
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointments?: AppointmentCreateNestedManyWithoutPhysiotherapistInput
-  }
-
-  export type PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput = {
-    id?: number
-    name: string
-    email: string
-    contactNumber: string
-    specialization: string
-    experience?: number
-    education?: string | null
-    certifications?: string | null
-    bio?: string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: number | null
-    imageUrl?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    appointments?: AppointmentUncheckedCreateNestedManyWithoutPhysiotherapistInput
-  }
-
-  export type PhysiotherapistCreateOrConnectWithoutAppointmentSlotsInput = {
-    where: PhysiotherapistWhereUniqueInput
-    create: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
-  }
-
   export type AppointmentUpsertWithWhereUniqueWithoutAppointmentSlotInput = {
     where: AppointmentWhereUniqueInput
     update: XOR<AppointmentUpdateWithoutAppointmentSlotInput, AppointmentUncheckedUpdateWithoutAppointmentSlotInput>
@@ -24134,256 +19143,6 @@ export namespace Prisma {
   export type AppointmentUpdateManyWithWhereWithoutAppointmentSlotInput = {
     where: AppointmentScalarWhereInput
     data: XOR<AppointmentUpdateManyMutationInput, AppointmentUncheckedUpdateManyWithoutAppointmentSlotInput>
-  }
-
-  export type PhysiotherapistUpsertWithoutAppointmentSlotsInput = {
-    update: XOR<PhysiotherapistUpdateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput>
-    create: XOR<PhysiotherapistCreateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedCreateWithoutAppointmentSlotsInput>
-    where?: PhysiotherapistWhereInput
-  }
-
-  export type PhysiotherapistUpdateToOneWithWhereWithoutAppointmentSlotsInput = {
-    where?: PhysiotherapistWhereInput
-    data: XOR<PhysiotherapistUpdateWithoutAppointmentSlotsInput, PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput>
-  }
-
-  export type PhysiotherapistUpdateWithoutAppointmentSlotsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointments?: AppointmentUpdateManyWithoutPhysiotherapistNestedInput
-  }
-
-  export type PhysiotherapistUncheckedUpdateWithoutAppointmentSlotsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    specialization?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    education?: NullableStringFieldUpdateOperationsInput | string | null
-    certifications?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    availability?: NullableJsonNullValueInput | InputJsonValue
-    rating?: NullableFloatFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointments?: AppointmentUncheckedUpdateManyWithoutPhysiotherapistNestedInput
-  }
-
-  export type UserCreateWithoutCartInput = {
-    id?: string
-    name?: string | null
-    username?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    hashedPassword?: string | null
-    image?: string | null
-    role?: string | null
-    hasCompletedProfile?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    Authenticator?: AuthenticatorCreateNestedManyWithoutUserInput
-    patientProfile?: PatientCreateNestedOneWithoutUserInput
-    productOrders?: ProductOrderCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutCartInput = {
-    id?: string
-    name?: string | null
-    username?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    hashedPassword?: string | null
-    image?: string | null
-    role?: string | null
-    hasCompletedProfile?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    Authenticator?: AuthenticatorUncheckedCreateNestedManyWithoutUserInput
-    patientProfile?: PatientUncheckedCreateNestedOneWithoutUserInput
-    productOrders?: ProductOrderUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutCartInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCartInput, UserUncheckedCreateWithoutCartInput>
-  }
-
-  export type CartItemCreateWithoutCartInput = {
-    id?: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl?: string | null
-    option: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartItemUncheckedCreateWithoutCartInput = {
-    id?: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl?: string | null
-    option: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartItemCreateOrConnectWithoutCartInput = {
-    where: CartItemWhereUniqueInput
-    create: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput>
-  }
-
-  export type CartItemCreateManyCartInputEnvelope = {
-    data: CartItemCreateManyCartInput | CartItemCreateManyCartInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutCartInput = {
-    update: XOR<UserUpdateWithoutCartInput, UserUncheckedUpdateWithoutCartInput>
-    create: XOR<UserCreateWithoutCartInput, UserUncheckedCreateWithoutCartInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCartInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCartInput, UserUncheckedUpdateWithoutCartInput>
-  }
-
-  export type UserUpdateWithoutCartInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    Authenticator?: AuthenticatorUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUpdateOneWithoutUserNestedInput
-    productOrders?: ProductOrderUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCartInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    hasCompletedProfile?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    Authenticator?: AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
-    patientProfile?: PatientUncheckedUpdateOneWithoutUserNestedInput
-    productOrders?: ProductOrderUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type CartItemUpsertWithWhereUniqueWithoutCartInput = {
-    where: CartItemWhereUniqueInput
-    update: XOR<CartItemUpdateWithoutCartInput, CartItemUncheckedUpdateWithoutCartInput>
-    create: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput>
-  }
-
-  export type CartItemUpdateWithWhereUniqueWithoutCartInput = {
-    where: CartItemWhereUniqueInput
-    data: XOR<CartItemUpdateWithoutCartInput, CartItemUncheckedUpdateWithoutCartInput>
-  }
-
-  export type CartItemUpdateManyWithWhereWithoutCartInput = {
-    where: CartItemScalarWhereInput
-    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutCartInput>
-  }
-
-  export type CartItemScalarWhereInput = {
-    AND?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
-    OR?: CartItemScalarWhereInput[]
-    NOT?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
-    id?: StringFilter<"CartItem"> | string
-    cartId?: StringFilter<"CartItem"> | string
-    productId?: StringFilter<"CartItem"> | string
-    name?: StringFilter<"CartItem"> | string
-    price?: FloatFilter<"CartItem"> | number
-    quantity?: IntFilter<"CartItem"> | number
-    imageUrl?: StringNullableFilter<"CartItem"> | string | null
-    option?: StringFilter<"CartItem"> | string
-    createdAt?: DateTimeFilter<"CartItem"> | Date | string
-    updatedAt?: DateTimeFilter<"CartItem"> | Date | string
-  }
-
-  export type CartCreateWithoutItemsInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCartInput
-  }
-
-  export type CartUncheckedCreateWithoutItemsInput = {
-    id?: string
-    userId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartCreateOrConnectWithoutItemsInput = {
-    where: CartWhereUniqueInput
-    create: XOR<CartCreateWithoutItemsInput, CartUncheckedCreateWithoutItemsInput>
-  }
-
-  export type CartUpsertWithoutItemsInput = {
-    update: XOR<CartUpdateWithoutItemsInput, CartUncheckedUpdateWithoutItemsInput>
-    create: XOR<CartCreateWithoutItemsInput, CartUncheckedCreateWithoutItemsInput>
-    where?: CartWhereInput
-  }
-
-  export type CartUpdateToOneWithWhereWithoutItemsInput = {
-    where?: CartWhereInput
-    data: XOR<CartUpdateWithoutItemsInput, CartUncheckedUpdateWithoutItemsInput>
-  }
-
-  export type CartUpdateWithoutItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCartNestedInput
-  }
-
-  export type CartUncheckedUpdateWithoutItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AccountCreateManyUserInput = {
@@ -24579,7 +19338,6 @@ export namespace Prisma {
   export type AppointmentCreateManyPatientInput = {
     id?: string
     slotId?: number | null
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -24621,14 +19379,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
-    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
     payment?: PaymentUpdateOneWithoutAppointmentNestedInput
   }
 
   export type AppointmentUncheckedUpdateWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
     slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -24646,7 +19402,6 @@ export namespace Prisma {
   export type AppointmentUncheckedUpdateManyWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
     slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -24752,129 +19507,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AppointmentCreateManyPhysiotherapistInput = {
-    id?: string
-    patientId: number
-    slotId?: number | null
-    appointmentDate: Date | string
-    startTime: string
-    duration: number
-    status?: string
-    reason?: string | null
-    notes?: string | null
-    paymentId?: string | null
-    paymentStatus?: string | null
-    fee?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AppointmentSlotCreateManyPhysiotherapistInput = {
-    id?: number
-    date: Date | string
-    startTime: string
-    endTime: string
-    capacity?: number
-    bookedCount?: number
-    isAvailable?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AppointmentUpdateWithoutPhysiotherapistInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    duration?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    fee?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
-    appointmentSlot?: AppointmentSlotUpdateOneWithoutAppointmentsNestedInput
-    payment?: PaymentUpdateOneWithoutAppointmentNestedInput
-  }
-
-  export type AppointmentUncheckedUpdateWithoutPhysiotherapistInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    patientId?: IntFieldUpdateOperationsInput | number
-    slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    duration?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    fee?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payment?: PaymentUncheckedUpdateOneWithoutAppointmentNestedInput
-  }
-
-  export type AppointmentUncheckedUpdateManyWithoutPhysiotherapistInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    patientId?: IntFieldUpdateOperationsInput | number
-    slotId?: NullableIntFieldUpdateOperationsInput | number | null
-    appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    duration?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    fee?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AppointmentSlotUpdateWithoutPhysiotherapistInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    capacity?: IntFieldUpdateOperationsInput | number
-    bookedCount?: IntFieldUpdateOperationsInput | number
-    isAvailable?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointments?: AppointmentUpdateManyWithoutAppointmentSlotNestedInput
-  }
-
-  export type AppointmentSlotUncheckedUpdateWithoutPhysiotherapistInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    capacity?: IntFieldUpdateOperationsInput | number
-    bookedCount?: IntFieldUpdateOperationsInput | number
-    isAvailable?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    appointments?: AppointmentUncheckedUpdateManyWithoutAppointmentSlotNestedInput
-  }
-
-  export type AppointmentSlotUncheckedUpdateManyWithoutPhysiotherapistInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    capacity?: IntFieldUpdateOperationsInput | number
-    bookedCount?: IntFieldUpdateOperationsInput | number
-    isAvailable?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type AppointmentCreateManyAppointmentSlotInput = {
     id?: string
     patientId: number
-    physiotherapistId?: number | null
     appointmentDate: Date | string
     startTime: string
     duration: number
@@ -24902,14 +19537,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientUpdateOneRequiredWithoutAppointmentsNestedInput
-    physiotherapist?: PhysiotherapistUpdateOneWithoutAppointmentsNestedInput
     payment?: PaymentUpdateOneWithoutAppointmentNestedInput
   }
 
   export type AppointmentUncheckedUpdateWithoutAppointmentSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -24927,7 +19560,6 @@ export namespace Prisma {
   export type AppointmentUncheckedUpdateManyWithoutAppointmentSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     patientId?: IntFieldUpdateOperationsInput | number
-    physiotherapistId?: NullableIntFieldUpdateOperationsInput | number | null
     appointmentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
@@ -24937,54 +19569,6 @@ export namespace Prisma {
     paymentId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartItemCreateManyCartInput = {
-    id?: string
-    productId: string
-    name: string
-    price: number
-    quantity: number
-    imageUrl?: string | null
-    option: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CartItemUpdateWithoutCartInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartItemUncheckedUpdateWithoutCartInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CartItemUncheckedUpdateManyWithoutCartInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    quantity?: IntFieldUpdateOperationsInput | number
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    option?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

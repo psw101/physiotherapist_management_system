@@ -182,7 +182,7 @@ exports.Prisma.PatientScalarFieldEnum = {
   id: 'id',
   name: 'name',
   username: 'username',
-  age: 'age',
+  dateOfBirth: 'dateOfBirth',
   contactNumber: 'contactNumber',
   email: 'email',
   area: 'area',
@@ -222,7 +222,6 @@ exports.Prisma.AppointmentScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
   slotId: 'slotId',
-  physiotherapistId: 'physiotherapistId',
   appointmentDate: 'appointmentDate',
   startTime: 'startTime',
   duration: 'duration',
@@ -251,24 +250,6 @@ exports.Prisma.PaymentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PhysiotherapistScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  contactNumber: 'contactNumber',
-  specialization: 'specialization',
-  experience: 'experience',
-  education: 'education',
-  certifications: 'certifications',
-  bio: 'bio',
-  availability: 'availability',
-  rating: 'rating',
-  imageUrl: 'imageUrl',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.AppointmentSlotScalarFieldEnum = {
   id: 'id',
   date: 'date',
@@ -277,27 +258,6 @@ exports.Prisma.AppointmentSlotScalarFieldEnum = {
   capacity: 'capacity',
   bookedCount: 'bookedCount',
   isAvailable: 'isAvailable',
-  physiotherapistId: 'physiotherapistId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.CartScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.CartItemScalarFieldEnum = {
-  id: 'id',
-  cartId: 'cartId',
-  productId: 'productId',
-  name: 'name',
-  price: 'price',
-  quantity: 'quantity',
-  imageUrl: 'imageUrl',
-  option: 'option',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -417,34 +377,9 @@ exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
   productOrderId: 'productOrderId'
 };
 
-exports.Prisma.PhysiotherapistOrderByRelevanceFieldEnum = {
-  name: 'name',
-  email: 'email',
-  contactNumber: 'contactNumber',
-  specialization: 'specialization',
-  education: 'education',
-  certifications: 'certifications',
-  bio: 'bio',
-  imageUrl: 'imageUrl'
-};
-
 exports.Prisma.AppointmentSlotOrderByRelevanceFieldEnum = {
   startTime: 'startTime',
   endTime: 'endTime'
-};
-
-exports.Prisma.CartOrderByRelevanceFieldEnum = {
-  id: 'id',
-  userId: 'userId'
-};
-
-exports.Prisma.CartItemOrderByRelevanceFieldEnum = {
-  id: 'id',
-  cartId: 'cartId',
-  productId: 'productId',
-  name: 'name',
-  imageUrl: 'imageUrl',
-  option: 'option'
 };
 
 
@@ -459,10 +394,7 @@ exports.Prisma.ModelName = {
   ProductOrder: 'ProductOrder',
   Appointment: 'Appointment',
   Payment: 'Payment',
-  Physiotherapist: 'Physiotherapist',
-  AppointmentSlot: 'AppointmentSlot',
-  Cart: 'Cart',
-  CartItem: 'CartItem'
+  AppointmentSlot: 'AppointmentSlot'
 };
 
 /**

@@ -24,22 +24,15 @@ model User {
   emailVerified       DateTime?
   hashedPassword      String?
   image               String?
-  role                String?   @default("PATIENT") // PATIENT, DOCTOR, ADMIN
-  hasCompletedProfile Boolean   @default(false) // Flag to track profile completion
+  role                String?   @default("PATIENT")
+  hasCompletedProfile Boolean   @default(false)
 
-  accounts      Account[]
-  sessions      Session[]
-  // Optional for WebAuthn support
+  accounts Account[]
+  sessions Session[]
+
   Authenticator Authenticator[]
-
-  // Add relation to Patient model
-  patientProfile Patient?
-
-  // Add this relation
-  cart      Cart?
-
-  // Add relation to ProductOrder
-  productOrders   ProductOrder[]
+  patient       Patient?
+  productOrders ProductOrder[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -105,84 +98,72 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
-//folloing are for application
 model Patient {
   id            Int      @id @default(autoincrement())
   name          String
   username      String   @unique
-  age           Int
+  dateOfBirth   DateTime
   contactNumber String
   email         String   @unique
   area          String
-  nic           String   @unique
+  nic           String
   address       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  // Connect to User model
-  userId String? @unique
-  user   User?   @relation(fields: [userId], references: [id])
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 
-  // Relationships
   appointments Appointment[]
   payments     Payment[]
 }
 
 model Product {
-  id              Int       @id @default(autoincrement())
-  name            String?
-  price           Int?
-  description     String?
-  specification   Json?
-  imageUrl        String?
-  videoUrl        String?
-  // Add new fields
-  customOptions   Json?     // Store customization options as key-value pairs
-  feedback        Json?     // Store customer feedback/comments
-  // Relation to orders
-  productOrders   ProductOrder[]
+  id            Int            @id @default(autoincrement())
+  name          String?
+  price         Int?
+  description   String?
+  specification Json?
+  imageUrl      String?
+  videoUrl      String?
+  customOptions Json?
+  feedback      Json?
+  productOrders ProductOrder[]
 }
 
-// New model for product orders
 model ProductOrder {
-  id              String    @id @default(cuid())
-  userId          String    // The user who placed the order
-  user            User      @relation(fields: [userId], references: [id])
-  productId       Int       // The product being ordered
-  product         Product   @relation(fields: [productId], references: [id])
-  quantity        Int       @default(1)
-  totalPrice      Float
-  customizations  Json?     // The selected customization options
-  status          String    @default("pending") // pending, approved, rejected, completed
-  adminNotes      String?   // Notes from admin about the order
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  productId      Int
+  product        Product  @relation(fields: [productId], references: [id])
+  quantity       Int      @default(1)
+  totalPrice     Float
+  customizations Json?
+  status         String   @default("pending")
+  adminNotes     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  // Add the payment relation
-  payment           Payment?
+  payment Payment?
 
   @@index([userId])
   @@index([productId])
 }
 
-// Appointment management
 model Appointment {
   id        String  @id @default(cuid())
   patientId Int
   patient   Patient @relation(fields: [patientId], references: [id])
 
-  // Add this new field to link appointment to slot
   slotId          Int?
   appointmentSlot AppointmentSlot? @relation(fields: [slotId], references: [id])
 
-  // Keep these existing fields for compatibility
-  physiotherapistId Int?
-  physiotherapist   Physiotherapist? @relation(fields: [physiotherapistId], references: [id])
-  appointmentDate   DateTime
-  startTime         String
-  duration          Int // in minutes
+  appointmentDate DateTime
+  startTime       String
+  duration        Int
 
-  status        String   @default("pending") // pending, scheduled, completed, cancelled
+  status        String   @default("pending")
   reason        String?
   notes         String?
   paymentId     String?
@@ -194,50 +175,23 @@ model Appointment {
 }
 
 model Payment {
-  id                String       @id @default(cuid())
-  amount            Float
-  method            String       // card, cash, etc.
-  status            String       // pending, completed, failed, refunded
-  transactionId     String?
-  paymentType       String?      // "appointment" or "product" - made optional
-  isAdvancePayment  Boolean      @default(false)
-  
-  // Relationships - make both optional with ?
-  appointmentId     String?      @unique
-  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
-  
-  // Add relationship to product orders
-  productOrderId    String?      @unique
-  productOrder      ProductOrder? @relation(fields: [productOrderId], references: [id])
-  
-  // Keep patient relation
-  patientId         Int?
-  patient           Patient?    @relation(fields: [patientId], references: [id])
-  
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-}
+  id               String  @id @default(cuid())
+  amount           Float
+  method           String
+  status           String
+  transactionId    String?
+  paymentType      String?
+  isAdvancePayment Boolean @default(false)
 
-model Physiotherapist {
-  id             Int     @id @default(autoincrement())
-  name           String
-  email          String  @unique
-  contactNumber  String
-  specialization String
-  experience     Int     @default(0) // Years of experience
-  education      String?
-  certifications String?
-  bio            String? @db.Text
-  availability   Json? // Store availability as JSON
-  rating         Float?  @default(0)
-  imageUrl       String? // Profile image
-  isActive       Boolean @default(true)
+  appointmentId String?      @unique
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
 
-  // Relationships
-  appointments     Appointment[]
-  appointmentSlots AppointmentSlot[]
+  productOrderId String?       @unique
+  productOrder   ProductOrder? @relation(fields: [productOrderId], references: [id])
 
-  // Timestamps
+  patientId Int?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -245,49 +199,17 @@ model Physiotherapist {
 model AppointmentSlot {
   id          Int      @id @default(autoincrement())
   date        DateTime
-  startTime   String // Format: "HH:MM" in 24h format
-  endTime     String // Format: "HH:MM" in 24h format
-  capacity    Int      @default(1) // Maximum number of patients that can be booked
-  bookedCount Int      @default(0) // Current number of bookings
+  startTime   String
+  endTime     String
+  capacity    Int      @default(1)
+  bookedCount Int      @default(0)
   isAvailable Boolean  @default(true)
 
-  // Relationships
-  appointments Appointment[] // Appointments booked for this slot
+  appointments Appointment[]
 
-  // Optional: link to physiotherapist if needed
-  physiotherapistId Int?
-  physiotherapist   Physiotherapist? @relation(fields: [physiotherapistId], references: [id])
-
-  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([date, startTime, physiotherapistId]) // Ensure no duplicate slots
-  @@index([date]) // Index for faster queries by date
-}
-
-// These models should be added to your schema.prisma file
-model Cart {
-  id        String     @id @default(cuid())
-  userId    String     @unique
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items     CartItem[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model CartItem {
-  id        String   @id @default(cuid())
-  cartId    String
-  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  productId String   // Store as string to match your product IDs
-  name      String   // Store name for easier access and display
-  price     Float    // Store price at time of adding to cart
-  quantity  Int
-  imageUrl  String?  // Optional image URL
-  option    String   // For variations like size, color, etc.
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([cartId])
+  @@unique([date, startTime])
+  @@index([date])
 }

@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 import SideMenu from "../components/SideMenu";
 import { Theme } from "@radix-ui/themes";
 import AuthProvider from "./auth/Provider";
-import { CartProvider } from "@/context/CartContext";
+import  NavbarWrapper  from "../components/NavbarWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,9 +41,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}>
         <AuthProvider>
           <Theme>
-            <Navbar />
+            <NavbarWrapper />
             <main className="p-5">
-              <CartProvider>{children}</CartProvider>
+              {children}
             </main>
           </Theme>
         </AuthProvider>
