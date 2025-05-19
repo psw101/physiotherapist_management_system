@@ -35,7 +35,6 @@ export async function GET(
       where: { id: appointmentId },
       include: {
         patient: true,
-        physiotherapist: true
       }
     });
     

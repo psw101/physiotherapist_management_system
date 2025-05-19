@@ -129,7 +129,7 @@ export async function POST(request: Request) {
           slotId: slotId,
           
           // Also connect to physiotherapist if available from slot
-          physiotherapistId: slot.physiotherapistId
+       
         }
       }),
       
