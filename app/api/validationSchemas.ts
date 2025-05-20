@@ -35,10 +35,6 @@ const patientSchema = z.object({
         .min(8, { message: "Password must be at least 8 characters" })
         .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
         .regex(/[0-9]/, { message: "Password must contain at least one number" }),
-    age: z.number()
-        .int({ message: "Age must be a whole number" })
-        .positive({ message: "Age must be positive" })
-        .max(120, { message: "Invalid age" }),
     contactNumber: z.string()
         .min(10, { message: "Contact number is too short" })
         .max(15, { message: "Contact number is too long" })

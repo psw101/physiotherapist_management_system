@@ -137,24 +137,6 @@ const Patients = () => {
 
         <div>
           <Text as="div" size="2" mb="1" weight="medium">
-            Age
-          </Text>
-          <TextField.Root
-            type="number"
-            placeholder="Enter patient's age"
-            {...register("age", {
-              valueAsNumber: true,
-            })}
-          />
-          {errors.age && (
-            <Text color="red" size="1">
-              {errors.age.message}
-            </Text>
-          )}
-        </div>
-
-        <div>
-          <Text as="div" size="2" mb="1" weight="medium">
             Contact Number
           </Text>
           <TextField.Root placeholder="Enter contact number" {...register("contactNumber")} />
@@ -213,13 +195,17 @@ const Patients = () => {
           )}
         </div>
    
-   
-        <input type="date" className="w-full border rounded p-2" {...register("dateOfBirth")} />
-        {errors.dateOfBirth && (
-          <Text color="red" size="1">
-            {errors.dateOfBirth.message}
+        <div>
+          <Text as="div" size="2" mb="1" weight="medium">
+            Date of Birth
           </Text>
-        )}
+          <input type="date" className="w-full border rounded p-2" {...register("dateOfBirth")} />
+          {errors.dateOfBirth && (
+            <Text color="red" size="1">
+              {errors.dateOfBirth.message}
+            </Text>
+          )}
+        </div>
 
         <div className="flex gap-4 pt-4">
           <Button type="submit" disabled={isSubmitting || success}>
