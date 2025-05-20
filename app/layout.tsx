@@ -1,17 +1,14 @@
 import "@radix-ui/themes/styles.css";
-import './theme.config.css'
+import "./theme.config.css";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Popover } from "radix-ui";
-import Navbar from "../components/Narbar"
+import Navbar from "../components/Navbar";
 import SideMenu from "../components/SideMenu";
 import { Theme } from "@radix-ui/themes";
 import AuthProvider from "./auth/Provider";
 import { CartProvider } from "@/context/CartContext";
-
-
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,11 +21,10 @@ const geistMono = Geist_Mono({
 });
 
 const inter = Inter({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 });
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -42,7 +38,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}><AuthProvider><Theme><Navbar/><main className="p-5"><CartProvider>{children}</CartProvider></main></Theme></AuthProvider></body>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}>
+        <AuthProvider>
+          <Theme>
+            <Navbar />
+            <main className="p-5">
+              <CartProvider>{children}</CartProvider>
+            </main>
+          </Theme>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

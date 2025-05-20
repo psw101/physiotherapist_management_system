@@ -229,6 +229,7 @@ exports.Prisma.AppointmentScalarFieldEnum = {
   status: 'status',
   reason: 'reason',
   notes: 'notes',
+  paymentId: 'paymentId',
   paymentStatus: 'paymentStatus',
   fee: 'fee',
   createdAt: 'createdAt',
@@ -399,6 +400,7 @@ exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
   status: 'status',
   reason: 'reason',
   notes: 'notes',
+  paymentId: 'paymentId',
   paymentStatus: 'paymentStatus'
 };
 

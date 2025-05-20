@@ -1,12 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react";
+import { 
+  Dialog, 
+  DialogPanel, 
+  DialogTitle,
+  Transition, 
+  TransitionChild 
+} from '@headlessui/react';
+import { loadStripe } from "@stripe/stripe-js";
 
 interface Specification {
   key: string;
@@ -44,6 +52,10 @@ const ProductDetailPage = () => {
   const [customValues, setCustomValues] = useState<Record<string, string>>({});
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Add these state variables
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [isPayingAdvance, setIsPayingAdvance] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -102,7 +114,7 @@ const ProductDetailPage = () => {
     return isValid;
   };
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = () => {
     // Check for authentication
     if (status !== "authenticated") {
       toast.info("Please login to place an order", {
@@ -117,35 +129,70 @@ const ProductDetailPage = () => {
     // Validate required fields
     if (!validateForm()) return;
 
+    // Open confirmation dialog
+    setConfirmDialogOpen(true);
+  };
+
+  const handleConfirmOrder = async (payAdvance = false) => {
     if (!product) return;
 
     try {
       setSubmitting(true);
+      setIsPayingAdvance(payAdvance);
       
       // Calculate total price
       const totalPrice = product.price * selectedQuantity;
       
-      // Create order
-      const response = await axios.post("/api/orders", {
-        productId: product.id,
-        quantity: selectedQuantity,
-        totalPrice: totalPrice,
-        customizations: customValues
-      });
+      // Calculate advance amount (10%)
+      const advanceAmount = Math.round(totalPrice * 0.1);
       
-      // Show success message
-      toast.success("Order placed successfully! Waiting for admin approval.", {
-        position: "bottom-right",
-        autoClose: 5000
-      });
-      
-      setOrderPlaced(true);
-      
-      // Redirect to orders page after a delay
-      setTimeout(() => {
-        router.push("/my-orders");
-      }, 3000);
-      
+      if (payAdvance) {
+        // Redirect to payment
+        const response = await axios.post('/api/checkout', {
+          items: [{
+            name: product.name,
+            price: advanceAmount,
+            quantity: 1
+          }],
+          orderId: `${product.id}-${Date.now()}`,
+          orderDetails: {
+            productId: product.id,
+            quantity: selectedQuantity,
+            totalPrice: totalPrice,
+            customizations: customValues,
+            advancePayment: true
+          },
+          returnUrl: `/products/${productId}`
+        });
+        
+        // Redirect to Stripe
+        if (response.data.id) {
+          const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+          await stripe?.redirectToCheckout({ sessionId: response.data.id });
+        }
+      } else {
+        // Create order without advance payment
+        const response = await axios.post("/api/orders", {
+          productId: product.id,
+          quantity: selectedQuantity,
+          totalPrice: totalPrice,
+          customizations: customValues,
+          advancePayment: false
+        });
+        
+        // Show success message
+        toast.success("Order placed successfully! Waiting for admin approval.", {
+          position: "bottom-right",
+          autoClose: 5000
+        });
+        
+        setOrderPlaced(true);
+        
+        // Redirect to orders page after a delay
+        setTimeout(() => {
+          router.push("/orders");
+        }, 3000);
+      }
     } catch (error) {
       console.error("Error placing order:", error);
       toast.error("Failed to place order. Please try again.", {
@@ -153,6 +200,7 @@ const ProductDetailPage = () => {
       });
     } finally {
       setSubmitting(false);
+      setConfirmDialogOpen(false);
     }
   };
 
@@ -216,7 +264,7 @@ const ProductDetailPage = () => {
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} className={`w-4 h-4 ${i < Math.round(
-                        product.feedback.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback.length
+                        product.feedback!.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback!.length
                       ) ? "text-yellow-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                       </svg>
@@ -359,6 +407,126 @@ const ProductDetailPage = () => {
           </div>
         )}
       </div>
+
+      {/* Confirmation Dialog */}
+      <Transition appear show={confirmDialogOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={() => setConfirmDialogOpen(false)}>
+          <TransitionChild
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </TransitionChild>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <TransitionChild
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <DialogTitle
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Confirm Your Order
+                  </DialogTitle>
+                  
+                  <div className="mt-4 space-y-4">
+                    {/* Product Summary */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium">{product?.name}</h4>
+                      <p className="text-sm text-gray-500">{product?.description.substring(0, 100)}{product?.description.length > 100 ? '...' : ''}</p>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Quantity:</span>
+                        <span className="font-medium">{selectedQuantity}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Price per unit:</span>
+                        <span className="font-medium">Rs. {product?.price.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    
+                    {/* Customizations */}
+                    {Object.keys(customValues).length > 0 && (
+                      <div className="border-t pt-3">
+                        <h4 className="font-medium mb-2">Customizations:</h4>
+                        <div className="space-y-1">
+                          {Object.entries(customValues).map(([label, value]) => (
+                            value && (
+                              <div key={label} className="grid grid-cols-2 text-sm">
+                                <span className="text-gray-500">{label}:</span>
+                                <span>{value}</span>
+                              </div>
+                            )
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Total */}
+                    <div className="border-t pt-3">
+                      <div className="flex justify-between font-bold">
+                        <span>Total Price:</span>
+                        <span>Rs. {(product?.price ?? 0 * selectedQuantity).toLocaleString()}</span>
+                      </div>
+                      
+                      {/* Advance Payment Option */}
+                      <div className="mt-2 p-3 bg-blue-50 rounded-md">
+                        <div className="flex justify-between">
+                          <span className="text-sm font-medium text-blue-800">10% Advance Payment:</span>
+                          <span className="font-medium text-blue-800">
+                            Rs. {Math.round(((product?.price ?? 0) * selectedQuantity) * 0.1).toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-1">
+                          Pay 10% now to confirm your order and the remaining amount on delivery.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex gap-3">
+                      <button
+                        type="button"
+                        className="flex-1 justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={() => setConfirmDialogOpen(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="flex-1 justify-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={() => handleConfirmOrder(false)}
+                        disabled={submitting}
+                      >
+                        {submitting ? "Processing..." : "Place Order"}
+                      </button>
+                      <button
+                        type="button"
+                        className="flex-1 justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={() => handleConfirmOrder(true)}
+                        disabled={submitting}
+                      >
+                        {submitting ? "Processing..." : "Pay Advance"}
+                      </button>
+                    </div>
+                  </div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 };

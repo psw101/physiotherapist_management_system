@@ -10424,6 +10424,7 @@ export namespace Prisma {
     status: string | null
     reason: string | null
     notes: string | null
+    paymentId: string | null
     paymentStatus: string | null
     fee: number | null
     createdAt: Date | null
@@ -10441,6 +10442,7 @@ export namespace Prisma {
     status: string | null
     reason: string | null
     notes: string | null
+    paymentId: string | null
     paymentStatus: string | null
     fee: number | null
     createdAt: Date | null
@@ -10458,6 +10460,7 @@ export namespace Prisma {
     status: number
     reason: number
     notes: number
+    paymentId: number
     paymentStatus: number
     fee: number
     createdAt: number
@@ -10493,6 +10496,7 @@ export namespace Prisma {
     status?: true
     reason?: true
     notes?: true
+    paymentId?: true
     paymentStatus?: true
     fee?: true
     createdAt?: true
@@ -10510,6 +10514,7 @@ export namespace Prisma {
     status?: true
     reason?: true
     notes?: true
+    paymentId?: true
     paymentStatus?: true
     fee?: true
     createdAt?: true
@@ -10527,6 +10532,7 @@ export namespace Prisma {
     status?: true
     reason?: true
     notes?: true
+    paymentId?: true
     paymentStatus?: true
     fee?: true
     createdAt?: true
@@ -10631,7 +10637,8 @@ export namespace Prisma {
     status: string
     reason: string | null
     notes: string | null
-    paymentStatus: string
+    paymentId: string | null
+    paymentStatus: string | null
     fee: number
     createdAt: Date
     updatedAt: Date
@@ -10667,6 +10674,7 @@ export namespace Prisma {
     status?: boolean
     reason?: boolean
     notes?: boolean
+    paymentId?: boolean
     paymentStatus?: boolean
     fee?: boolean
     createdAt?: boolean
@@ -10690,13 +10698,14 @@ export namespace Prisma {
     status?: boolean
     reason?: boolean
     notes?: boolean
+    paymentId?: boolean
     paymentStatus?: boolean
     fee?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "slotId" | "physiotherapistId" | "appointmentDate" | "startTime" | "duration" | "status" | "reason" | "notes" | "paymentStatus" | "fee" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "slotId" | "physiotherapistId" | "appointmentDate" | "startTime" | "duration" | "status" | "reason" | "notes" | "paymentId" | "paymentStatus" | "fee" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
   export type AppointmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientDefaultArgs<ExtArgs>
     appointmentSlot?: boolean | Appointment$appointmentSlotArgs<ExtArgs>
@@ -10723,7 +10732,8 @@ export namespace Prisma {
       status: string
       reason: string | null
       notes: string | null
-      paymentStatus: string
+      paymentId: string | null
+      paymentStatus: string | null
       fee: number
       createdAt: Date
       updatedAt: Date
@@ -11110,6 +11120,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Appointment", 'String'>
     readonly reason: FieldRef<"Appointment", 'String'>
     readonly notes: FieldRef<"Appointment", 'String'>
+    readonly paymentId: FieldRef<"Appointment", 'String'>
     readonly paymentStatus: FieldRef<"Appointment", 'String'>
     readonly fee: FieldRef<"Appointment", 'Float'>
     readonly createdAt: FieldRef<"Appointment", 'DateTime'>
@@ -16893,6 +16904,7 @@ export namespace Prisma {
     status: 'status',
     reason: 'reason',
     notes: 'notes',
+    paymentId: 'paymentId',
     paymentStatus: 'paymentStatus',
     fee: 'fee',
     createdAt: 'createdAt',
@@ -17120,6 +17132,7 @@ export namespace Prisma {
     status: 'status',
     reason: 'reason',
     notes: 'notes',
+    paymentId: 'paymentId',
     paymentStatus: 'paymentStatus'
   };
 
@@ -17902,7 +17915,8 @@ export namespace Prisma {
     status?: StringFilter<"Appointment"> | string
     reason?: StringNullableFilter<"Appointment"> | string | null
     notes?: StringNullableFilter<"Appointment"> | string | null
-    paymentStatus?: StringFilter<"Appointment"> | string
+    paymentId?: StringNullableFilter<"Appointment"> | string | null
+    paymentStatus?: StringNullableFilter<"Appointment"> | string | null
     fee?: FloatFilter<"Appointment"> | number
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
@@ -17923,7 +17937,8 @@ export namespace Prisma {
     status?: SortOrder
     reason?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
-    paymentStatus?: SortOrder
+    paymentId?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrderInput | SortOrder
     fee?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17948,7 +17963,8 @@ export namespace Prisma {
     status?: StringFilter<"Appointment"> | string
     reason?: StringNullableFilter<"Appointment"> | string | null
     notes?: StringNullableFilter<"Appointment"> | string | null
-    paymentStatus?: StringFilter<"Appointment"> | string
+    paymentId?: StringNullableFilter<"Appointment"> | string | null
+    paymentStatus?: StringNullableFilter<"Appointment"> | string | null
     fee?: FloatFilter<"Appointment"> | number
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
@@ -17969,7 +17985,8 @@ export namespace Prisma {
     status?: SortOrder
     reason?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
-    paymentStatus?: SortOrder
+    paymentId?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrderInput | SortOrder
     fee?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17994,7 +18011,8 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Appointment"> | string
     reason?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     notes?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
-    paymentStatus?: StringWithAggregatesFilter<"Appointment"> | string
+    paymentId?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    paymentStatus?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     fee?: FloatWithAggregatesFilter<"Appointment"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
@@ -19134,7 +19152,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19155,7 +19174,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19170,7 +19190,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19191,7 +19212,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19209,7 +19231,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19223,7 +19246,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19240,7 +19264,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20477,6 +20502,7 @@ export namespace Prisma {
     status?: SortOrder
     reason?: SortOrder
     notes?: SortOrder
+    paymentId?: SortOrder
     paymentStatus?: SortOrder
     fee?: SortOrder
     createdAt?: SortOrder
@@ -20502,6 +20528,7 @@ export namespace Prisma {
     status?: SortOrder
     reason?: SortOrder
     notes?: SortOrder
+    paymentId?: SortOrder
     paymentStatus?: SortOrder
     fee?: SortOrder
     createdAt?: SortOrder
@@ -20519,6 +20546,7 @@ export namespace Prisma {
     status?: SortOrder
     reason?: SortOrder
     notes?: SortOrder
+    paymentId?: SortOrder
     paymentStatus?: SortOrder
     fee?: SortOrder
     createdAt?: SortOrder
@@ -22647,7 +22675,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22666,7 +22695,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22794,7 +22824,8 @@ export namespace Prisma {
     status?: StringFilter<"Appointment"> | string
     reason?: StringNullableFilter<"Appointment"> | string | null
     notes?: StringNullableFilter<"Appointment"> | string | null
-    paymentStatus?: StringFilter<"Appointment"> | string
+    paymentId?: StringNullableFilter<"Appointment"> | string | null
+    paymentStatus?: StringNullableFilter<"Appointment"> | string | null
     fee?: FloatFilter<"Appointment"> | number
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     updatedAt?: DateTimeFilter<"Appointment"> | Date | string
@@ -23337,7 +23368,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23357,7 +23389,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23423,7 +23456,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23443,7 +23477,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23499,7 +23534,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23518,7 +23554,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23626,7 +23663,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23645,7 +23683,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24168,7 +24207,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24193,7 +24233,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24212,7 +24253,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24229,7 +24271,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24326,7 +24369,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24352,7 +24396,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24371,7 +24416,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24388,7 +24434,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24441,7 +24488,8 @@ export namespace Prisma {
     status?: string
     reason?: string | null
     notes?: string | null
-    paymentStatus?: string
+    paymentId?: string | null
+    paymentStatus?: string | null
     fee?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24455,7 +24503,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24474,7 +24523,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24491,7 +24541,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     fee?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -182,7 +182,8 @@ model Appointment {
   status        String   @default("pending") // pending, scheduled, completed, cancelled
   reason        String?
   notes         String?
-  paymentStatus String   @default("unpaid") // unpaid, paid, refunded
+  paymentId     String?
+  paymentStatus String?
   fee           Float    @default(2500)
   payment       Payment?
   createdAt     DateTime @default(now())
