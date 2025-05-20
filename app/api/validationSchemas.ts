@@ -1,20 +1,19 @@
 import { z } from "zod";
 
-export const productSchema = z.object({
+// Define your product schema - updated to match your interface
+const productSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   price: z.coerce.number().min(1, { message: "Price is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  // Fix the specification field to have a proper default
+  // Make this exactly match your non-nullable interface array
   specification: z
     .array(
       z.object({
         key: z.string().min(1, { message: "Key is required" }),
         value: z.string().min(1, { message: "Value is required" }),
       })
-    )
-    .nullable()
-    .default([]),
-  // Make customOptions properly optional with default
+    ),
+  // Make this match your optional interface array
   customOptions: z
     .array(
       z.object({
@@ -23,13 +22,12 @@ export const productSchema = z.object({
         required: z.boolean().optional(),
       })
     )
-    .optional()
-    .nullable()
-    .default([]),
+    .optional(),
   imageUrl: z.string().min(1, { message: "Image is required" }),
   videoUrl: z.string().min(1, { message: "Video is required" }),
 });
 
+// The rest of your validation schemas remain unchanged
 const patientSchema = z.object({
     name: z.string().min(1, { message: "Full name is required" }),
     username: z.string().min(3, { message: "Username must be at least 3 characters" }),
@@ -122,5 +120,5 @@ const appointmentSchema = z.object({
     path: ["physiotherapistId"],
 });
 
-// Export all schemas together
+// Export all schemas in a single export statement
 export { productSchema, patientSchema, appointmentSchema };
