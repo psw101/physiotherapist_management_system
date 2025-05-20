@@ -325,9 +325,7 @@ const AdminOrdersPage = () => {
                 value={newStatus}
                 onChange={(e) => setNewStatus(e.target.value)}
               >
-                <option value="pending">Pending</option>
                 <option value="approved">Approved</option>
-                <option value="completed">Completed</option>
                 <option value="rejected">Rejected</option>
               </select>
             </div>
@@ -366,6 +364,23 @@ const AdminOrdersPage = () => {
               </div>
             </div>
             
+            {/* Explanatory Text */}
+            <div className="mb-4 p-3 bg-blue-50 rounded-md text-sm text-blue-800">
+              <p>Please review this order and decide whether to approve or reject it.</p>
+              <p className="mt-1">
+                <strong>Note:</strong> Once an order is approved or rejected, you cannot change it back to pending.
+              </p>
+            </div>
+            
+            {/* Pending Order Notice */}
+            {selectedOrder && selectedOrder.status === "pending" && (
+              <div className="my-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                <p className="text-sm text-yellow-800 font-medium">
+                  This order is currently pending approval.
+                </p>
+              </div>
+            )}
+            
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => setShowUpdateModal(false)}
@@ -374,12 +389,18 @@ const AdminOrdersPage = () => {
               >
                 Cancel
               </button>
+              
+              {/* Show different colored button based on selection */}
               <button
                 onClick={handleUpdateOrder}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md font-medium"
+                className={`px-4 py-2 rounded-md text-white font-medium
+                  ${newStatus === "approved" ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}
                 disabled={submitting}
               >
-                {submitting ? "Updating..." : "Update Order"}
+                {submitting 
+                  ? "Processing..." 
+                  : `${newStatus === "approved" ? "Approve" : "Reject"} Order`
+                }
               </button>
             </div>
           </div>
