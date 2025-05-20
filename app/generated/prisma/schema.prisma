@@ -38,6 +38,9 @@ model User {
   // Add this relation
   cart Cart?
 
+  // Add relation to ProductOrder
+  productOrders ProductOrder[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -126,13 +129,37 @@ model Patient {
 }
 
 model Product {
-  id            Int     @id @default(autoincrement())
+  id            Int            @id @default(autoincrement())
   name          String?
   price         Int?
   description   String?
   specification Json?
   imageUrl      String?
   videoUrl      String?
+  // Add new fields
+  customOptions Json? // Store customization options as key-value pairs
+  feedback      Json? // Store customer feedback/comments
+  // Relation to orders
+  productOrders ProductOrder[]
+}
+
+// New model for product orders
+model ProductOrder {
+  id             String   @id @default(cuid())
+  userId         String // The user who placed the order
+  user           User     @relation(fields: [userId], references: [id])
+  productId      Int // The product being ordered
+  product        Product  @relation(fields: [productId], references: [id])
+  quantity       Int      @default(1)
+  totalPrice     Float
+  customizations Json? // The selected customization options
+  status         String   @default("pending") // pending, approved, rejected, completed
+  adminNotes     String? // Notes from admin about the order
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@index([productId])
 }
 
 // Appointment management

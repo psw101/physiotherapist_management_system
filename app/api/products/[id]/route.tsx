@@ -8,6 +8,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Fix: Make sure to await params.id if necessary
     const id = parseInt(params.id);
 
     if (isNaN(id)) {
@@ -28,7 +29,12 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(product);
+    // Ensure specification and customOptions are always arrays
+    return NextResponse.json({
+      ...product,
+      specification: product.specification || [],
+      customOptions: product.customOptions || [],
+    });
   } catch (error) {
     console.error("Error fetching product:", error);
     return NextResponse.json(
@@ -76,7 +82,7 @@ export async function PUT(
       );
     }
 
-    // Update the product
+    // Update the product with new fields
     const updatedProduct = await prisma.product.update({
       where: { id },
       data: {
@@ -86,6 +92,9 @@ export async function PUT(
         specification: body.specification,
         imageUrl: body.imageUrl,
         videoUrl: body.videoUrl,
+        // Add new fields - preserve existing data if not provided
+        customOptions: body.customOptions || existingProduct.customOptions,
+        feedback: body.feedback || existingProduct.feedback,
       },
     });
 

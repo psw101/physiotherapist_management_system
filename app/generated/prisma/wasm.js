@@ -200,7 +200,22 @@ exports.Prisma.ProductScalarFieldEnum = {
   description: 'description',
   specification: 'specification',
   imageUrl: 'imageUrl',
-  videoUrl: 'videoUrl'
+  videoUrl: 'videoUrl',
+  customOptions: 'customOptions',
+  feedback: 'feedback'
+};
+
+exports.Prisma.ProductOrderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  productId: 'productId',
+  quantity: 'quantity',
+  totalPrice: 'totalPrice',
+  customizations: 'customizations',
+  status: 'status',
+  adminNotes: 'adminNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AppointmentScalarFieldEnum = {
@@ -371,6 +386,13 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
   videoUrl: 'videoUrl'
 };
 
+exports.Prisma.ProductOrderOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  adminNotes: 'adminNotes'
+};
+
 exports.Prisma.AppointmentOrderByRelevanceFieldEnum = {
   id: 'id',
   startTime: 'startTime',
@@ -427,6 +449,7 @@ exports.Prisma.ModelName = {
   Authenticator: 'Authenticator',
   Patient: 'Patient',
   Product: 'Product',
+  ProductOrder: 'ProductOrder',
   Appointment: 'Appointment',
   Payment: 'Payment',
   Physiotherapist: 'Physiotherapist',

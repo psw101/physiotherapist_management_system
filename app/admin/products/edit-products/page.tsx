@@ -10,6 +10,7 @@ import { productSchema } from "@/app/api/validationSchemas";
 import { z } from "zod";
 import MediaUploader from "@/components/MediaUploader";
 import SpecificationAdder from "@/components/SpecificationAdder";
+import CustomizationOptionsAdder from "@/components/CustomizationOptionsAdder";
 
 export interface Product {
   id?: number;
@@ -22,6 +23,12 @@ export interface Product {
     key: string;
     value: string;
   }[];
+  customOptions?: {
+    label: string;
+    placeholder?: string;
+    required?: boolean;
+  }[];
+  feedback?: any[];
 }
 
 const EditProductPage = () => {
@@ -30,6 +37,7 @@ const EditProductPage = () => {
   const productId = searchParams.get("id");
   
   const [specs, setSpecs] = useState<Product["specification"]>([]);
+  const [customOptions, setCustomOptions] = useState<Product["customOptions"]>([]);
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -73,12 +81,14 @@ const EditProductPage = () => {
           imageUrl: product.imageUrl,
           videoUrl: product.videoUrl || "",
           specification: product.specification,
+          customOptions: product.customOptions,
         });
 
         // Set state values
         setImageUrl(product.imageUrl);
         setVideoUrl(product.videoUrl || "");
         setSpecs(product.specification || []);
+        setCustomOptions(product.customOptions || []);
 
         setIsLoading(false);
       } catch (err) {
@@ -147,6 +157,7 @@ const EditProductPage = () => {
       const updatedProduct = {
         ...data,
         specification: specs,
+        customOptions: customOptions,
       };
 
       await axios.put(`/api/products/${productId}`, updatedProduct);
@@ -334,6 +345,15 @@ const EditProductPage = () => {
                   {errors.specification?.message as string}
                 </Text>
               )}
+            </div>
+
+            <div>
+              <CustomizationOptionsAdder
+                initialOptions={customOptions || []}
+                onChange={(newOptions) => {
+                  setCustomOptions(newOptions);
+                }}
+              />
             </div>
 
             <div className="flex gap-4 pt-4">

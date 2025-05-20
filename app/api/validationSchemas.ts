@@ -1,17 +1,33 @@
-import z from 'zod'
+import { z } from "zod";
 
-const productSchema = z.object({
-    name: z.string().min(1, { message: "Name is required" }),
-    price: z.number().min(1, { message: "Price is required" }),
-    description: z.string().min(1, { message: "Description is required" }),
-    specification: z.array(
-        z.object({
-            key: z.string().min(1, { message: "Key is required" }),
-            value: z.string().min(1, { message: "Value is required" }),
-        })
-    ),
-    imageUrl: z.string().min(1, { message: "Image is required" }),
-    videoUrl: z.string().min(1, { message: "Video is required" }),
+export const productSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  price: z.coerce.number().min(1, { message: "Price is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  // Fix the specification field to have a proper default
+  specification: z
+    .array(
+      z.object({
+        key: z.string().min(1, { message: "Key is required" }),
+        value: z.string().min(1, { message: "Value is required" }),
+      })
+    )
+    .nullable()
+    .default([]),
+  // Make customOptions properly optional with default
+  customOptions: z
+    .array(
+      z.object({
+        label: z.string().min(1, { message: "Label is required" }),
+        placeholder: z.string().optional(),
+        required: z.boolean().optional(),
+      })
+    )
+    .optional()
+    .nullable()
+    .default([]),
+  imageUrl: z.string().min(1, { message: "Image is required" }),
+  videoUrl: z.string().min(1, { message: "Video is required" }),
 });
 
 const patientSchema = z.object({

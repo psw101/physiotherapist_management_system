@@ -7,25 +7,40 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
+    console.log("Received product data:", JSON.stringify(body, null, 2));
+    
     // Validate request body with Zod
     const validation = productSchema.safeParse(body);
     if (!validation.success) {
+      console.error("Validation error:", validation.error);
       return NextResponse.json(
         { error: validation.error.format() }, 
         { status: 400 }
       );
     }
 
+    // Ensure customOptions is properly formatted
+    const customOptions = Array.isArray(body.customOptions) 
+      ? body.customOptions 
+      : [];
+      
+    console.log("Formatted customOptions:", JSON.stringify(customOptions, null, 2));
+
     const product = await prisma.product.create({
       data: {
         name: body.name,
         price: body.price,
         description: body.description,
-        specification: body.specification,
+        specification: body.specification || [],
         imageUrl: body.imageUrl,
         videoUrl: body.videoUrl,
+        // Add customOptions explicitly
+        customOptions: customOptions,
+        feedback: [], // Initialize empty feedback array
       },
     });
+
+    console.log("Created product:", JSON.stringify(product, null, 2));
 
     return NextResponse.json(product, { status: 201 });
   } catch (error: any) {

@@ -10,6 +10,7 @@ import { productSchema } from "@/app/api/validationSchemas";
 import { z } from "zod";
 import MediaUploader from "@/components/MediaUploader";
 import SpecificationAdder from "@/components/SpecificationAdder";
+import CustomizationOptionsAdder from "@/components/CustomizationOptionsAdder";
 
 export interface Product {
   id?: number;
@@ -22,12 +23,18 @@ export interface Product {
     key: string;
     value: string;
   }[];
+  customOptions?: {
+    label: string;
+    placeholder?: string;
+    required?: boolean;
+  }[];
 }
 
 const AddProductPage = () => {
   const router = useRouter();
   
   const [specs, setSpecs] = useState<Product["specification"]>([]);
+  const [customOptions, setCustomOptions] = useState<Product["customOptions"]>([]);
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -95,10 +102,11 @@ const AddProductPage = () => {
       setSubmitting(true);
       setError("");
 
-      // Create the product data
+      // Create the product data with defaults for arrays
       const productData = {
         ...data,
-        specification: specs,
+        specification: specs || [], // Ensure it's always an array
+        customOptions: customOptions || [], // Ensure it's always an array
       };
 
       await axios.post("/api/products", productData);
@@ -267,10 +275,10 @@ const AddProductPage = () => {
                 Specifications
               </Text>
               <SpecificationAdder
-                initialSpecs={specs}
+                initialSpecs={specs || []} // Make sure this is an array
                 onChange={(newSpecs) => {
-                  setSpecs(newSpecs);
-                  setValue("specification", newSpecs);
+                  setSpecs(newSpecs || []); // Ensure it's always an array
+                  setValue("specification", newSpecs || []);
                 }}
               />
               {errors.specification && (
@@ -278,6 +286,15 @@ const AddProductPage = () => {
                   {errors.specification?.message as string}
                 </Text>
               )}
+            </div>
+
+            <div>
+              <CustomizationOptionsAdder
+                initialOptions={customOptions || []} // Make sure this is an array
+                onChange={(newOptions) => {
+                  setCustomOptions(newOptions || []); // Ensure it's always an array
+                }}
+              />
             </div>
 
             <div className="flex gap-4 pt-4">
