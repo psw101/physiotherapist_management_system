@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Heading, Text, Flex, Grid, Card, Box } from "@radix-ui/themes";
 import { 
   UserGroupIcon, CalendarIcon, ShoppingCartIcon, 
@@ -20,26 +19,22 @@ interface DashboardStats {
 }
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<Partial<DashboardStats>>({});
-  const [loading, setLoading] = useState(true);
+  // Use mock data instead of fetching from API
+  const [stats, setStats] = useState<Partial<DashboardStats>>({
+    usersCount: 125,
+    patientsCount: 85,
+    physiotherapistsCount: 12,
+    appointmentsCount: 230,
+    productsCount: 45,
+    revenueTotal: 25000,
+    pendingAppointments: 18,
+    completedAppointments: 212
+  });
+  
+  const [loading, setLoading] = useState(false); // No loading since no API call
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("/api/admin/stats");
-        setStats(response.data);
-      } catch (err) {
-        console.error("Failed to fetch admin stats:", err);
-        setError("Failed to load dashboard statistics");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStats();
-  }, []);
+  // Removed useEffect with API call
 
   if (loading) {
     return (
