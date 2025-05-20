@@ -36,7 +36,7 @@ const Navbar = () => {
       href: '#', 
       dropdown: [
         { label: 'Add Products', href: '/products/add-products' },
-        { label: 'View Products', href: '/products/view-products' },
+        { label: 'View Products', href: '/products' },
         { label: 'Product Categories', href: '/products/categories' },
       ]
     },
@@ -52,6 +52,8 @@ const Navbar = () => {
     { label: 'Reports', href: '/reports', dropdown: null },
     { label: 'Settings', href: '/settings', dropdown: null },
     { label: 'Cart', href: '/cart', dropdown: null },
+    { label: 'My Orders', href: '/orders', dropdown: null },
+
 
   ];
 

@@ -2,49 +2,48 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { useCart } from "@/context/CartContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSession } from "next-auth/react";
 
 interface Specification {
   key: string;
   value: string;
 }
 
+interface CustomOption {
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+}
+
 interface Product {
-  id: number; // This is a number
+  id: number;
   name: string;
   price: number;
   description: string;
   specification: Specification[];
+  customOptions: CustomOption[]; // Add this new field
   imageUrl?: string;
   videoUrl?: string;
-}
-
-export interface CartItem {
-  id: string | number;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl?: string;
-  option: string;
+  feedback?: any[];
 }
 
 const ProductDetailPage = () => {
   const params = useParams();
   const router = useRouter();
+  const { data: session, status } = useSession();
   const productId = params.id;
-  const { addToCart } = useCart(); // Use the cart context
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [selectedOption, setSelectedOption] = useState("standard");
-  const [addedToCart, setAddedToCart] = useState(false);
+  const [customValues, setCustomValues] = useState<Record<string, string>>({});
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -54,6 +53,15 @@ const ProductDetailPage = () => {
         setLoading(true);
         const response = await axios.get(`/api/products/${productId}`);
         setProduct(response.data);
+        
+        // Initialize custom values with empty strings
+        const initialValues: Record<string, string> = {};
+        if (response.data.customOptions && Array.isArray(response.data.customOptions)) {
+          response.data.customOptions.forEach((option: CustomOption) => {
+            initialValues[option.label] = "";
+          });
+        }
+        setCustomValues(initialValues);
       } catch (err) {
         console.error("Error fetching product details:", err);
         setError("Failed to load product details");
@@ -65,52 +73,88 @@ const ProductDetailPage = () => {
     fetchProduct();
   }, [productId]);
 
-  const handleAddToCart = () => {
+  const handleCustomValueChange = (label: string, value: string) => {
+    setCustomValues(prev => ({
+      ...prev,
+      [label]: value
+    }));
+  };
+
+  const validateForm = () => {
+    if (!product?.customOptions) return true;
+    
+    let isValid = true;
+    const requiredFields: string[] = [];
+    
+    product.customOptions.forEach(option => {
+      if (option.required && !customValues[option.label]) {
+        requiredFields.push(option.label);
+        isValid = false;
+      }
+    });
+    
+    if (!isValid) {
+      toast.error(`Please fill in the required fields: ${requiredFields.join(', ')}`, {
+        position: "bottom-right"
+      });
+    }
+    
+    return isValid;
+  };
+
+  const handlePlaceOrder = async () => {
+    // Check for authentication
+    if (status !== "authenticated") {
+      toast.info("Please login to place an order", {
+        position: "bottom-right"
+      });
+      
+      // Save current page to redirect back after login
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`);
+      return;
+    }
+    
+    // Validate required fields
+    if (!validateForm()) return;
+
     if (!product) return;
 
-    // Calculate correct price based on option
-    const priceWithOption = getOptionPrice(selectedOption);
-
-    // Add product to cart - convert ID to string to match CartItem interface
-    addToCart({
-      id: String(product.id), // Convert number to string
-      name: product.name,
-      price: priceWithOption,
-      quantity: selectedQuantity,
-      option: selectedOption,
-      imageUrl: product.imageUrl,
-    });
-
-    // Show success message using toast
-    toast.success(`Added ${selectedQuantity} ${product.name} to cart!`, {
-      position: "bottom-right",
-      autoClose: 3000,
-    });
-
-    // Update state to show cart notification
-    setAddedToCart(true);
-
-    // Hide notification after 5 seconds
-    setTimeout(() => {
-      setAddedToCart(false);
-    }, 5000);
-  };
-
-  const getOptionPrice = (option: string) => {
-    if (!product) return 0; // Add null check
-
-    switch (option) {
-      case "premium":
-        return product.price + 5000;
-      case "professional":
-        return product.price + 10000;
-      default:
-        return product.price;
+    try {
+      setSubmitting(true);
+      
+      // Calculate total price
+      const totalPrice = product.price * selectedQuantity;
+      
+      // Create order
+      const response = await axios.post("/api/orders", {
+        productId: product.id,
+        quantity: selectedQuantity,
+        totalPrice: totalPrice,
+        customizations: customValues
+      });
+      
+      // Show success message
+      toast.success("Order placed successfully! Waiting for admin approval.", {
+        position: "bottom-right",
+        autoClose: 5000
+      });
+      
+      setOrderPlaced(true);
+      
+      // Redirect to orders page after a delay
+      setTimeout(() => {
+        router.push("/my-orders");
+      }, 3000);
+      
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Failed to place order. Please try again.", {
+        position: "bottom-right"
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
-
-  // Add null check for totalPrice calculation
-  const totalPrice = product ? getOptionPrice(selectedOption) * selectedQuantity : 0;
 
   if (loading) {
     return (
@@ -165,16 +209,22 @@ const ProductDetailPage = () => {
           <div className="space-y-6">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
-              <div className="flex items-center mt-2">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                  ))}
+              
+              {/* Show ratings from feedback if available */}
+              {product.feedback && product.feedback.length > 0 && (
+                <div className="flex items-center mt-2">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className={`w-4 h-4 ${i < Math.round(
+                        product.feedback.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback.length
+                      ) ? "text-yellow-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="ml-2 text-gray-600">({product.feedback.length} reviews)</span>
                 </div>
-                <span className="ml-2 text-gray-600">(24 reviews)</span>
-              </div>
+              )}
             </div>
 
             <div className="text-3xl font-bold text-gray-900">Rs. {product.price.toLocaleString()}</div>
@@ -184,48 +234,82 @@ const ProductDetailPage = () => {
               <p className="mt-2 text-gray-600">{product.description}</p>
             </div>
 
-            {/* Customizable Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Quantity Selector */}
-              <div>
-                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
-                  Quantity
-                </label>
-                <select id="quantity" className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" value={selectedQuantity} onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}>
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Options Selector */}
-              <div>
-                <label htmlFor="options" className="block text-sm font-medium text-gray-700">
-                  Options
-                </label>
-                <select id="options" className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-                  <option value="standard">Standard</option>
-                  <option value="premium">Premium (+Rs. 5,000)</option>
-                  <option value="professional">Professional (+Rs. 10,000)</option>
-                </select>
-              </div>
+            {/* Quantity Selector */}
+            <div>
+              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+                Quantity
+              </label>
+              <select 
+                id="quantity" 
+                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" 
+                value={selectedQuantity} 
+                onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
+              >
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
             </div>
+
+            {/* Customization Options */}
+            {product.customOptions && product.customOptions.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium text-gray-900">Customization Options</h3>
+                
+                {product.customOptions.map((option, index) => (
+                  <div key={index} className="space-y-1">
+                    <label htmlFor={`custom-${index}`} className="block text-sm font-medium text-gray-700">
+                      {option.label}
+                      {option.required && <span className="text-red-500 ml-1">*</span>}
+                    </label>
+                    <input
+                      type="text"
+                      id={`custom-${index}`}
+                      placeholder={option.placeholder || `Enter ${option.label}`}
+                      className="block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none"
+                      value={customValues[option.label] || ""}
+                      onChange={(e) => handleCustomValueChange(option.label, e.target.value)}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Total Price */}
             <div className="bg-gray-50 p-4 rounded-md">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Total Price:</span>
-                <span className="text-xl font-bold text-blue-600">Rs. {totalPrice.toLocaleString()}</span>
+                <span className="text-xl font-bold text-blue-600">Rs. {(product.price * selectedQuantity).toLocaleString()}</span>
               </div>
-              {product && selectedQuantity > 1 && <div className="text-sm text-gray-500 text-right mt-1">(Rs. {getOptionPrice(selectedOption).toLocaleString()} each)</div>}
+              {selectedQuantity > 1 && <div className="text-sm text-gray-500 text-right mt-1">(Rs. {product.price.toLocaleString()} each)</div>}
             </div>
 
-            {/* Add to Cart Button */}
-            <button onClick={handleAddToCart} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-              Add to Cart
+            {/* Place Order Button */}
+            <button 
+              onClick={handlePlaceOrder} 
+              disabled={submitting || orderPlaced}
+              className={`w-full py-3 px-6 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${
+                submitting || orderPlaced 
+                  ? "bg-gray-400 cursor-not-allowed" 
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
+              }`}
+            >
+              {submitting 
+                ? "Processing..." 
+                : orderPlaced 
+                  ? "Order Placed!" 
+                  : "Place Order"
+              }
             </button>
+            
+            {/* Login prompt for unauthenticated users */}
+            {status !== "authenticated" && (
+              <p className="text-sm text-center text-gray-500">
+                Please <button className="text-blue-600 underline" onClick={() => router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`)}>login</button> to place an order
+              </p>
+            )}
           </div>
         </div>
 
@@ -244,39 +328,37 @@ const ProductDetailPage = () => {
             </div>
           </div>
         )}
+        
+        {/* Customer Feedback */}
+        {product.feedback && product.feedback.length > 0 && (
+          <div className="border-t border-gray-200 p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Customer Reviews</h3>
+            
+            <div className="space-y-4">
+              {product.feedback.map((review, index) => (
+                <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center">
+                      <div className="font-medium">{review.userName}</div>
+                      <div className="ml-2 text-sm text-gray-500">
+                        {new Date(review.date).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className={`w-4 h-4 ${i < review.rating ? "text-yellow-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700">{review.comment}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Added to Cart Notification */}
-      {addedToCart && (
-        <div className="fixed bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg border border-green-500 max-w-sm">
-          <div className="flex items-center">
-            <div className="bg-green-100 rounded-full p-2 mr-3">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h4 className="font-medium">Added to Cart!</h4>
-              <p className="text-sm text-gray-600">
-                {selectedQuantity} x {product?.name} ({selectedOption})
-              </p>
-            </div>
-            <button onClick={() => setAddedToCart(false)} className="text-gray-400 hover:text-gray-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="mt-3 flex justify-between">
-            <button onClick={() => router.push("/products/view-products")} className="text-blue-600 hover:text-blue-800 text-sm">
-              Continue Shopping
-            </button>
-            <button onClick={() => router.push("/cart")} className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded">
-              View Cart
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
