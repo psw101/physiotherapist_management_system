@@ -652,14 +652,6 @@ const ProductDetailPage = () => {
                     >
                       {submitting ? "Processing..." : "Pay 10% Advance"}
                     </button>
-                    <button
-                      type="button"
-                      className="px-3 py-2 text-sm font-medium text-white bg-gray-800 rounded-md hover:bg-gray-900"
-                      onClick={() => handleConfirmOrder(false)}
-                      disabled={submitting}
-                    >
-                      {submitting ? "Processing..." : "Pay Full Amount"}
-                    </button>
                   </div>
                 </DialogPanel>
               </TransitionChild>

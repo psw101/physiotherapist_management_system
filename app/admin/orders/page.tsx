@@ -122,25 +122,13 @@ const AdminOrdersPage = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending": return "bg-yellow-100 text-yellow-800";
-      case "approved": return "bg-green-100 text-green-800";
+      case "approved": return "bg-blue-100 text-blue-800";
+      case "completed": return "bg-green-100 text-green-800";
       case "rejected": return "bg-red-100 text-red-800";
-      case "cancellation_requested": return "bg-purple-100 text-purple-800";
-      case "cancelled": return "bg-gray-100 text-gray-800";
-      case "rejected_cancellation": return "bg-orange-100 text-orange-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };
 
-  // Format status labels for display
-  const formatStatusForDisplay = (status: string) => {
-    switch (status) {
-      case "cancellation_requested": return "Cancellation Requested";
-      case "cancelled": return "Cancelled";
-      case "rejected_cancellation": return "Cancellation Rejected";
-      default: return status.charAt(0).toUpperCase() + status.slice(1);
-    }
-  };
-  
   if (status === "loading" || loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -190,12 +178,6 @@ const AdminOrdersPage = () => {
           onClick={() => { setActiveTab("rejected"); setCurrentPage(1); }}
         >
           Rejected
-        </button>
-        <button
-          className={`px-4 py-2 font-medium text-sm ${activeTab === "cancellation_requested" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
-          onClick={() => { setActiveTab("cancellation_requested"); setCurrentPage(1); }}
-        >
-          Cancellation Requests
         </button>
       </div>
       
@@ -269,8 +251,8 @@ const AdminOrdersPage = () => {
                     Rs. {order.totalPrice.toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
-                      {formatStatusForDisplay(order.status)}
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
+                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -336,38 +318,19 @@ const AdminOrdersPage = () => {
               <p className="text-sm text-gray-600">Customer: {selectedOrder.user.name}</p>
             </div>
             
-            {selectedOrder && selectedOrder.status === "cancellation_requested" ? (
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Status</label>
-                <select
-                  className="w-full p-2 border rounded-md"
-                  value={newStatus}
-                  onChange={(e) => setNewStatus(e.target.value)}
-                >
-                  <option value="cancelled">Approve Cancellation</option>
-                  <option value="rejected_cancellation">Reject Cancellation</option>
-                </select>
-                
-                <div className="mt-2 p-3 bg-yellow-50 rounded-md">
-                  <p className="text-sm text-yellow-800">
-                    <strong>Customer requested cancellation.</strong> You can approve the cancellation 
-                    or reject it and keep the order in its previous state.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Status</label>
-                <select
-                  className="w-full p-2 border rounded-md"
-                  value={newStatus}
-                  onChange={(e) => setNewStatus(e.target.value)}
-                >
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                </select>
-              </div>
-            )}
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Status</label>
+              <select
+                className="w-full p-2 border rounded-md"
+                value={newStatus}
+                onChange={(e) => setNewStatus(e.target.value)}
+              >
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="completed">Completed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
             
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">Admin Notes</label>
@@ -403,23 +366,6 @@ const AdminOrdersPage = () => {
               </div>
             </div>
             
-            {/* Explanatory Text */}
-            <div className="mb-4 p-3 bg-blue-50 rounded-md text-sm text-blue-800">
-              <p>Please review this order and decide whether to approve or reject it.</p>
-              <p className="mt-1">
-                <strong>Note:</strong> Once an order is approved or rejected, you cannot change it back to pending.
-              </p>
-            </div>
-            
-            {/* Pending Order Notice */}
-            {selectedOrder && selectedOrder.status === "pending" && (
-              <div className="my-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                <p className="text-sm text-yellow-800 font-medium">
-                  This order is currently pending approval.
-                </p>
-              </div>
-            )}
-            
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => setShowUpdateModal(false)}
@@ -428,18 +374,12 @@ const AdminOrdersPage = () => {
               >
                 Cancel
               </button>
-              
-              {/* Show different colored button based on selection */}
               <button
                 onClick={handleUpdateOrder}
-                className={`px-4 py-2 rounded-md text-white font-medium
-                  ${newStatus === "approved" ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md font-medium"
                 disabled={submitting}
               >
-                {submitting 
-                  ? "Processing..." 
-                  : `${newStatus === "approved" ? "Approve" : "Reject"} Order`
-                }
+                {submitting ? "Updating..." : "Update Order"}
               </button>
             </div>
           </div>
