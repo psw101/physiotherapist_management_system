@@ -32,20 +32,42 @@ export async function PUT(
     const body = await request.json();
     const { status, adminNotes } = body;
 
-    // Validate status
-    if (!status || !["pending", "approved", "rejected", "completed"].includes(status)) {
+    // Update the status validation to include cancellation-related statuses
+    if (!status || !["approved", "rejected", "cancelled", "rejected_cancellation"].includes(status)) {
       return NextResponse.json(
-        { error: "Valid status is required (pending, approved, rejected, completed)" },
+        { error: "Valid status is required" },
         { status: 400 }
       );
     }
 
-    // Update order
+    // Update the status change handling
+    let updatedStatus = status;
+    let updatedNotes = adminNotes || undefined;
+
+    // Special handling for cancellation responses
+    if (status === "rejected_cancellation") {
+      // If rejecting cancellation, revert to previous status (stored in notes)
+      const currentOrder = await prisma.productOrder.findUnique({
+        where: { id },
+        select: { status: true, adminNotes: true }
+      });
+      
+      if (currentOrder?.status === "cancellation_requested") {
+        // Extract the previous status from notes if possible, otherwise default to pending
+        updatedStatus = "approved"; // Default to approved if we can't determine previous
+        updatedNotes = `Cancellation rejected: ${adminNotes || "No reason provided"}`;
+      }
+    } else if (status === "cancelled") {
+      // If approving cancellation
+      updatedNotes = `Cancellation approved on ${new Date().toISOString()}. ${adminNotes || ""}`;
+    }
+
+    // Update order with the determined status and notes
     const updatedOrder = await prisma.productOrder.update({
       where: { id },
       data: {
-        status,
-        adminNotes: adminNotes || undefined,
+        status: updatedStatus,
+        adminNotes: updatedNotes,
       },
     });
 

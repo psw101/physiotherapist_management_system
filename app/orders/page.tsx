@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FiX } from 'react-icons/fi';
 
 interface Product {
   id: number;
@@ -43,6 +44,12 @@ const MyOrdersPage = () => {
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
+
+  // For cancellation modal
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [cancellationReason, setCancellationReason] = useState("");
+  const [submittingCancellation, setSubmittingCancellation] = useState(false);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -111,6 +118,45 @@ const MyOrdersPage = () => {
     }
   };
 
+  const openCancelModal = (orderId: string) => {
+    setSelectedOrderId(orderId);
+    setCancellationReason("");
+    setShowCancelModal(true);
+  };
+
+  const handleCancelOrder = async () => {
+    if (!selectedOrderId) return;
+    
+    if (!cancellationReason.trim()) {
+      toast.error("Please provide a reason for cancellation");
+      return;
+    }
+    
+    try {
+      setSubmittingCancellation(true);
+      
+      await axios.put(`/api/orders/${selectedOrderId}/cancel`, {
+        reason: cancellationReason
+      });
+      
+      // Update local state to reflect the change
+      setOrders(orders.map(order => 
+        order.id === selectedOrderId 
+          ? { ...order, status: "cancellation_requested" } 
+          : order
+      ));
+      
+      setShowCancelModal(false);
+      toast.success("Cancellation request submitted");
+      
+    } catch (error: any) {
+      console.error("Error canceling order:", error);
+      toast.error(error.response?.data?.error || "Failed to request cancellation");
+    } finally {
+      setSubmittingCancellation(false);
+    }
+  };
+
   // Helper for status badge color
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -118,8 +164,17 @@ const MyOrdersPage = () => {
       case "approved": return "bg-blue-100 text-blue-800";
       case "completed": return "bg-green-100 text-green-800";
       case "rejected": return "bg-red-100 text-red-800";
+      case "cancellation_requested": return "bg-purple-100 text-purple-800";
       default: return "bg-gray-100 text-gray-800";
     }
+  };
+
+  // Update status display to format cancellation_requested nicely
+  const formatStatus = (status: string) => {
+    if (status === "cancellation_requested") {
+      return "Cancellation Requested";
+    }
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   if (status === "loading" || loading) {
@@ -198,10 +253,21 @@ const MyOrdersPage = () => {
                       Placed on {new Date(order.createdAt).toLocaleDateString()}
                     </div>
                   </div>
-                  <div className="mt-2 sm:mt-0">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  <div className="mt-2 sm:mt-0 flex items-center space-x-2">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                      {formatStatus(order.status)}
                     </span>
+                    
+                    {/* Cancel button - only for pending and approved orders */}
+                    {(order.status === "pending" || order.status === "approved") && (
+                      <button
+                        onClick={() => openCancelModal(order.id)}
+                        className="ml-2 px-3 py-1 text-xs font-medium text-red-600 hover:text-white hover:bg-red-600 rounded-md border border-red-200 hover:border-red-600 transition-colors duration-200"
+                        title="Request cancellation"
+                      >
+                        Cancel
+                      </button>
+                    )}
                   </div>
                 </div>
                 
@@ -313,6 +379,55 @@ const MyOrdersPage = () => {
                 disabled={submittingFeedback || rating === 0}
               >
                 {submittingFeedback ? "Submitting..." : "Submit Feedback"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Cancel Order Modal */}
+      {showCancelModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-bold mb-4">Request Order Cancellation</h2>
+            
+            <p className="text-gray-600 mb-4">
+              Please provide a reason why you'd like to cancel this order. Our admin team will review your request.
+            </p>
+            
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Cancellation Reason</label>
+              <textarea
+                className="w-full p-2 border rounded-md"
+                rows={3}
+                value={cancellationReason}
+                onChange={(e) => setCancellationReason(e.target.value)}
+                placeholder="I need to cancel because..."
+                required
+              ></textarea>
+            </div>
+            
+            <div className="p-3 bg-yellow-50 rounded-md mb-4">
+              <p className="text-sm text-yellow-800">
+                <strong>Note:</strong> Submitting a cancellation request doesn't guarantee that your order will be cancelled, 
+                especially if it's already being processed. Our team will review your request and notify you of the decision.
+              </p>
+            </div>
+            
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowCancelModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded-md text-gray-800 font-medium"
+                disabled={submittingCancellation}
+              >
+                Back
+              </button>
+              <button
+                onClick={handleCancelOrder}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium"
+                disabled={submittingCancellation || !cancellationReason.trim()}
+              >
+                {submittingCancellation ? "Submitting..." : "Request Cancellation"}
               </button>
             </div>
           </div>

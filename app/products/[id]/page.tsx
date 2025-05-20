@@ -15,6 +15,7 @@ import {
   TransitionChild 
 } from '@headlessui/react';
 import { loadStripe } from "@stripe/stripe-js";
+import { FiInfo, FiStar, FiPlay, FiBox } from "react-icons/fi";
 
 interface Specification {
   key: string;
@@ -33,7 +34,7 @@ interface Product {
   price: number;
   description: string;
   specification: Specification[];
-  customOptions: CustomOption[]; // Add this new field
+  customOptions: CustomOption[];
   imageUrl?: string;
   videoUrl?: string;
   feedback?: any[];
@@ -52,10 +53,12 @@ const ProductDetailPage = () => {
   const [customValues, setCustomValues] = useState<Record<string, string>>({});
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
-  // Add these state variables
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [isPayingAdvance, setIsPayingAdvance] = useState(false);
+  const [orderError, setOrderError] = useState("");
+
+  const [activeTab, setActiveTab] = useState("details");
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -66,7 +69,6 @@ const ProductDetailPage = () => {
         const response = await axios.get(`/api/products/${productId}`);
         setProduct(response.data);
         
-        // Initialize custom values with empty strings
         const initialValues: Record<string, string> = {};
         if (response.data.customOptions && Array.isArray(response.data.customOptions)) {
           response.data.customOptions.forEach((option: CustomOption) => {
@@ -115,21 +117,17 @@ const ProductDetailPage = () => {
   };
 
   const handlePlaceOrder = () => {
-    // Check for authentication
     if (status !== "authenticated") {
       toast.info("Please login to place an order", {
         position: "bottom-right"
       });
       
-      // Save current page to redirect back after login
       router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`);
       return;
     }
     
-    // Validate required fields
     if (!validateForm()) return;
 
-    // Open confirmation dialog
     setConfirmDialogOpen(true);
   };
 
@@ -140,13 +138,9 @@ const ProductDetailPage = () => {
       setSubmitting(true);
       setIsPayingAdvance(payAdvance);
       
-      // Calculate total price
       const totalPrice = product.price * selectedQuantity;
-      
-      // Calculate advance amount (10%)
       const advanceAmount = Math.round(totalPrice * 0.1);
       
-      // Create checkout session with proper metadata
       const response = await axios.post('/api/checkout', {
         items: [{
           name: product.name,
@@ -164,7 +158,6 @@ const ProductDetailPage = () => {
         }
       });
       
-      // Redirect to Stripe checkout
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
       if (stripe && response.data.id) {
         await stripe.redirectToCheckout({ sessionId: response.data.id });
@@ -200,191 +193,343 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6">
-      {/* Add ToastContainer for notifications */}
-      <ToastContainer />
+    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6">
+      <ToastContainer position="bottom-right" />
 
-      {/* Back button */}
-      <div className="mb-6">
-        <button onClick={() => router.push("/products/view-products")} className="flex items-center text-blue-600 hover:text-blue-800">
-          <IoChevronBackOutline className="mr-1" /> Back to Products
-        </button>
-      </div>
+      <button 
+        onClick={() => router.push("/products/view-products")} 
+        className="flex items-center text-sm text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+      >
+        <IoChevronBackOutline className="mr-1 text-gray-500" /> Back to Products
+      </button>
 
-      {/* Product Overview */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="grid md:grid-cols-2 gap-8 p-6">
-          {/* Left: Media (Image & Video) */}
-          <div className="space-y-4">
-            {/* Main Image */}
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
-              <img src={product.imageUrl || "https://via.placeholder.com/600x400?text=No+Image"} alt={product.name} className="w-full h-auto object-cover" />
-            </div>
-
-            {/* Video (if available) */}
-            {product.videoUrl && (
-              <div className="border border-gray-200 rounded-lg overflow-hidden aspect-w-16 aspect-h-9">
-                <iframe src={product.videoUrl} title={`${product.name} demo`} className="w-full h-64" allowFullScreen></iframe>
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+        </div>
+      ) : error ? (
+        <div className="bg-red-50 rounded-lg p-6 text-center">
+          <p className="text-red-600 mb-4">{error || "Product not found"}</p>
+          <button 
+            onClick={() => router.push("/products/view-products")} 
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Browse Products
+          </button>
+        </div>
+      ) : product ? (
+        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+          {/* Product title bar for mobile only */}
+          <div className="lg:hidden p-4 border-b">
+            <h1 className="text-xl font-bold text-gray-900 line-clamp-2">{product.name}</h1>
+            <div className="flex justify-between items-center mt-2">
+              <div className="flex items-center">
+                {product.feedback && product.feedback.length > 0 && (
+                  <div className="flex items-center text-sm">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <FiStar 
+                          key={i} 
+                          className={`w-4 h-4 ${i < Math.round(
+                            product.feedback!.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback!.length
+                          ) ? "text-yellow-400 fill-current" : "text-gray-300"}`} 
+                        />
+                      ))}
+                    </div>
+                    <span className="ml-1 text-gray-600">({product.feedback.length})</span>
+                  </div>
+                )}
               </div>
-            )}
+              <div className="text-xl font-bold text-blue-600">Rs. {product.price.toLocaleString()}</div>
+            </div>
           </div>
-
-          {/* Right: Product Information */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
-              
-              {/* Show ratings from feedback if available */}
-              {product.feedback && product.feedback.length > 0 && (
-                <div className="flex items-center mt-2">
+          
+          {/* Main content area */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
+            {/* Left: Media column (3/5 width on large screens) */}
+            <div className="lg:col-span-3 p-4 lg:p-6">
+              {/* Product title for desktop */}
+              <div className="hidden lg:block mb-4">
+                <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
+                <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className={`w-4 h-4 ${i < Math.round(
-                        product.feedback!.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback!.length
-                      ) ? "text-yellow-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
+                    {product.feedback && product.feedback.length > 0 && (
+                      <div className="flex items-center">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <FiStar 
+                              key={i} 
+                              className={`w-4 h-4 ${i < Math.round(
+                                product.feedback!.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback!.length
+                              ) ? "text-yellow-400 fill-current" : "text-gray-300"}`} 
+                            />
+                          ))}
+                        </div>
+                        <span className="ml-1 text-sm text-gray-600">({product.feedback.length} reviews)</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-2xl font-bold text-blue-600">Rs. {product.price.toLocaleString()}</div>
+                </div>
+              </div>
+              
+              {/* Media Gallery - More elegant layout */}
+              <div className="space-y-6">
+                {/* Product Image with improved styling */}
+                <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-100 shadow-sm">
+                  <div className="flex items-center justify-center h-64 sm:h-80 lg:h-96">
+                    {product.imageUrl ? (
+                      <img 
+                        src={product.imageUrl} 
+                        alt={product.name} 
+                        className="max-h-full max-w-full object-contain p-4"
+                        onError={(e) => {
+                          e.currentTarget.src = "/placeholder-image.jpg";
+                        }}
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-gray-400">
+                        <FiBox className="w-16 h-16 mb-2" />
+                        <p className="text-sm">No image available</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Video Section - More professional styling */}
+                {product.videoUrl && (
+                  <div className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                    <div className="bg-gray-800 px-4 py-3 flex items-center">
+                      <FiPlay className="w-4 h-4 text-white mr-2" />
+                      <h3 className="text-sm font-medium text-white">
+                        Product Demonstration Video
+                      </h3>
+                    </div>
+                    <div className="relative pb-[56.25%] h-0 bg-black">
+                      <iframe 
+                        src={product.videoUrl} 
+                        className="absolute top-0 left-0 w-full h-full border-0"
+                        title={`${product.name} video`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Reviews tab content - Always visible if available */}
+              {product.feedback && product.feedback.length > 0 && (
+                <div className="mt-6 bg-white rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                    <h3 className="text-sm font-medium text-gray-900">Customer Reviews ({product.feedback.length})</h3>
+                    <div className="flex items-center">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <FiStar 
+                            key={i} 
+                            className={`w-4 h-4 ${i < Math.round(
+                              product.feedback!.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback!.length
+                            ) ? "text-yellow-400 fill-current" : "text-gray-300"}`} 
+                          />
+                        ))}
+                      </div>
+                      <span className="ml-2 text-xs text-gray-600">
+                        {(product.feedback.reduce((acc, curr) => acc + curr.rating, 0) / product.feedback.length).toFixed(1)} out of 5
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="divide-y divide-gray-200 max-h-[250px] overflow-y-auto p-4">
+                    {product.feedback.map((review, index) => (
+                      <div key={index} className="py-3 first:pt-0 last:pb-0">
+                        <div className="flex items-center justify-between">
+                          <div className="font-medium text-gray-900 text-sm">{review.userName}</div>
+                          <div className="text-xs text-gray-500">
+                            {new Date(review.date).toLocaleDateString()}
+                          </div>
+                        </div>
+                        <div className="flex mt-1 mb-1">
+                          {[...Array(5)].map((_, i) => (
+                            <FiStar 
+                              key={i} 
+                              className={`w-3 h-3 ${i < review.rating ? "text-yellow-400 fill-current" : "text-gray-300"}`} 
+                            />
+                          ))}
+                        </div>
+                        <p className="text-gray-600 text-xs">{review.comment}</p>
+                      </div>
                     ))}
                   </div>
-                  <span className="ml-2 text-gray-600">({product.feedback.length} reviews)</span>
                 </div>
               )}
             </div>
-
-            <div className="text-3xl font-bold text-gray-900">Rs. {product.price.toLocaleString()}</div>
-
-            <div>
-              <h3 className="text-lg font-medium text-gray-900">Description</h3>
-              <p className="mt-2 text-gray-600">{product.description}</p>
-            </div>
-
-            {/* Quantity Selector */}
-            <div>
-              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
-                Quantity
-              </label>
-              <select 
-                id="quantity" 
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none" 
-                value={selectedQuantity} 
-                onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-              >
-                {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Customization Options */}
-            {product.customOptions && product.customOptions.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900">Customization Options</h3>
-                
-                {product.customOptions.map((option, index) => (
-                  <div key={index} className="space-y-1">
-                    <label htmlFor={`custom-${index}`} className="block text-sm font-medium text-gray-700">
-                      {option.label}
-                      {option.required && <span className="text-red-500 ml-1">*</span>}
-                    </label>
-                    <input
-                      type="text"
-                      id={`custom-${index}`}
-                      placeholder={option.placeholder || `Enter ${option.label}`}
-                      className="block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-500 focus:outline-none"
-                      value={customValues[option.label] || ""}
-                      onChange={(e) => handleCustomValueChange(option.label, e.target.value)}
-                    />
+            
+            {/* Right: Details & Purchase column (2/5 width on large screens) */}
+            <div className="lg:col-span-2 p-4 lg:p-6 bg-gray-50 lg:bg-white lg:border-l border-gray-200">
+              <div className="lg:sticky lg:top-6">
+                {/* MOVED: Tabs for product specs and details now at top of right column */}
+                <div className="mb-6">
+                  <div className="flex border-b border-gray-200">
+                    <button
+                      onClick={() => setActiveTab("details")}
+                      className={`px-4 py-2 text-sm font-medium ${activeTab === "details" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
+                    >
+                      Details
+                    </button>
+                    {product.specification && product.specification.length > 0 && (
+                      <button
+                        onClick={() => setActiveTab("specifications")}
+                        className={`px-4 py-2 text-sm font-medium ${activeTab === "specifications" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
+                      >
+                        Specifications
+                      </button>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
-
-            {/* Total Price */}
-            <div className="bg-gray-50 p-4 rounded-md">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Total Price:</span>
-                <span className="text-xl font-bold text-blue-600">Rs. {(product.price * selectedQuantity).toLocaleString()}</span>
-              </div>
-              {selectedQuantity > 1 && <div className="text-sm text-gray-500 text-right mt-1">(Rs. {product.price.toLocaleString()} each)</div>}
-            </div>
-
-            {/* Place Order Button */}
-            <button 
-              onClick={handlePlaceOrder} 
-              disabled={submitting || orderPlaced}
-              className={`w-full py-3 px-6 rounded-md font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${
-                submitting || orderPlaced 
-                  ? "bg-gray-400 cursor-not-allowed" 
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
-              }`}
-            >
-              {submitting 
-                ? "Processing..." 
-                : orderPlaced 
-                  ? "Order Placed!" 
-                  : "Place Order"
-              }
-            </button>
-            
-            {/* Login prompt for unauthenticated users */}
-            {status !== "authenticated" && (
-              <p className="text-sm text-center text-gray-500">
-                Please <button className="text-blue-600 underline" onClick={() => router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`)}>login</button> to place an order
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Specifications */}
-        {product.specification && product.specification.length > 0 && (
-          <div className="border-t border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Specifications</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-              {product.specification.map((spec, index) => (
-                <div key={index} className="py-2 grid grid-cols-2">
-                  <div className="font-medium text-gray-700">{spec.key}</div>
-                  <div className="text-gray-600">{spec.value}</div>
+                  
+                  {/* Tab content */}
+                  <div className="mt-4 bg-white p-4 rounded-md shadow-sm border border-gray-100">
+                    {/* Details tab */}
+                    {activeTab === "details" && (
+                      <div className="text-gray-600 text-sm leading-relaxed space-y-3 max-h-[200px] overflow-y-auto pr-2">
+                        {product.description.split('\n').map((paragraph, i) => (
+                          <p key={i}>{paragraph}</p>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Specifications tab */}
+                    {activeTab === "specifications" && (
+                      <div className="rounded-md max-h-[200px] overflow-y-auto pr-2">
+                        {product.specification.map((spec, index) => (
+                          <div key={index} className={`py-2 ${index !== product.specification.length - 1 ? 'border-b border-gray-100' : ''} flex justify-between`}>
+                            <span className="text-sm text-gray-500">{spec.key}</span>
+                            <span className="text-sm font-medium text-gray-900 ml-4 text-right">{spec.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-        
-        {/* Customer Feedback */}
-        {product.feedback && product.feedback.length > 0 && (
-          <div className="border-t border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Customer Reviews</h3>
-            
-            <div className="space-y-4">
-              {product.feedback.map((review, index) => (
-                <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center">
-                      <div className="font-medium">{review.userName}</div>
-                      <div className="ml-2 text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString()}
+
+                {/* Order section with quantity selector and customization */}
+                <div className="mt-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Order Information</h3>
+                  
+                  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    {/* Quantity selector */}
+                    <div className="mb-4">
+                      <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
+                        Quantity
+                      </label>
+                      <select 
+                        id="quantity" 
+                        className="block w-full rounded-md border border-gray-300 py-2 px-3 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" 
+                        value={selectedQuantity} 
+                        onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
+                      >
+                        {[1, 2, 3, 4, 5].map((num) => (
+                          <option key={num} value={num}>{num}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Customization options */}
+                    {product.customOptions && product.customOptions.length > 0 && (
+                      <div className="mb-4 border-t border-gray-200 pt-4">
+                        <h4 className="text-sm font-medium text-gray-700 mb-3">Customization Options</h4>
+                        
+                        <div className="space-y-3">
+                          {product.customOptions.map((option, index) => (
+                            <div key={index}>
+                              <label htmlFor={`custom-${index}`} className="block text-xs font-medium text-gray-700 mb-1">
+                                {option.label}
+                                {option.required && <span className="text-red-500 ml-1">*</span>}
+                              </label>
+                              <input
+                                type="text"
+                                id={`custom-${index}`}
+                                placeholder={option.placeholder || `Enter ${option.label}`}
+                                className="block w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                value={customValues[option.label] || ""}
+                                onChange={(e) => handleCustomValueChange(option.label, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Price calculation */}
+                    <div className="mb-4 border-t border-gray-200 pt-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">Price per item:</span>
+                        <span className="text-sm font-medium">Rs. {product.price.toLocaleString()}</span>
+                      </div>
+                      
+                      {selectedQuantity > 1 && (
+                        <div className="flex justify-between items-center mt-1">
+                          <span className="text-sm text-gray-600">Quantity:</span>
+                          <span className="text-sm font-medium">{selectedQuantity}</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-200">
+                        <span className="text-base font-medium text-gray-700">Total:</span>
+                        <span className="text-lg font-bold text-blue-600">Rs. {(product.price * selectedQuantity).toLocaleString()}</span>
                       </div>
                     </div>
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <svg key={i} className={`w-4 h-4 ${i < review.rating ? "text-yellow-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                        </svg>
-                      ))}
+
+                    {/* Advance payment info */}
+                    <div className="mb-4 p-3 bg-blue-50 rounded-md">
+                      <div className="flex">
+                        <FiInfo className="w-5 h-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
+                        <div>
+                          <p className="text-xs font-medium text-blue-800">
+                            Advanced Payment Option
+                          </p>
+                          <p className="text-xs text-blue-700 mt-1">
+                            Secure your order with a 10% deposit (Rs. {Math.round(product.price * selectedQuantity * 0.1).toLocaleString()}) and pay the remainder on delivery.
+                          </p>
+                        </div>
+                      </div>
                     </div>
+                    
+                    {/* Place order button */}
+                    <button 
+                      onClick={handlePlaceOrder} 
+                      disabled={submitting || orderPlaced}
+                      className={`w-full flex justify-center items-center py-3 px-4 rounded-md text-sm font-medium transition-colors ${
+                        submitting || orderPlaced 
+                          ? "bg-gray-400 cursor-not-allowed text-white" 
+                          : "bg-blue-600 hover:bg-blue-700 text-white"
+                      }`}
+                    >
+                      {submitting 
+                        ? "Processing..." 
+                        : orderPlaced 
+                          ? "Order Placed!" 
+                          : "Place Order"
+                      }
+                    </button>
+                    
+                    {/* Login prompt for unauthenticated users */}
+                    {status !== "authenticated" && (
+                      <div className="mt-3 text-center">
+                        <p className="text-xs text-gray-500">
+                          Please <button className="text-blue-600 hover:underline" onClick={() => router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`)}>login</button> to place an order
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-gray-700">{review.comment}</p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      ) : null}
 
-      {/* Confirmation Dialog */}
+      {/* Order Confirmation Dialog - Keep existing code */}
       <Transition appear show={confirmDialogOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => setConfirmDialogOpen(false)}>
           <TransitionChild
@@ -396,11 +541,11 @@ const ProductDetailPage = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black/25" />
           </TransitionChild>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex min-h-full items-center justify-center p-4">
               <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -410,92 +555,111 @@ const ProductDetailPage = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <DialogTitle
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Confirm Your Order
-                  </DialogTitle>
-                  
-                  <div className="mt-4 space-y-4">
-                    {/* Product Summary */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium">{product?.name}</h4>
-                      <p className="text-sm text-gray-500">{product?.description.substring(0, 100)}{product?.description.length > 100 ? '...' : ''}</p>
-                      <div className="flex justify-between">
-                        <span className="text-sm">Quantity:</span>
-                        <span className="font-medium">{selectedQuantity}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm">Price per unit:</span>
-                        <span className="font-medium">Rs. {product?.price.toLocaleString()}</span>
-                      </div>
-                    </div>
+                <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white shadow-xl transition-all">
+                  <div className="px-6 pt-6 pb-4">
+                    <DialogTitle as="h3" className="text-lg font-medium text-gray-900">
+                      Confirm Your Order
+                    </DialogTitle>
                     
-                    {/* Customizations */}
-                    {Object.keys(customValues).length > 0 && (
-                      <div className="border-t pt-3">
-                        <h4 className="font-medium mb-2">Customizations:</h4>
-                        <div className="space-y-1">
-                          {Object.entries(customValues).map(([label, value]) => (
-                            value && (
-                              <div key={label} className="grid grid-cols-2 text-sm">
-                                <span className="text-gray-500">{label}:</span>
-                                <span>{value}</span>
-                              </div>
-                            )
-                          ))}
+                    <div className="mt-4">
+                      {/* Product summary with fixed-size image */}
+                      <div className="flex items-start mb-4">
+                        <div className="w-16 h-16 bg-gray-50 rounded overflow-hidden flex-shrink-0 flex items-center justify-center">
+                          {product?.imageUrl ? (
+                            <img 
+                              src={product.imageUrl} 
+                              alt={product.name}
+                              className="max-h-full max-w-full object-contain"
+                              onError={(e) => {
+                                e.currentTarget.src = "/placeholder-image.jpg";
+                              }}
+                            />
+                          ) : (
+                            <FiBox className="w-6 h-6 text-gray-400" />
+                          )}
                         </div>
-                      </div>
-                    )}
-                    
-                    {/* Total */}
-                    <div className="border-t pt-3">
-                      <div className="flex justify-between font-bold">
-                        <span>Total Price:</span>
-                        <span>Rs. {(product?.price ?? 0 * selectedQuantity).toLocaleString()}</span>
+                        
+                        <div className="ml-3 flex-1 min-w-0">
+                          <h4 className="font-medium text-gray-900 text-sm truncate">{product?.name}</h4>
+                          <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                            {product?.description}
+                          </p>
+                        </div>
                       </div>
                       
-                      {/* Advance Payment Option */}
-                      <div className="mt-2 p-3 bg-blue-50 rounded-md">
-                        <div className="flex justify-between">
-                          <span className="text-sm font-medium text-blue-800">10% Advance Payment:</span>
-                          <span className="font-medium text-blue-800">
-                            Rs. {Math.round(((product?.price ?? 0) * selectedQuantity) * 0.1).toLocaleString()}
-                          </span>
+                      {/* Order details */}
+                      <div className="bg-gray-50 p-3 rounded-md mb-4">
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Item Price:</span>
+                            <span className="font-medium">Rs. {product?.price.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Quantity:</span>
+                            <span className="font-medium">{selectedQuantity}</span>
+                          </div>
+                          {Object.entries(customValues).filter(([_, v]) => v).length > 0 && (
+                            <div className="pt-2 border-t border-gray-200">
+                              <p className="font-medium mb-1">Customizations:</p>
+                              {Object.entries(customValues).map(([key, value]) => 
+                                value ? (
+                                  <div key={key} className="flex justify-between text-xs">
+                                    <span className="text-gray-600">{key}:</span>
+                                    <span className="font-medium">{value}</span>
+                                  </div>
+                                ) : null
+                              )}
+                            </div>
+                          )}
+                          
+                          <div className="pt-2 border-t border-gray-200 flex justify-between font-bold">
+                            <span>Total:</span>
+                            <span>Rs. {(product?.price! * selectedQuantity).toLocaleString()}</span>
+                          </div>
                         </div>
-                        <p className="text-xs text-blue-700 mt-1">
-                          Pay 10% now to confirm your order and the remaining amount on delivery.
-                        </p>
+                      </div>
+                      
+                      {/* Payment options info */}
+                      <div className="p-3 bg-blue-50 rounded-md">
+                        <div className="flex">
+                          <FiInfo className="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium text-blue-800 text-sm">
+                              Pay 10% Advance: Rs. {Math.round(product?.price! * selectedQuantity * 0.1).toLocaleString()}
+                            </p>
+                            <p className="text-xs text-blue-700 mt-1">
+                              Pay advance to secure your order, remaining on delivery
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="mt-6 flex gap-3">
-                      <button
-                        type="button"
-                        className="flex-1 justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={() => setConfirmDialogOpen(false)}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="button"
-                        className="flex-1 justify-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={() => handleConfirmOrder(false)}
-                        disabled={submitting}
-                      >
-                        {submitting ? "Processing..." : "Place Order"}
-                      </button>
-                      <button
-                        type="button"
-                        className="flex-1 justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={() => handleConfirmOrder(true)}
-                        disabled={submitting}
-                      >
-                        {submitting ? "Processing..." : "Pay Advance"}
-                      </button>
-                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
+                    <button
+                      type="button"
+                      className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                      onClick={() => setConfirmDialogOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                      onClick={() => handleConfirmOrder(true)}
+                      disabled={submitting}
+                    >
+                      {submitting ? "Processing..." : "Pay 10% Advance"}
+                    </button>
+                    <button
+                      type="button"
+                      className="px-3 py-2 text-sm font-medium text-white bg-gray-800 rounded-md hover:bg-gray-900"
+                      onClick={() => handleConfirmOrder(false)}
+                      disabled={submitting}
+                    >
+                      {submitting ? "Processing..." : "Pay Full Amount"}
+                    </button>
                   </div>
                 </DialogPanel>
               </TransitionChild>
@@ -508,7 +672,4 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
-function setOrderError(arg0: string) {
-  throw new Error("Function not implemented.");
-}
 
