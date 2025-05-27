@@ -22,13 +22,13 @@ export default function AdminDashboard() {
   // Use mock data instead of fetching from API
   const [stats, setStats] = useState<Partial<DashboardStats>>({
     usersCount: 125,
-    patientsCount: 85,
-    physiotherapistsCount: 12,
-    appointmentsCount: 230,
+    patientsCount: 2,
+  
+    appointmentsCount: 2,
     productsCount: 45,
-    revenueTotal: 25000,
-    pendingAppointments: 18,
-    completedAppointments: 212
+    revenueTotal: 12000,
+    pendingAppointments: 2,
+    completedAppointments: 5
   });
   
   const [loading, setLoading] = useState(false); // No loading since no API call
@@ -80,17 +80,8 @@ export default function AdminDashboard() {
       <Heading size="8" className="mb-6">Admin Dashboard</Heading>
       
       <Grid columns={{ initial: "1", sm: "2", lg: "4" }} gap="4" className="mb-8">
-        <StatCard 
-          title="Total Users" 
-          value={stats.usersCount || 0}
-          icon={UserGroupIcon}
-        />
-        <StatCard 
-          title="Physiotherapists" 
-          value={stats.physiotherapistsCount || 0}
-          icon={UserGroupIcon}
-          color="emerald"
-        />
+        
+
         <StatCard 
           title="Patients" 
           value={stats.patientsCount || 0}
@@ -139,10 +130,6 @@ export default function AdminDashboard() {
           </Flex>
         </Card>
         
-        <Card className="p-6">
-          <Heading size="3" className="mb-4">Latest Activity</Heading>
-          <Text color="gray">Recent activity will be displayed here</Text>
-        </Card>
       </Grid>
     </Box>
   );

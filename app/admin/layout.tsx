@@ -39,7 +39,7 @@ export default function AdminLayout({
   return (
     <Flex>
       <AdminNavbar />
-      <Box className="flex-1 p-6">
+      <Box className="flex-1 md:ml-64 p-6 pt-16 md:pt-6 w-full min-h-screen">
         <Container size="4">
           {children}
         </Container>

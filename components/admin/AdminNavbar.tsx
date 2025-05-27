@@ -4,11 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { 
-  Box, Flex, Text, Button, Avatar, 
-  DropdownMenu, Separator 
+import {
+  Box, Flex, Text, Button, Avatar,
+  DropdownMenu, Separator
 } from "@radix-ui/themes";
-import { 
+import {
   HomeIcon, UserIcon, CalendarIcon, ShoppingCartIcon,
   UserGroupIcon, ClipboardDocumentListIcon, CogIcon, ArrowLeftOnRectangleIcon,
   Bars3Icon, XMarkIcon, ChartPieIcon
@@ -36,10 +36,10 @@ export default function AdminNavbar() {
     <>
       {/* Mobile menu button */}
       <div className="fixed top-4 left-4 z-40 md:hidden">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2"
+          className="p-2 bg-white"
         >
           {isMobileMenuOpen ? (
             <XMarkIcon className="h-6 w-6" />
@@ -48,11 +48,11 @@ export default function AdminNavbar() {
           )}
         </Button>
       </div>
-      
+
       {/* Sidebar for desktop */}
-      <Box 
+      <Box
         className={`
-          fixed left-0 top-0 h-full bg-indigo-900 text-white w-64 
+          fixed left-0 top-0 h-full bg-indigo-900 text-white w-64
           transform transition-transform duration-300 ease-in-out z-30
           md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -60,10 +60,10 @@ export default function AdminNavbar() {
         <Flex direction="column" className="h-full">
           <Box className="p-4">
             <Flex align="center" gap="3">
-              <Avatar 
-                src="/assets/logo.png" 
-                fallback="P" 
-                size="3" 
+              <Avatar
+                src="/assets/logo.png"
+                fallback="P"
+                size="3"
                 radius="full"
               />
               <Text size="5" weight="bold">
@@ -71,7 +71,7 @@ export default function AdminNavbar() {
               </Text>
             </Flex>
           </Box>
-          
+
           <Separator size="4" color="indigo" />
 
           <Box className="py-4 flex-1 overflow-y-auto">
@@ -79,8 +79,8 @@ export default function AdminNavbar() {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <Link 
-                    key={item.name} 
+                  <Link
+                    key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -103,9 +103,9 @@ export default function AdminNavbar() {
           </Box>
 
           <Box className="p-4">
-            <Button 
-              variant="soft" 
-              color="red" 
+            <Button
+              variant="soft"
+              color="red"
               className="w-full"
               onClick={() => signOut({ callbackUrl: "/" })}
             >
@@ -118,7 +118,7 @@ export default function AdminNavbar() {
 
       {/* Overlay for mobile */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />

@@ -25,7 +25,7 @@ const Navbar = () => {
   const currentPath = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  
+
   if (status === "loading") return null;
 
   // Navigation items data
@@ -60,17 +60,17 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md w-full px-4 py-3">
+    <nav className="bg-white shadow-md w-full px-4 py-3 fixed top-0 left-0 right-0 z-30">
       {/* Navigation Bar Container */}
       <div className="flex justify-between items-center">
         {/* Brand Logo */}
         <div className="text-xl font-bold">Sethphysio Lanka</div>
-        
+
         {/* Desktop Navigation */}
         <ul className="hidden xl:flex items-center space-x-6">
           {navItems.map((item) => (
-            <li 
-              key={item.label} 
+            <li
+              key={item.label}
               className="relative"
               onMouseEnter={() => item.dropdown && handleMouseEnter(item.label)}
               onMouseLeave={handleMouseLeave}
@@ -91,7 +91,7 @@ const Navbar = () => {
                     {item.label}
                     <IoIosArrowDown className="ml-1" />
                   </button>
-                  
+
                   {/* Dropdown Menu */}
                   {activeDropdown === item.label && (
                     <div className="absolute left-0 -mt-1 w-48 bg-white rounded-md shadow-lg z-20">
@@ -116,8 +116,8 @@ const Navbar = () => {
                 </div>
               ) : (
                 // Regular link item
-                <Link 
-                  href={item.href} 
+                <Link
+                  href={item.href}
                   className={classNames(
                     "px-2 py-1 transition-colors",
                     {
@@ -131,7 +131,7 @@ const Navbar = () => {
               )}
             </li>
           ))}
-          
+
           {/* Authentication Section */}
           <div className="border-l pl-6 ml-2">
             {status === 'authenticated' && (
@@ -149,9 +149,9 @@ const Navbar = () => {
             )}
           </div>
         </ul>
-        
+
         {/* Mobile Menu Toggle Button */}
-        <button 
+        <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="xl:hidden text-gray-600 focus:outline-none"
           aria-label="Toggle menu"
@@ -159,13 +159,13 @@ const Navbar = () => {
           {isMenuOpen ? <IoMdClose size={24} /> : <CiMenuBurger size={24} />}
         </button>
       </div>
-      
+
       {/* Mobile Navigation Menu */}
-      <div 
+      <div
         className={classNames(
-          "xl:hidden absolute left-0 right-0 bg-white shadow-md z-10 transition-all duration-300 ease-in-out",
+          "xl:hidden fixed top-[53px] left-0 right-0 bg-white shadow-md z-20 transition-all duration-300 ease-in-out",
           {
-            "max-h-screen opacity-100 mt-3": isMenuOpen,
+            "max-h-[calc(100vh-53px)] opacity-100": isMenuOpen,
             "max-h-0 opacity-0 overflow-hidden": !isMenuOpen
           }
         )}
@@ -180,14 +180,14 @@ const Navbar = () => {
                     className="flex justify-between items-center w-full py-2 text-zinc-700 font-medium"
                   >
                     {item.label}
-                    <IoIosArrowDown 
+                    <IoIosArrowDown
                       className={classNames("transition-transform", {
                         "transform rotate-180": activeDropdown === item.label
                       })}
                     />
                   </button>
-                  
-                  <div 
+
+                  <div
                     className={classNames("pl-4 space-y-2 overflow-hidden transition-all duration-300", {
                       "max-h-screen py-2": activeDropdown === item.label,
                       "max-h-0": activeDropdown !== item.label
@@ -209,7 +209,7 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : (
-                <Link 
+                <Link
                   href={item.href}
                   className={classNames("block py-2", {
                     "text-blue-600 font-medium": item.href === currentPath,
@@ -222,14 +222,14 @@ const Navbar = () => {
               )}
             </li>
           ))}
-          
+
           {/* Mobile Auth Links */}
           <li className="py-2 mt-2 pt-2 border-t border-gray-200">
             {status === 'authenticated' ? (
               <div className="flex flex-col space-y-2">
                 <span className="text-zinc-700">{session.user!.name}</span>
-                <Link 
-                  href="/api/auth/signout" 
+                <Link
+                  href="/api/auth/signout"
                   className="text-red-600"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -237,8 +237,8 @@ const Navbar = () => {
                 </Link>
               </div>
             ) : (
-              <Link 
-                href="/api/auth/signin" 
+              <Link
+                href="/api/auth/signin"
                 className="text-blue-600"
                 onClick={() => setIsMenuOpen(false)}
               >
