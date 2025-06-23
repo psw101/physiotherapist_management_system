@@ -31,7 +31,6 @@ interface Order {
 const MyOrdersPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
