@@ -59,8 +59,8 @@ export async function POST(request: NextRequest) {
       },
       success_url:
         orderDetails?.type === "appointment"
-          ? `${origin}/checkout/appointment-success?session_id={CHECKOUT_SESSION_ID}`
-          : `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+          ? `${origin}/user/checkout/appointment-success?session_id={CHECKOUT_SESSION_ID}`
+          : `${origin}/user/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel`,
     });
 

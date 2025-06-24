@@ -11,30 +11,12 @@ import { z } from "zod";
 import MediaUploader from "@/components/MediaUploader";
 import SpecificationAdder from "@/components/SpecificationAdder";
 import CustomizationOptionsAdder from "@/components/CustomizationOptionsAdder";
-
-export interface Product {
-  id?: number;
-  name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  videoUrl: string;
-  specification: {
-    key: string;
-    value: string;
-  }[];
-  customOptions?: {
-    label: string;
-    placeholder?: string;
-    required?: boolean;
-  }[];
-}
+import { CreateProductDto, Specification, CustomOption } from "@/types/models";
 
 const AddProductPage = () => {
   const router = useRouter();
-  
-  const [specs, setSpecs] = useState<Product["specification"]>([]);
-  const [customOptions, setCustomOptions] = useState<Product["customOptions"]>([]);
+    const [specs, setSpecs] = useState<Specification[]>([]);
+  const [customOptions, setCustomOptions] = useState<CustomOption[]>([]);
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -49,8 +31,8 @@ const AddProductPage = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-    trigger,
-  } = useForm<Product>({
+    trigger,  // Use the schema type here, not the DTO
+  } = useForm({
     resolver: zodResolver(productSchema),
     mode: "onChange",
   });
@@ -97,7 +79,8 @@ const AddProductPage = () => {
     });
   };
 
-  const onSubmit = async (data: Product) => {
+  // Use the schema-inferred type
+  const onSubmit = async (data: z.infer<typeof productSchema>) => {
     try {
       setSubmitting(true);
       setError("");

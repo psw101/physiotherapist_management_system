@@ -1,19 +1,6 @@
 import { useState } from "react";
 import { Card, Button, Text, Flex, Box, TextField, Heading } from "@radix-ui/themes";
-
-interface PaymentFormProps {
-  amount: number;
-  onSubmit: (paymentDetails: PaymentDetails) => Promise<void>;
-  processing: boolean;
-  error?: string;
-}
-
-export interface PaymentDetails {
-  cardNumber: string;
-  cardName: string;
-  expiryDate: string;
-  cvv: string;
-}
+import { PaymentFormProps, PaymentDetails } from "@/types/models";
 
 export default function PaymentForm({ 
   amount, 

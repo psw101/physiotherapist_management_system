@@ -7,18 +7,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { useSession } from "next-auth/react";
 import { IoIosArrowDown } from "react-icons/io";
-
-// Define types for navigation items
-interface NavSubItem {
-  label: string;
-  href: string;
-}
-
-interface NavItem {
-  label: string;
-  href: string;
-  dropdown: NavSubItem[] | null;
-}
+import { NavItem, NavSubItem } from "@/types/models";
 
 const Navbar = () => {
   const { status, data: session } = useSession();
@@ -31,16 +20,16 @@ const Navbar = () => {
   // Navigation items data
   const navItems: NavItem[] = [
     { label: 'Home', href: '/', dropdown: null },
-    { label: 'Products', href: '/products', dropdown: null },
+    { label: 'Products', href: '/user/products', dropdown: null },
     {
       label: 'Appointments',
       href: '',
       dropdown: [
-        { label: 'My appointments', href: '/appointments' },
-        { label: 'Book Appointment', href: '/appointments/book-appointments' },
+        { label: 'My appointments', href: '/user/appointments' },
+        { label: 'Book Appointment', href: '/user/appointments/book-appointments' },
       ]
     },
-    { label: 'My Orders', href: '/orders', dropdown: null },
+    { label: 'My Orders', href: '/user/orders', dropdown: null },
 
 
   ];

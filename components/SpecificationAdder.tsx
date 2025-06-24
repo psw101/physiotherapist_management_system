@@ -1,17 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
-
-interface Specification {
-  key: string;
-  value: string;
-}
-
-interface SpecificationAdderProps {
-  initialSpecs?: Specification[];
-  onChange: (specs: Specification[]) => void;
-  className?: string;
-}
+import { Specification, SpecificationAdderProps } from '@/types/models';
 
 const SpecificationAdder = ({ 
   initialSpecs = [{ key: "weight", value: "15 kg" }],

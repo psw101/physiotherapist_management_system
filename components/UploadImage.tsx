@@ -2,12 +2,7 @@
 import React, { useState, useCallback } from "react";
 import { Upload, X } from "lucide-react";
 import { Text } from "@radix-ui/themes";
-
-interface ImageUploaderProps {
-  onChange: (file: File | null) => void;
-  acceptedFileTypes: string;
-  maxSizeMB: number;
-}
+import { ImageUploaderProps } from "@/types/models";
 
 const ImageUploader = ({
   onChange,

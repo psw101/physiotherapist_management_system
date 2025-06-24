@@ -6,42 +6,21 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-interface Order {
-  id: string;
-  userId: string;
-  user: {
-    name: string;
-    email: string;
-  };
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl?: string;
-  };
-  quantity: number;
-  totalPrice: number;
-  customizations: Record<string, string>;
-  status: string;
-  adminNotes?: string;
-  createdAt: string;
-}
+import { AdminOrder } from "@/types/models/order";
 
 const AdminOrdersPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  
-  // For order update modal
+    // For order update modal
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<AdminOrder | null>(null);
   const [newStatus, setNewStatus] = useState<string>("");
   const [adminNotes, setAdminNotes] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
@@ -84,7 +63,7 @@ const AdminOrdersPage = () => {
     fetchOrders();
   }, [status, session, activeTab, currentPage]);
 
-  const openUpdateModal = (order: Order) => {
+  const openUpdateModal = (order: AdminOrder) => {
     setSelectedOrder(order);
     setNewStatus(order.status);
     setAdminNotes(order.adminNotes || "");

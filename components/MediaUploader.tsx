@@ -1,18 +1,7 @@
 "use client";
 import React from "react";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
-
-interface CloudinaryResult {
-  public_id: string;
-  secure_url: string;
-  resource_type: string;
-}
-
-interface MediaUploaderProps {
-  mediaType: "image" | "video" | "any"; // Type of media to upload
-  setUrl: (url: string) => void; // Function to set URL in parent component
-  setPublicId?: (id: string) => void; // Optional function to set public ID in parent
-}
+import { CloudinaryResult, MediaUploaderProps } from "@/types/models";
 
 const MediaUploader: React.FC<MediaUploaderProps> = ({ mediaType = "image", setUrl, setPublicId }) => {
   const [selectedMedia, setSelectedMedia] = React.useState<string>("");

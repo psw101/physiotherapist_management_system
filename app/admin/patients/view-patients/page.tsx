@@ -3,18 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PatientTable from '@/components/PatientTable';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-
-interface Patient {
-  id: number;
-  name: string;
-  username: string;
-  age: number;
-  contactNumber: string;
-  email: string;
-  area: string;
-  nic: string;
-  address: string;
-}
+import { Patient } from '@/types/models';
 
 const PatientViewPage = () => {
   const [patients, setPatients] = useState<Patient[]>([]);

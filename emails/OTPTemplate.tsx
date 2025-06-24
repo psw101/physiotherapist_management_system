@@ -12,11 +12,7 @@ import {
   Hr,
   Tailwind
 } from '@react-email/components';
-
-interface OTPTemplateProps {
-  name: string;
-  otp: string;
-}
+import { OTPTemplateProps } from '@/types/models';
 
 const OTPTemplate = ({ name, otp }: OTPTemplateProps) => {
   return (

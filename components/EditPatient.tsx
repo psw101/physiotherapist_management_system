@@ -1,29 +1,25 @@
 "use client";
+/**
+ * EditPatient Component
+ * 
+ * This component provides an interface for editing patient information. It displays 
+ * a form pre-populated with the selected patient's data and handles validation,
+ * submission, and error states.
+ * 
+ * Features:
+ * - Form validation for required fields
+ * - Real-time API updates
+ * - State synchronization with parent component
+ * - Success/error feedback to user
+ */
 import React, { useState } from 'react';
 import axios from 'axios';
-
-interface Patient {
-  id: number;
-  name: string;
-  username: string;
-  age: number;
-  contactNumber: string;
-  email: string;
-  area: string;
-  nic: string;
-  address: string;
-}
-
-interface EditPatientProps {
-  patients: Patient[];
-  selectedPatient: Patient;
-  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { Patient, EditPatientProps } from '@/types/models';
 
 const EditPatient: React.FC<EditPatientProps> = ({ patients, selectedPatient, setPatients, setIsEditing }) => {
   const id = selectedPatient.id;
 
+  // Form state initialized with the selected patient's data
   const [name, setName] = useState(selectedPatient.name);
   const [username, setUsername] = useState(selectedPatient.username);
   const [age, setAge] = useState(selectedPatient.age);
@@ -32,19 +28,34 @@ const EditPatient: React.FC<EditPatientProps> = ({ patients, selectedPatient, se
   const [area, setArea] = useState(selectedPatient.area);
   const [nic, setNic] = useState(selectedPatient.nic);
   const [address, setAddress] = useState(selectedPatient.address);
+  
+  // Feedback state for user notifications
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  /**
+   * Handles form submission for updating patient information
+   * 
+   * The function:
+   * 1. Prevents default form submission behavior
+   * 2. Validates that all required fields have values
+   * 3. Sends API request to update patient data
+   * 4. Updates local state to reflect changes
+   * 5. Shows success message and closes edit mode after a delay
+   * 
+   * @param e - Form submission event
+   */
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // Validation
+    // Validation - ensure all fields are filled
     if (!name || !username || !age || !contactNumber || !email || !area || !nic || !address) {
       setError('All fields are required.');
       return;
     }
 
+    // Construct updated patient object with form values
     const updatedPatient = {
       id,
       name,
@@ -58,10 +69,10 @@ const EditPatient: React.FC<EditPatientProps> = ({ patients, selectedPatient, se
     };
 
     try {
-      // Update patient via API
+      // Send API request to update patient in database
       await axios.put(`/api/patients/${id}`, updatedPatient);
 
-      // Update local state
+      // Update local patients array in parent component
       const updatedPatients = patients.map(patient => 
         patient.id === id ? updatedPatient : patient
       );

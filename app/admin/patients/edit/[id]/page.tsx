@@ -3,18 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import EditPatient from '@/components/EditPatient';
-
-interface Patient {
-  id: number;
-  name: string;
-  username: string;
-  age: number;
-  contactNumber: string;
-  email: string;
-  area: string;
-  nic: string;
-  address: string;
-}
+import { Patient } from '@/types/models';
 
 const PatientEditPage = () => {
   const [patient, setPatient] = useState<Patient | null>(null);

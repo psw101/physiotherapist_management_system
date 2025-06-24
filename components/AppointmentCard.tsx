@@ -2,25 +2,7 @@
 import { format } from "date-fns";
 import { Card, Text, Flex, Button } from "@radix-ui/themes";
 import { CalendarIcon, ClockIcon } from "@radix-ui/react-icons";
-
-interface AppointmentCardProps {
-  appointment: {
-    id: string;
-    appointmentDate: string;
-    startTime: string;
-    duration: number;
-    status: string;
-    paymentStatus: string;
-    fee: number;
-    reason?: string;
-    physiotherapist?: {
-      name: string;
-      specialization: string;
-    };
-  };
-  onCancel?: (id: string) => void;
-  isCancelling?: boolean;
-}
+import { AppointmentCardProps } from "@/types/models";
 
 export default function AppointmentCard({ 
   appointment, 

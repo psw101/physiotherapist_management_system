@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField, Text, Flex, Card } from "@radix-ui/themes";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
-
-interface CustomizationOption {
-  label: string;
-  placeholder?: string;
-  required?: boolean;
-}
-
-interface CustomizationOptionsAdderProps {
-  initialOptions: CustomizationOption[] | null | undefined;
-  onChange: (options: CustomizationOption[]) => void;
-}
+import { CustomOption, CustomizationOptionsAdderProps } from "@/types/models";
 
 const CustomizationOptionsAdder: React.FC<CustomizationOptionsAdderProps> = ({
   initialOptions = [],
@@ -20,7 +10,7 @@ const CustomizationOptionsAdder: React.FC<CustomizationOptionsAdderProps> = ({
   // Ensure initialOptions is always an array
   const safeInitialOptions = Array.isArray(initialOptions) ? initialOptions : [];
 
-  const [options, setOptions] = useState<CustomizationOption[]>(safeInitialOptions);
+  const [options, setOptions] = useState<CustomOption[]>(safeInitialOptions);
   const [newLabel, setNewLabel] = useState("");
   const [newPlaceholder, setNewPlaceholder] = useState("");
   const [newRequired, setNewRequired] = useState(false);
@@ -36,7 +26,7 @@ const CustomizationOptionsAdder: React.FC<CustomizationOptionsAdderProps> = ({
   const handleAddOption = () => {
     if (!newLabel.trim()) return;
 
-    const newOption: CustomizationOption = {
+    const newOption: CustomOption = {
       label: newLabel,
       placeholder: newPlaceholder || undefined,
       required: newRequired,

@@ -1,26 +1,5 @@
 import React from 'react';
-
-// Define the Patient interface
-interface Patient {
-  id?: number;
-  name: string;
-  username: string;
-  age: number;
-  contactNumber: string;
-  email: string;
-  area: string;
-  nic: string;
-  address: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-// Define the props for the Table component
-interface TableProps {
-  patients: Patient[];
-  handleEdit: (id: number) => void;
-  handleDelete: (id: number) => void;
-}
+import { Patient, TableProps } from '@/types/models';
 
  const PatientTable: React.FC<TableProps> = ({ patients, handleEdit, handleDelete }) => {
   // Assign sequential IDs if not present
