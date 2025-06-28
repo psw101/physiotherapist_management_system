@@ -178,7 +178,8 @@ const ProductDetailPage = () => {
           quantity: selectedQuantity,
           totalPrice: totalPrice,
           customizations: customValues,
-          advancePayment: payAdvance
+          advancePayment: payAdvance,
+          status: "pending" // Explicitly set the order status to pending
         }
       });
       
@@ -226,7 +227,7 @@ const ProductDetailPage = () => {
 
       {/* Back navigation button */}
       <button 
-        onClick={() => router.push("/products/view-products")} 
+        onClick={() => router.push("/user/products/")} 
         className="flex items-center text-sm text-gray-600 hover:text-gray-900 mb-6 transition-colors"
       >
         <IoChevronBackOutline className="mr-1 text-gray-500" /> Back to Products
@@ -241,7 +242,7 @@ const ProductDetailPage = () => {
         <div className="bg-red-50 rounded-lg p-6 text-center">
           <p className="text-red-600 mb-4">{error || "Product not found"}</p>
           <button 
-            onClick={() => router.push("/products/view-products")} 
+            onClick={() => router.push("/user/products")} 
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             Browse Products

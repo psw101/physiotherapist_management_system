@@ -37,7 +37,7 @@ export default async function Home() {
             Book an Appointment
           </Link>
           
-          <Link href="/products" 
+          <Link href="/user/products" 
                 className="bg-white/20 hover:bg-white/30 text-white font-medium py-3 px-6 rounded-lg backdrop-blur-sm transition-colors">
             Explore Products
           </Link>

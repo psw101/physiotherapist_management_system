@@ -42,7 +42,7 @@ export default function ProductSuccessPage() {
         quantity: parseInt(orderDetails.quantity || "1"),
         totalPrice: parseFloat((sessionData.amount_total / 100).toFixed(2)),
         customizations: orderDetails.customizations || {},
-        status: "pending"
+        status: "pending" // Explicitly ensure order status is pending
       };
       
       const orderUrl = "/api/orders";

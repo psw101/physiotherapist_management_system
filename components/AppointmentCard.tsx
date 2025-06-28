@@ -44,18 +44,9 @@ export default function AppointmentCard({
             <Text>{appointment.startTime} • {appointment.duration} mins</Text>
           </Flex>
           
-          {appointment.physiotherapist && (
-            <Text size="2">
-              Physiotherapist: {appointment.physiotherapist.name}
-              {appointment.physiotherapist.specialization && (
-                <span className="text-gray-500"> ({appointment.physiotherapist.specialization})</span>
-              )}
-            </Text>
-          )}
           
-          {appointment.reason && (
-            <Text size="2">{appointment.reason}</Text>
-          )}
+          
+       
           
           <Flex gap="2" mt="2">
             <div className={`px-2 py-1 rounded text-xs ${getStatusColor(appointment.status)}`}>

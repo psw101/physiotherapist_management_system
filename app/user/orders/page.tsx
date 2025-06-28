@@ -214,7 +214,7 @@ const MyOrdersPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-lg text-gray-600">You don't have any orders yet.</p>
           <button
-            onClick={() => router.push("/products/view-products")}
+            onClick={() => router.push("/user/products")}
             className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
           >
             Browse Products

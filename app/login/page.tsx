@@ -143,7 +143,7 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            {/* Social login options */}
+            {/* Social login options
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -162,7 +162,7 @@ export default function LoginPage() {
                   <span className="ml-2 font-medium">Continue with Google</span>
                 </button>
               </div>
-            </div>
+            </div> */}
 
             {/* Registration link */}
             <div className="mt-6 text-center">

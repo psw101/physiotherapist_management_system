@@ -86,8 +86,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}>        <AuthProvider>
           <Theme>
             <NavbarWrapper />
-            {/* Add margin-top to prevent navbar overlap - navbar is 53px + padding */}
-            <main className="p-5 mt-16">
+            <main className="pt-16 p-5">
               {children}
             </main>
           </Theme>
