@@ -125,17 +125,6 @@ const AddProductPage = () => {
           )}
 
           <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl space-y-6 pb-20">
-            {Object.keys(errors).length > 0 && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                <p>Please correct the following errors:</p>
-                <ul className="list-disc ml-5">
-                  {Object.entries(errors).map(([field, error]) => (
-                    <li key={field}>{(error as any).message}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             <div>
               <Text as="div" size="2" mb="1" weight="medium">
                 Product Name

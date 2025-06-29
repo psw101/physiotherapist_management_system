@@ -20,8 +20,8 @@ export default function AdminNavbar() {
 
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: HomeIcon },
-    { name: "Users", href: "/admin/users", icon: UserIcon },
-    { name: "Patients", href: "/admin/patients", icon: UserGroupIcon },
+    // { name: "Users", href: "/admin/users", icon: UserIcon },
+    // { name: "Patients", href: "/admin/patients", icon: UserGroupIcon },
     { name: "Appointments", href: "/admin/appointments/slots", icon: CalendarIcon },
     { name: "Products", href: "/admin/products", icon: ShoppingCartIcon },
     { name: "Orders", href: "/admin/orders", icon: ClipboardDocumentListIcon },
@@ -29,6 +29,10 @@ export default function AdminNavbar() {
   ];
 
   const isActive = (path: string) => {
+    // Special case for dashboard - only exact match
+    if (path === '/admin') {
+      return pathname === '/admin';
+    }
     return pathname === path || pathname.startsWith(`${path}/`);
   };
 

@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
         const updatedOrder = await prisma.productOrder.update({
           where: { id: parsedOrderId },
           data: {
-            status: isAdvancePayment ? "advance_paid" : "paid"
+            status: isAdvancePayment ? "advance_paid" : "pending"
           }
         });
         console.log("API: Product order updated successfully:", updatedOrder);

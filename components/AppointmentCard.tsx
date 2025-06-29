@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { Card, Text, Flex, Button } from "@radix-ui/themes";
 import { CalendarIcon, ClockIcon } from "@radix-ui/react-icons";
 import { AppointmentCardProps } from "@/types/models";
+import { formatCurrency, getStatusColor } from "@/lib/utils";
 
 export default function AppointmentCard({ 
   appointment, 
@@ -11,24 +12,6 @@ export default function AppointmentCard({
 }: AppointmentCardProps) {
   // Format the date for display
   const formattedDate = format(new Date(appointment.appointmentDate), "MMM dd, yyyy");
-  
-  // Get badge color based on status
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "scheduled": return "bg-green-100 text-green-700";
-      case "completed": return "bg-blue-100 text-blue-700";
-      case "cancelled": return "bg-red-100 text-red-700";
-      case "pending": return "bg-orange-100 text-orange-700";
-      default: return "bg-gray-100 text-gray-700";
-    }
-  };
-  
-  // Get payment status color
-  const getPaymentColor = (status: string) => {
-    return status.toLowerCase() === "paid" 
-      ? "bg-green-100 text-green-700" 
-      : "bg-yellow-100 text-yellow-700";
-  };
 
   return (
     <Card className="p-4">
@@ -53,7 +36,7 @@ export default function AppointmentCard({
               {appointment.status}
             </div>
             
-            <div className={`px-2 py-1 rounded text-xs ${getPaymentColor(appointment.paymentStatus)}`}>
+            <div className={`px-2 py-1 rounded text-xs ${getStatusColor(appointment.paymentStatus)}`}>
               {appointment.paymentStatus}
             </div>
           </Flex>

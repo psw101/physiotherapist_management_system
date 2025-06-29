@@ -67,25 +67,26 @@ const Patients = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Register</h2>
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-xl bg-white rounded-lg shadow-md p-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
 
-      {error && (
-        <Callout.Root color="red" className="mb-6">
-          <Callout.Text>{error}</Callout.Text>
-        </Callout.Root>
-      )}
+        {error && (
+          <Callout.Root color="red" className="mb-6">
+            <Callout.Text>{error}</Callout.Text>
+          </Callout.Root>
+        )}
 
-      {success && (
-        <Callout.Root color="green" className="mb-6">
-          <Callout.Icon>
-            <CheckCircledIcon />
-          </Callout.Icon>
-          <Callout.Text>Registration successful! Redirecting to home page...</Callout.Text>
-        </Callout.Root>
-      )}
+        {success && (
+          <Callout.Root color="green" className="mb-6">
+            <Callout.Icon>
+              <CheckCircledIcon />
+            </Callout.Icon>
+            <Callout.Text>Registration successful! Redirecting to home page...</Callout.Text>
+          </Callout.Root>
+        )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <Text as="div" size="2" mb="1" weight="medium">
             Name
@@ -207,15 +208,16 @@ const Patients = () => {
           )}
         </div>
 
-        <div className="flex gap-4 pt-4">
-          <Button type="submit" disabled={isSubmitting || success}>
+        <div className="flex gap-4 pt-4 justify-center">
+          <Button type="submit" disabled={isSubmitting || success} className="w-full">
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
-          <Button type="button" variant="soft" color="gray" onClick={() => reset()} disabled={isSubmitting || success}>
+          <Button type="button" variant="soft" color="gray" onClick={() => reset()} disabled={isSubmitting || success} className="w-full">
             Cancel
           </Button>
         </div>
       </form>
+      </div>
     </div>
   );
 };
