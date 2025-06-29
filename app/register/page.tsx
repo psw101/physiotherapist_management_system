@@ -200,7 +200,12 @@ const Patients = () => {
           <Text as="div" size="2" mb="1" weight="medium">
             Date of Birth
           </Text>
-          <input type="date" className="w-full border rounded p-2" {...register("dateOfBirth")} />
+          <input 
+            type="date" 
+            className="w-full border rounded p-2" 
+            max={new Date().toISOString().split('T')[0]} 
+            {...register("dateOfBirth")} 
+          />
           {errors.dateOfBirth && (
             <Text color="red" size="1">
               {errors.dateOfBirth.message}

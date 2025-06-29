@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../app/generated/prisma"
@@ -14,77 +8,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// !impotant do not change
-//Follwing are the prisma schemas from nextauth for authentication purposes
-model User {
-  id                  String    @id @default(cuid())
-  name                String?
-  username            String?   @unique
-  email               String?   @unique
-  emailVerified       DateTime?
-  hashedPassword      String?
-  image               String?
-  role                String?   @default("PATIENT")
-  hasCompletedProfile Boolean   @default(false)
-
-  accounts Account[]
-  sessions Session[]
-
-  Authenticator Authenticator[]
-  patient       Patient?
-  productOrders ProductOrder[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Account {
-  id                       String  @id @default(cuid())
-  userId                   String  @unique
+model account {
+  id                       String   @id
+  userId                   String   @unique(map: "Account_userId_key")
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?  @db.Text
+  access_token             String?  @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?  @db.Text
   session_state            String?
   refresh_token_expires_in Int?
-  user                     User?   @relation(fields: [userId], references: [id])
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime
+  user                     user     @relation(fields: [userId], references: [id], map: "Account_userId_fkey")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+  @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
+  @@index([userId], map: "Account_userId_idx")
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
+model appointment {
+  id              String           @id
+  patientId       Int
+  slotId          Int?
+  appointmentDate DateTime
+  startTime       String
+  duration        Int
+  status          String           @default("pending")
+  reason          String?
+  notes           String?
+  paymentId       String?
+  paymentStatus   String?
+  fee             Float            @default(2500)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime
+  patient         patient          @relation(fields: [patientId], references: [id], map: "Appointment_patientId_fkey")
+  appointmentslot appointmentslot? @relation(fields: [slotId], references: [id], map: "Appointment_slotId_fkey")
+  payment         payment?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
+  @@index([patientId], map: "Appointment_patientId_fkey")
+  @@index([slotId], map: "Appointment_slotId_fkey")
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+model appointmentslot {
+  id          Int           @id @default(autoincrement())
+  date        DateTime
+  startTime   String
+  endTime     String
+  capacity    Int           @default(1)
+  bookedCount Int           @default(0)
+  isAvailable Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  appointment appointment[]
 
-  @@unique([identifier, token])
+  @@unique([date, startTime], map: "AppointmentSlot_date_startTime_key")
+  @@index([date], map: "AppointmentSlot_date_idx")
 }
 
-// Optional for WebAuthn support
-model Authenticator {
-  credentialID         String  @unique
+model authenticator {
+  credentialID         String  @unique(map: "Authenticator_credentialID_key")
   userId               String
   providerAccountId    String
   credentialPublicKey  String
@@ -92,33 +78,52 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                 user    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Authenticator_userId_fkey")
 
   @@id([userId, credentialID])
 }
 
-model Patient {
-  id            Int      @id @default(autoincrement())
+model patient {
+  id            Int           @id @default(autoincrement())
   name          String
-  username      String   @unique
+  username      String        @unique(map: "Patient_username_key")
   dateOfBirth   DateTime
   contactNumber String
-  email         String   @unique
+  email         String        @unique(map: "Patient_email_key")
   area          String
   nic           String
   address       String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
-
-  appointments Appointment[]
-  payments     Payment[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  userId        String        @unique(map: "Patient_userId_key")
+  appointment   appointment[]
+  user          user          @relation(fields: [userId], references: [id], map: "Patient_userId_fkey")
+  payment       payment[]
 }
 
-model Product {
+model payment {
+  id               String        @id
+  amount           Float
+  method           String
+  status           String
+  transactionId    String?
+  appointmentId    String?       @unique(map: "Payment_appointmentId_key")
+  productOrderId   String?       @unique(map: "Payment_productOrderId_key")
+  patientId        Int?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime
+  isAdvancePayment Boolean       @default(false)
+  paymentType      String?
+  appointment      appointment?  @relation(fields: [appointmentId], references: [id], map: "Payment_appointmentId_fkey")
+  patient          patient?      @relation(fields: [patientId], references: [id], map: "Payment_patientId_fkey")
+  productorder     productorder? @relation(fields: [productOrderId], references: [id], map: "Payment_productOrderId_fkey")
+
+  @@index([appointmentId], map: "Payment_appointmentId_idx")
+  @@index([patientId], map: "Payment_patientId_idx")
+  @@index([productOrderId], map: "Payment_productOrderId_idx")
+}
+
+model product {
   id            Int            @id @default(autoincrement())
   name          String?
   price         Int?
@@ -128,88 +133,63 @@ model Product {
   videoUrl      String?
   customOptions Json?
   feedback      Json?
-  productOrders ProductOrder[]
+  productorder  productorder[]
 }
 
-model ProductOrder {
-  id             String   @id @default(cuid())
+model productorder {
+  id             String   @id
   userId         String
-  user           User     @relation(fields: [userId], references: [id])
   productId      Int
-  product        Product  @relation(fields: [productId], references: [id])
   quantity       Int      @default(1)
   totalPrice     Float
   customizations Json?
   status         String   @default("pending")
   adminNotes     String?
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  updatedAt      DateTime
+  payment        payment?
+  product        product  @relation(fields: [productId], references: [id], map: "ProductOrder_productId_fkey")
+  user           user     @relation(fields: [userId], references: [id], map: "ProductOrder_userId_fkey")
 
-  payment Payment?
-
-  @@index([userId])
-  @@index([productId])
+  @@index([productId], map: "ProductOrder_productId_idx")
+  @@index([userId], map: "ProductOrder_userId_idx")
 }
 
-model Appointment {
-  id        String  @id @default(cuid())
-  patientId Int
-  patient   Patient @relation(fields: [patientId], references: [id])
+model session {
+  id           String   @id
+  sessionToken String   @unique(map: "Session_sessionToken_key")
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  user         user     @relation(fields: [userId], references: [id], map: "Session_userId_fkey")
 
-  slotId          Int?
-  appointmentSlot AppointmentSlot? @relation(fields: [slotId], references: [id])
-
-  appointmentDate DateTime
-  startTime       String
-  duration        Int
-
-  status        String   @default("pending")
-  reason        String?
-  notes         String?
-  paymentId     String?
-  paymentStatus String?
-  fee           Float    @default(2500)
-  payment       Payment?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  @@index([userId], map: "Session_userId_idx")
 }
 
-model Payment {
-  id               String  @id @default(cuid())
-  amount           Float
-  method           String
-  status           String
-  transactionId    String?
-  paymentType      String?
-  isAdvancePayment Boolean @default(false)
-
-  appointmentId String?      @unique
-  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
-
-  productOrderId String?       @unique
-  productOrder   ProductOrder? @relation(fields: [productOrderId], references: [id])
-
-  patientId Int?
-  patient   Patient? @relation(fields: [patientId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model user {
+  id                  String          @id
+  name                String?
+  username            String?         @unique(map: "User_username_key")
+  email               String?         @unique(map: "User_email_key")
+  emailVerified       DateTime?
+  hashedPassword      String?
+  image               String?
+  role                String?         @default("PATIENT")
+  hasCompletedProfile Boolean         @default(false)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime
+  account             account?
+  authenticator       authenticator[]
+  patient             patient?
+  productorder        productorder[]
+  session             session[]
 }
 
-model AppointmentSlot {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
-  startTime   String
-  endTime     String
-  capacity    Int      @default(1)
-  bookedCount Int      @default(0)
-  isAvailable Boolean  @default(true)
+model verificationtoken {
+  identifier String
+  token      String
+  expires    DateTime
 
-  appointments Appointment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([date, startTime])
-  @@index([date])
+  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
 }

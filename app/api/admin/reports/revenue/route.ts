@@ -62,6 +62,16 @@ export async function GET(request: NextRequest) {
         createdAt: 'desc',
       },
     });
+    
+    // Debug output
+    console.log(`Found ${payments.length} payments between ${start.toISOString()} and ${end.toISOString()}`);
+    if (payments.length > 0) {
+      console.log("Sample payment:", JSON.stringify(payments[0], null, 2));
+    } else {
+      // If no payments found, let's look for any payments without date filtering
+      const allPayments = await prisma.payment.count();
+      console.log(`Total payments in database without date filter: ${allPayments}`);
+    }
 
     // Transform the data for the frontend
     const revenueData = payments.map(payment => {
@@ -84,7 +94,23 @@ export async function GET(request: NextRequest) {
     });
 
     // Calculate summary data
-    const completedPayments = payments.filter(p => p.status.toLowerCase() === "completed");
+    // Log payment statuses for debugging
+    console.log("Payment statuses found:", payments.map(p => p.status));
+    
+    // Include any status that indicates completion (case-insensitive check)
+    const completedPayments = payments.filter(p => 
+      ["completed", "paid", "success", "successful"].includes(p.status.toLowerCase())
+    );
+    
+    // Debug log payment amounts
+    console.log("Payment amounts:", payments.map(p => ({ 
+      id: p.id, 
+      amount: p.amount,
+      status: p.status,
+      isCompleted: ["completed", "paid", "success", "successful"].includes(p.status.toLowerCase())
+    })));
+    
+    console.log(`Found ${completedPayments.length} completed payments out of ${payments.length} total`);
     
     const totalRevenue = completedPayments.reduce((sum, payment) => sum + payment.amount, 0);
     
@@ -97,7 +123,7 @@ export async function GET(request: NextRequest) {
       .reduce((sum, payment) => sum + payment.amount, 0);
     
     const pendingPayments = payments
-      .filter(payment => payment.status.toLowerCase() === "pending")
+      .filter(payment => ["pending", "processing", "awaiting"].includes(payment.status.toLowerCase()))
       .reduce((sum, payment) => sum + payment.amount, 0);
 
     // Calculate monthly growth (comparing to previous period of same length)
@@ -112,12 +138,19 @@ export async function GET(request: NextRequest) {
         createdAt: {
           gte: previousPeriodStart,
           lte: previousPeriodEnd,
-        },
-        status: "COMPLETED",
+        }
       },
     });
+    
+    // Filter completed payments manually for case-insensitive matching
+    const previousCompletedPayments = previousPeriodPayments.filter(p => 
+      ["completed", "paid", "success", "successful"].includes(p.status.toLowerCase())
+    );
 
-    const lastPeriodRevenue = previousPeriodPayments.reduce((sum, payment) => sum + payment.amount, 0);
+    // Log for debugging purposes
+    console.log(`Found ${previousPeriodPayments.length} previous period payments, ${previousCompletedPayments.length} completed`);
+
+    const lastPeriodRevenue = previousCompletedPayments.reduce((sum, payment) => sum + payment.amount, 0);
     
     // Calculate growth percentage
     let monthlyGrowth = 0;

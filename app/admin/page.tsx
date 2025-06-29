@@ -112,12 +112,12 @@ export default function AdminDashboard() {
           icon={UserGroupIcon}
           color="blue"
         />
-        <StatCard 
+        {/* <StatCard 
           title="Patients" 
           value={stats.patientsCount || 0}
           icon={UserGroupIcon}
           color="blue"
-        />
+        /> */}
         <StatCard 
           title="Products" 
           value={stats.productsCount || 0}
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
       </Grid>
 
       <Grid columns={{ initial: "1", md: "2" }} gap="4">
-        <Card className="p-6">
+        {/* <Card className="p-6">
           <Heading size="3" className="mb-4">Appointment Status</Heading>
           <Flex gap="4">
             <Box className="flex-1 p-4 bg-amber-100 rounded-md">
@@ -158,7 +158,7 @@ export default function AdminDashboard() {
               <Text size="2" className="text-green-700">Completed</Text>
             </Box>
           </Flex>
-        </Card>
+        </Card> */}
         
         <Card className="p-6">
           <Heading size="3" className="mb-4">System Summary</Heading>

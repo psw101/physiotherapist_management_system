@@ -15,9 +15,20 @@ export function cn(...inputs: ClassValue[]) {
  * @param currency Currency symbol (default: "Rs.")
  * @returns Formatted currency string
  */
-export function formatCurrency(amount: number, withCurrency = true, currency = "Rs.") {
-  const formatted = amount.toLocaleString()
-  return withCurrency ? `${currency} ${formatted}` : formatted
+export function formatCurrency(amount: number, withSymbol: boolean = true): string {
+  // Check if we're getting a valid number
+  console.log("Formatting amount:", amount, typeof amount);
+  
+  if (amount === null || amount === undefined || isNaN(amount)) {
+    console.warn("Invalid amount passed to formatCurrency:", amount);
+    return "0";
+  }
+  
+  // Format the number with commas
+  const formattedAmount = Number(amount).toLocaleString('en-IN');
+  
+  // Return with or without currency symbol
+  return withSymbol ? `₹${formattedAmount}` : formattedAmount;
 }
 
 /**

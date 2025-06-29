@@ -91,16 +91,16 @@ export default function AppointmentSuccessPage() {
         <p className="text-gray-600 mb-6">{error}</p>
         <div className="flex justify-center gap-4">
           <Link 
-            href="/user/appointments/my-appointments" 
+            href="/user/appointments" 
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             View My Appointments
           </Link>
           <Link 
-            href="/contact" 
+            href="/user" 
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
           >
-            Contact Support
+            Retrun to Home
           </Link>
         </div>
       </div>
@@ -124,14 +124,14 @@ export default function AppointmentSuccessPage() {
           </Link>
         ) : (
           <Link 
-            href="/appointments/my-appointments" 
+            href="/user/appointments" 
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             View My Appointments
           </Link>
         )}
         <Link 
-          href="/" 
+          href="/user" 
           className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
         >
           Return to Home

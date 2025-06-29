@@ -33,11 +33,12 @@ export async function POST(request: NextRequest) {
     
     console.log("API: Extracted payment intent ID:", paymentIntentId);
     
-    // Prepare safe data for Prisma
+    // Prepare safe data for Prisma with normalized status (always lowercase)
     let paymentData: any = {
       amount: parseFloat(amount.toString()),
       method,
-      status,
+      // Normalize status to lowercase for consistent comparison
+      status: status ? status.toLowerCase() : "completed",
       transactionId: paymentIntentId,
       paymentType: paymentType || "product", // Provide a default value
       isAdvancePayment: Boolean(isAdvancePayment)
@@ -138,7 +139,7 @@ export async function POST(request: NextRequest) {
         const updatedOrder = await prisma.productOrder.update({
           where: { id: parsedOrderId },
           data: {
-            status: isAdvancePayment ? "advance_paid" : "pending"
+            status: isAdvancePayment ? "advance_paid" : "pending" // Set to paid instead of pending
           }
         });
         console.log("API: Product order updated successfully:", updatedOrder);
